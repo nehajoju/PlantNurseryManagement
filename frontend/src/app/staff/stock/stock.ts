@@ -428,3 +428,5 @@ export class Stock implements OnInit {
   }
 
 }
+
+

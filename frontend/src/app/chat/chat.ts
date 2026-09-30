@@ -500,3 +500,5 @@ export class Chat implements OnInit {
     this.errorMessage = '';
   }
 }
+
+

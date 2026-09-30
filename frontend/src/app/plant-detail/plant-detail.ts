@@ -144,3 +144,5 @@ export class PlantDetail implements OnInit {
 }
 
 }
+
+
