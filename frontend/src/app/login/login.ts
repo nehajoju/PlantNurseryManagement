@@ -51,7 +51,7 @@ export class Login {
 
 
     this.http.post<any>(
-      'http://https://plantnurserymanagement.onrender.com/api/users/login/',
+      'https://plantnurserymanagement.onrender.com/api/users/login/',
       this.loginForm.value
     ).subscribe({
 

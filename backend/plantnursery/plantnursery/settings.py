@@ -159,8 +159,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
+    'https://plant-nursery-management.vercel.app',
 ]
-
 
 
 
