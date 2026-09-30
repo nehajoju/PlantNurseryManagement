@@ -1,0 +1,223 @@
+<div class="notification-wrapper">
+
+  <!-- Notification Bell -->
+  <button
+    class="notification-button"
+    (click)="toggleNotifications()"
+    type="button"
+    aria-label="Notifications"
+  >
+
+    🔔
+
+    <span
+      class="notification-badge"
+      *ngIf="unreadCount > 0"
+    >
+      {{ unreadCount > 99 ? '99+' : unreadCount }}
+    </span>
+
+  </button>
+
+
+  <!-- Notification Dropdown -->
+  <div
+    class="notification-dropdown"
+    *ngIf="showNotifications"
+  >
+
+
+    <!-- HEADER -->
+    <div class="notification-header">
+
+      <h3>
+        Notifications
+      </h3>
+
+
+      <div class="notification-header-actions">
+
+        <!-- Clear All -->
+        <button
+          type="button"
+          class="clear-all-button"
+          (click)="clearAllNotifications()"
+          [disabled]="
+            notifications.length === 0 ||
+            clearingAll
+          "
+        >
+          {{ clearingAll ? 'Clearing...' : 'Clear all' }}
+        </button>
+
+
+        <!-- Close -->
+        <button
+          type="button"
+          class="close-notification-button"
+          (click)="closeNotifications()"
+          aria-label="Close notifications"
+        >
+          ×
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- MARK ALL AS READ -->
+    <div
+      class="notification-actions"
+      *ngIf="notifications.length > 0"
+    >
+
+      <button
+        type="button"
+        class="mark-all-button"
+        (click)="markAllAsRead()"
+        [disabled]="unreadCount === 0"
+      >
+        Mark all as read
+      </button>
+
+    </div>
+
+
+    <!-- NO NOTIFICATIONS -->
+    <div
+      class="empty-notifications"
+      *ngIf="notifications.length === 0"
+    >
+
+      <div class="empty-icon">
+        🔔
+      </div>
+
+      <p>
+        No notifications yet
+      </p>
+
+    </div>
+
+
+    <!-- NOTIFICATION LIST -->
+    <div
+      class="notification-list"
+      *ngIf="notifications.length > 0"
+    >
+
+      <div
+        class="notification-item"
+        *ngFor="let notification of notifications"
+        [class.unread]="!notification.is_read"
+        (click)="markAsRead(notification)"
+      >
+
+
+        <!-- ICON -->
+        <div class="notification-icon">
+
+          <span
+            *ngIf="
+              notification.notification_type === 'ORDER'
+            "
+          >
+            🛒
+          </span>
+
+          <span
+            *ngIf="
+              notification.notification_type === 'DELIVERY'
+            "
+          >
+            🚚
+          </span>
+
+          <span
+            *ngIf="
+              notification.notification_type === 'STOCK'
+            "
+          >
+            📦
+          </span>
+
+          <span
+            *ngIf="
+              notification.notification_type === 'GARDENING'
+            "
+          >
+            🌱
+          </span>
+
+          <span
+            *ngIf="
+              notification.notification_type === 'CHAT'
+            "
+          >
+            💬
+          </span>
+
+          <span
+            *ngIf="
+              notification.notification_type === 'STAFF'
+            "
+          >
+            👷
+          </span>
+
+          <span
+            *ngIf="
+              notification.notification_type === 'SYSTEM'
+            "
+          >
+            🔔
+          </span>
+
+        </div>
+
+
+        <!-- CONTENT -->
+        <div class="notification-content">
+
+          <div class="notification-title">
+            {{ notification.title }}
+          </div>
+
+          <div class="notification-message">
+            {{ notification.message }}
+          </div>
+
+          <div class="notification-time">
+            {{ notification.created_at | date:'medium' }}
+          </div>
+
+        </div>
+
+
+        <!-- DELETE BUTTON -->
+        <button
+          type="button"
+          class="delete-notification-button"
+          (click)="deleteNotification($event, notification)"
+          [disabled]="isDeleting(notification.id)"
+          aria-label="Delete notification"
+          title="Delete notification"
+        >
+          {{ isDeleting(notification.id) ? '...' : '🗑' }}
+        </button>
+
+
+        <!-- UNREAD DOT -->
+        <span
+          class="unread-dot"
+          *ngIf="!notification.is_read"
+        ></span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

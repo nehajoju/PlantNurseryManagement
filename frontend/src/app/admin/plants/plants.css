@@ -1,0 +1,356 @@
+.admin-plants-page {
+  min-height: 100vh;
+  padding: 50px 8%;
+  background: #f6f8f6;
+}
+
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.page-header {
+  max-width: 1200px;
+  margin: 0 auto 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.page-header p {
+  margin: 0 0 8px;
+
+  color: #6b8e72;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.page-header h1 {
+  margin: 0 0 10px;
+
+  color: #2f6b3f;
+  font-size: 36px;
+}
+
+.page-header span {
+  color: #777;
+  font-size: 15px;
+}
+
+
+/* =========================
+   ADD PLANT BUTTON
+========================= */
+
+.add-plant-button {
+  border: none;
+  background: #2f6b3f;
+  color: white;
+
+  padding: 12px 20px;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: .3s;
+
+  white-space: nowrap;
+}
+
+.add-plant-button:hover {
+  background: #245531;
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+  max-width: 1200px;
+  margin: auto;
+
+  padding: 70px;
+
+  background: white;
+  border-radius: 15px;
+
+  text-align: center;
+  color: #777;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-state {
+  max-width: 600px;
+  margin: 50px auto;
+
+  padding: 50px;
+
+  background: white;
+  border-radius: 16px;
+
+  text-align: center;
+
+  border: 1px solid #e2ebe3;
+}
+
+.empty-state div {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.empty-state h2 {
+  margin: 0 0 8px;
+  color: #2f6b3f;
+}
+
+.empty-state p {
+  margin: 0;
+  color: #777;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.plants-table-wrapper {
+  max-width: 1200px;
+  margin: auto;
+
+  background: white;
+
+  border-radius: 16px;
+
+  border: 1px solid #e2ebe3;
+
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .05);
+
+  overflow-x: auto;
+}
+
+.plants-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  min-width: 800px;
+}
+
+.plants-table th {
+  padding: 18px 20px;
+
+  background: #f5f9f5;
+
+  color: #555;
+
+  text-align: left;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  border-bottom: 1px solid #e3ebe4;
+}
+
+.plants-table td {
+  padding: 18px 20px;
+
+  color: #555;
+
+  font-size: 14px;
+
+  border-bottom: 1px solid #edf1ed;
+}
+
+.plants-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.plants-table tbody tr:hover {
+  background: #fbfdfb;
+}
+
+
+/* =========================
+   PLANT INFO
+========================= */
+
+.plant-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.plant-image {
+  width: 55px;
+  height: 55px;
+
+  border-radius: 10px;
+
+  background: #eaf3eb;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.plant-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.plant-image span {
+  font-size: 25px;
+}
+
+.plant-info strong {
+  display: block;
+
+  color: #2f6b3f;
+
+  font-size: 15px;
+
+  margin-bottom: 4px;
+}
+
+.plant-info small {
+  display: block;
+
+  color: #999;
+
+  font-size: 11px;
+}
+
+
+/* =========================
+   STOCK
+========================= */
+
+.low-stock {
+  display: inline-block;
+
+  padding: 5px 9px;
+
+  border-radius: 6px;
+
+  background: #fff4dc;
+
+  color: #9a6a00;
+
+  font-weight: 600;
+}
+
+.out-of-stock {
+  display: inline-block;
+
+  padding: 5px 9px;
+
+  border-radius: 6px;
+
+  background: #fde8e8;
+
+  color: #b42318;
+
+  font-weight: 600;
+}
+
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.edit-button,
+.delete-button {
+  border: none;
+
+  padding: 8px 12px;
+
+  border-radius: 6px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: .3s;
+}
+
+.edit-button {
+  background: #e8f2ea;
+  color: #2f6b3f;
+
+  margin-right: 7px;
+}
+
+.edit-button:hover {
+  background: #dcebdd;
+}
+
+.delete-button {
+  background: #fdeaea;
+  color: #b42318;
+}
+
+.delete-button:hover {
+  background: #f9dcdc;
+}
+.view-button {
+  border: none;
+  background: #e8f1eb;
+  color: #245c38;
+
+  padding: 9px 14px;
+  border-radius: 7px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  margin-right: 8px;
+
+  transition: 0.2s ease;
+}
+
+.view-button:hover {
+  background: #d5e6da;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+  .admin-plants-page {
+    padding: 35px 5%;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-header h1 {
+    font-size: 30px;
+  }
+
+  .add-plant-button {
+    width: 100%;
+  }
+
+}

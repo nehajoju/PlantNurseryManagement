@@ -1,0 +1,277 @@
+<div class="orders-page">
+
+  <div class="orders-header">
+
+    <p>YOUR ACCOUNT</p>
+
+    <h1>My Orders</h1>
+
+    <span>
+      View your previous purchases and order details.
+    </span>
+
+  </div>
+
+
+  @if (loading) {
+
+    <div class="orders-loading">
+      <p>Loading your orders...</p>
+    </div>
+
+  } @else if (orders.length === 0) {
+
+    <div class="empty-orders">
+
+      <div class="empty-icon">
+        📦
+      </div>
+
+      <h2>No Orders Yet</h2>
+
+      <p>
+        You haven't placed any orders yet.
+      </p>
+
+      <a
+        routerLink="/plants"
+        class="shop-button">
+        🌿 Start Shopping
+      </a>
+
+    </div>
+
+  } @else {
+
+    <div class="orders-list">
+
+      @for (order of orders; track order.id) {
+
+        <div class="order-card">
+
+          <!-- Order Header -->
+
+          <div class="order-header">
+
+            <div>
+              <span>Order ID</span>
+              <h2>#{{ order.id }}</h2>
+            </div>
+
+            <div class="order-date">
+
+              <span>Order Date</span>
+
+              <strong>
+                {{ order.created_at | date:'dd MMM yyyy' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- Order Status -->
+
+          <div class="order-status-row">
+
+            <div>
+              <span>Order Status</span>
+
+              <strong class="status">
+                {{ order.status }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Payment</span>
+
+              <strong>
+                {{ order.payment_method }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Payment Status</span>
+
+              <strong>
+                {{ order.payment_status }}
+              </strong>
+            </div>
+
+          </div>
+
+          <!-- Order Progress -->
+
+<div class="order-progress">
+
+  <div class="progress-step"
+       [class.active]="getStatusStep(order.status) >= 1">
+
+    <div class="progress-circle">
+      ✓
+    </div>
+
+    <span>Pending</span>
+
+  </div>
+
+
+  <div class="progress-line"
+       [class.active]="getStatusStep(order.status) >= 2">
+  </div>
+
+
+  <div class="progress-step"
+       [class.active]="getStatusStep(order.status) >= 2">
+
+    <div class="progress-circle">
+      ✓
+    </div>
+
+    <span>Confirmed</span>
+
+  </div>
+
+
+  <div class="progress-line"
+       [class.active]="getStatusStep(order.status) >= 3">
+  </div>
+
+
+  <div class="progress-step"
+       [class.active]="getStatusStep(order.status) >= 3">
+
+    <div class="progress-circle">
+      ✓
+    </div>
+
+    <span>Shipped</span>
+
+  </div>
+
+
+  <div class="progress-line"
+       [class.active]="getStatusStep(order.status) >= 4">
+  </div>
+
+
+  <div class="progress-step"
+       [class.active]="getStatusStep(order.status) >= 4">
+
+    <div class="progress-circle">
+      ✓
+    </div>
+
+    <span>Delivered</span>
+
+  </div>
+
+</div>
+
+
+          <!-- Order Items -->
+
+          <div class="order-items">
+
+            <h3>Items</h3>
+
+            @for (item of order.items; track item.id) {
+
+              <div class="order-item">
+
+                <div class="item-image">
+
+                  @if (item.plant_image) {
+
+                    <img
+                      [src]="item.plant_image"
+                      [alt]="item.plant_name">
+
+                  } @else {
+
+                    <span>🌱</span>
+
+                  }
+
+                </div>
+
+                <div class="item-details">
+
+                  <h4>
+                    {{ item.plant_name }}
+                  </h4>
+
+                  <p>
+                    Quantity: {{ item.quantity }}
+                  </p>
+
+                </div>
+
+                <div class="item-price">
+
+  <span>
+    ₹{{ item.price }} × {{ item.quantity }}
+  </span>
+
+  <strong>
+    ₹{{ item.price * item.quantity }}
+  </strong>
+
+</div>
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- Delivery Details -->
+
+          <div class="delivery-details">
+
+            <h3>📍 Delivery Address</h3>
+
+            <p>
+              {{ order.shipping_address }},
+              {{ order.city }},
+              {{ order.state }} -
+              {{ order.pincode }}
+            </p>
+
+          </div>
+
+
+          <!-- Order Footer -->
+
+          <div class="order-footer">
+
+            <div class="total">
+
+              <span>Total Amount</span>
+
+              <strong>
+                ₹{{ order.total_amount }}
+              </strong>
+
+            </div>
+
+            <button
+              type="button"
+              class="receipt-button"
+              (click)="downloadReceipt(order.id)">
+              📄 Download Receipt
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>

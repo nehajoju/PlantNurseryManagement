@@ -1,0 +1,420 @@
+<div class="categories-page">
+
+  <!-- =========================
+       PAGE HEADER
+  ========================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <p>ADMIN PANEL</p>
+
+      <h1>
+        Manage Categories
+      </h1>
+
+      <span>
+        Create and manage plant categories.
+      </span>
+
+    </div>
+
+
+    <!-- Add Category Button -->
+
+    <button
+      type="button"
+      class="add-category-button"
+      (click)="openAddCategory()">
+
+      + Add Category
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       LOADING
+  ========================== -->
+
+  @if (loading) {
+
+    <div class="loading">
+
+      <p>
+        Loading categories...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       EMPTY STATE
+  ========================== -->
+
+  @else if (categories.length === 0) {
+
+    <div class="empty-state">
+
+      <div>
+        🪴
+      </div>
+
+      <h2>
+        No Categories Found
+      </h2>
+
+      <p>
+        There are no plant categories yet.
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       CATEGORY LIST
+  ========================== -->
+
+  @else {
+
+    <div class="categories-grid">
+
+      @for (category of categories; track category.id) {
+
+        <div class="category-card">
+
+
+          <!-- Category Icon -->
+
+          <div class="category-icon">
+            🪴
+          </div>
+
+
+          <!-- Category Information -->
+
+          <div class="category-info">
+
+            <h3>
+              {{ category.name }}
+            </h3>
+
+            <span>
+              Category ID: #{{ category.id }}
+            </span>
+
+          </div>
+
+
+          <!-- Actions -->
+
+          <div class="category-actions">
+
+            <button
+              type="button"
+              class="edit-button"
+              (click)="openEditCategory(category)">
+
+              ✏️ Edit
+
+            </button>
+
+
+            <button
+              type="button"
+              class="delete-button"
+              (click)="openDeleteCategory(category)">
+
+              🗑️ Delete
+
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>
+
+
+<!-- =================================================
+     ADD / EDIT CATEGORY MODAL
+================================================== -->
+
+@if (showCategoryModal) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeCategoryModal()">
+
+
+    <div
+      class="category-modal"
+      (click)="$event.stopPropagation()">
+
+
+      <!-- Modal Header -->
+
+      <div class="modal-header">
+
+        <div>
+
+          <p>
+            PLANTNEST
+          </p>
+
+
+          <h2>
+
+            @if (editingCategoryId !== null) {
+
+              Edit Category
+
+            } @else {
+
+              Add Category
+
+            }
+
+          </h2>
+
+
+          <span>
+
+            @if (editingCategoryId !== null) {
+
+              Update the category name.
+
+            } @else {
+
+              Create a new plant category.
+
+            }
+
+          </span>
+
+        </div>
+
+
+        <!-- Close -->
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeCategoryModal()">
+
+          ×
+
+        </button>
+
+      </div>
+
+
+      <!-- Modal Body -->
+
+      <div class="modal-body">
+
+        <label for="categoryName">
+
+          Category Name
+
+        </label>
+
+
+        <input
+          id="categoryName"
+          type="text"
+          [(ngModel)]="categoryName"
+          placeholder="Example: Air Purifying Plants"
+          autocomplete="off">
+
+
+        @if (!categoryName.trim()) {
+
+          <small>
+
+            Enter a category name to continue.
+
+          </small>
+
+        }
+
+      </div>
+
+
+      <!-- Modal Actions -->
+
+      <div class="modal-actions">
+
+
+        <!-- Cancel -->
+
+        <button
+          type="button"
+          class="modal-cancel-button"
+          (click)="closeCategoryModal()">
+
+          Cancel
+
+        </button>
+
+
+        <!-- Add / Update -->
+
+        <button
+          type="button"
+          class="modal-save-button"
+          [disabled]="adding || !categoryName.trim()"
+          (click)="saveCategory()">
+
+
+          @if (adding) {
+
+            @if (editingCategoryId !== null) {
+
+              Updating...
+
+            } @else {
+
+              Adding...
+
+            }
+
+          } @else {
+
+            @if (editingCategoryId !== null) {
+
+              ✏️ Update Category
+
+            } @else {
+
+              🌿 Add Category
+
+            }
+
+          }
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+
+<!-- =================================================
+     DELETE CATEGORY MODAL
+================================================== -->
+
+@if (showDeleteModal && deletingCategory) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeDeleteModal()">
+
+
+    <div
+      class="delete-modal"
+      (click)="$event.stopPropagation()">
+
+
+      <!-- Delete Icon -->
+
+      <div class="delete-icon">
+
+        🗑️
+
+      </div>
+
+
+      <!-- Title -->
+
+      <h2>
+
+        Delete Category?
+
+      </h2>
+
+
+      <!-- Message -->
+
+      <p>
+
+        Are you sure you want to delete
+
+        <strong>
+          "{{ deletingCategory.name }}"
+        </strong>
+
+        ?
+
+      </p>
+
+
+      <small>
+
+        This action cannot be undone.
+
+      </small>
+
+
+      <!-- Delete Actions -->
+
+      <div class="delete-modal-actions">
+
+
+        <!-- Cancel -->
+
+        <button
+          type="button"
+          class="modal-cancel-button"
+          (click)="closeDeleteModal()"
+          [disabled]="deleting">
+
+          Cancel
+
+        </button>
+
+
+        <!-- Confirm Delete -->
+
+        <button
+          type="button"
+          class="confirm-delete-button"
+          (click)="deleteCategory()"
+          [disabled]="deleting">
+
+
+          @if (deleting) {
+
+            Deleting...
+
+          } @else {
+
+            🗑️ Delete Category
+
+          }
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

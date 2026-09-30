@@ -1,0 +1,82 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="login-header">
+
+      <div class="logo">
+        🌿
+      </div>
+
+      <h1>Welcome Back</h1>
+
+      <p>
+        Login to your PlantNest account
+      </p>
+
+    </div>
+
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+    >
+
+      <!-- Username -->
+
+      <div class="form-group">
+
+        <label for="username">
+          Username
+        </label>
+
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="Enter your username"
+        >
+
+      </div>
+
+
+      <!-- Password -->
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+        >
+
+      </div>
+
+
+      <!-- Login button -->
+
+      <button type="submit">
+        Login
+      </button>
+
+    </form>
+
+
+    <p class="register-link">
+
+      Don't have an account?
+
+      <a routerLink="/register">
+        Create Account
+      </a>
+
+    </p>
+
+  </div>
+
+</div>

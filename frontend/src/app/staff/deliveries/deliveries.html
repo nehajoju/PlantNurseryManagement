@@ -1,0 +1,1457 @@
+<div class="deliveries-page">
+
+  <!-- =========================
+       PAGE HEADER
+  ========================== -->
+
+  <div class="page-header">
+
+    <div class="header-content">
+
+      <div class="header-icon">
+        🚚
+      </div>
+
+      <div>
+        <h1>My Deliveries</h1>
+
+        <p>
+          Manage your assigned deliveries, COD collection
+          and order completion.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       DELIVERY STATISTICS
+  ========================== -->
+
+  <div class="stats-grid">
+
+    <div class="stat-card total-card">
+
+      <div class="stat-icon">
+        📦
+      </div>
+
+      <div class="stat-content">
+
+        <span class="stat-label">
+          Total Deliveries
+        </span>
+
+        <strong class="stat-value">
+          {{ totalDeliveries }}
+        </strong>
+
+        <small>
+          Active deliveries
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card assigned-card">
+
+      <div class="stat-icon">
+        📋
+      </div>
+
+      <div class="stat-content">
+
+        <span class="stat-label">
+          Assigned
+        </span>
+
+        <strong class="stat-value">
+          {{ assignedDeliveries }}
+        </strong>
+
+        <small>
+          Waiting to start
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card out-card">
+
+      <div class="stat-icon">
+        🛵
+      </div>
+
+      <div class="stat-content">
+
+        <span class="stat-label">
+          Out for Delivery
+        </span>
+
+        <strong class="stat-value">
+          {{ outForDelivery }}
+        </strong>
+
+        <small>
+          Currently delivering
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card finished-card">
+
+      <div class="stat-icon">
+        ✅
+      </div>
+
+      <div class="stat-content">
+
+        <span class="stat-label">
+          Finished
+        </span>
+
+        <strong class="stat-value">
+          {{ finishedDeliveries }}
+        </strong>
+
+        <small>
+          Successfully delivered
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card cod-pending-card">
+
+      <div class="stat-icon">
+        💵
+      </div>
+
+      <div class="stat-content">
+
+        <span class="stat-label">
+          COD Pending
+        </span>
+
+        <strong class="stat-value">
+          {{ codPending }}
+        </strong>
+
+        <small>
+          Payment to collect
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card cod-collected-card">
+
+      <div class="stat-icon">
+        💰
+      </div>
+
+      <div class="stat-content">
+
+        <span class="stat-label">
+          COD Collected
+        </span>
+
+        <strong class="stat-value">
+          {{ codCollected }}
+        </strong>
+
+        <small>
+          Payments collected
+        </small>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       SEARCH & FILTER
+  ========================== -->
+
+  <div class="filter-section">
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        🔍
+      </span>
+
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search by order, customer or city..."
+        (keyup.enter)="searchDeliveries()"
+      />
+
+      @if (searchTerm) {
+
+        <button
+          type="button"
+          class="clear-search"
+          (click)="clearSearch()"
+        >
+          ✕
+        </button>
+
+      }
+
+      <button
+        type="button"
+        class="search-button"
+        (click)="searchDeliveries()"
+      >
+        Search
+      </button>
+
+    </div>
+
+
+    <div class="filter-box">
+
+      <label for="deliveryStatus">
+        Delivery Status
+      </label>
+
+      <select
+        id="deliveryStatus"
+        [(ngModel)]="selectedDeliveryStatus"
+        (change)="filterDeliveries()"
+      >
+
+        @for (
+          status of deliveryStatuses;
+          track status
+        ) {
+
+          <option [value]="status">
+            {{ status }}
+          </option>
+
+        }
+
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       LOADING
+  ========================== -->
+
+  @if (loading) {
+
+    <div class="loading-container">
+
+      <div class="spinner"></div>
+
+      <p>
+        Loading your deliveries...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       EMPTY STATE
+  ========================== -->
+
+  @if (!loading && deliveries.length === 0) {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        🚚
+      </div>
+
+      <h2>
+        No deliveries found
+      </h2>
+
+      <p>
+        You currently have no deliveries assigned to you.
+      </p>
+
+      @if (searchTerm) {
+
+        <button
+          type="button"
+          class="clear-button"
+          (click)="clearSearch()"
+        >
+          Clear Search
+        </button>
+
+      }
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       DELIVERY TABLE
+  ========================== -->
+
+  @if (!loading && deliveries.length > 0) {
+
+    <div class="table-container">
+
+      <table class="deliveries-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Order</th>
+
+            <th>Customer</th>
+
+            <th>Location</th>
+
+            <th>Items</th>
+
+            <th>Amount</th>
+
+            <th>Payment</th>
+
+            <th>Delivery Status</th>
+
+            <th>Assigned To</th>
+
+            <th>Date</th>
+
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (
+            delivery of deliveries;
+            track delivery.id
+          ) {
+
+            <tr>
+
+              <!-- ORDER -->
+              <td>
+
+                <div class="order-number">
+                  #{{ delivery.id }}
+                </div>
+
+              </td>
+
+
+              <!-- CUSTOMER -->
+              <td>
+
+                <div class="customer-cell">
+
+                  <strong>
+                    {{ getCustomerName(delivery) }}
+                  </strong>
+
+                  @if (delivery.email) {
+
+                    <small>
+                      {{ delivery.email }}
+                    </small>
+
+                  }
+
+                </div>
+
+              </td>
+
+
+              <!-- LOCATION -->
+              <td>
+
+                <div class="location-cell">
+
+                  <strong>
+                    {{ delivery.city }}
+                  </strong>
+
+                  @if (delivery.state) {
+
+                    <small>
+                      {{ delivery.state }}
+                    </small>
+
+                  }
+
+                </div>
+
+              </td>
+
+
+              <!-- ITEMS -->
+              <td>
+
+                <span class="item-count">
+
+                  {{ getItemCount(delivery) }}
+
+                  {{
+                    getItemCount(delivery) === 1
+                      ? 'item'
+                      : 'items'
+                  }}
+
+                </span>
+
+              </td>
+
+
+              <!-- AMOUNT -->
+              <td>
+
+                <strong class="amount">
+                  ₹{{ delivery.total_amount | number:'1.2-2' }}
+                </strong>
+
+              </td>
+
+
+              <!-- PAYMENT -->
+              <td>
+
+                <div class="payment-cell">
+
+                  <span class="payment-method">
+                    {{ delivery.payment_method }}
+                  </span>
+
+                  <span
+                    class="payment-status"
+                    [class]="
+                      getPaymentClass(
+                        delivery.payment_status
+                      )
+                    "
+                  >
+                    {{ delivery.payment_status }}
+                  </span>
+
+                </div>
+
+              </td>
+
+
+              <!-- DELIVERY STATUS -->
+              <td>
+
+                <span
+                  class="delivery-status"
+                  [class]="
+                    getDeliveryClass(
+                      delivery.delivery_status
+                    )
+                  "
+                >
+                  {{ delivery.delivery_status }}
+                </span>
+
+              </td>
+
+
+              <!-- ASSIGNED STAFF -->
+              <td>
+
+                <div class="assigned-cell">
+
+                  @if (isAssignedToMe(delivery)) {
+
+                    <span class="assigned-me">
+                      You
+                    </span>
+
+                  } @else {
+
+                    <span>
+                      {{ delivery.assigned_staff_name || 'Not Assigned' }}
+                    </span>
+
+                  }
+
+                </div>
+
+              </td>
+
+
+              <!-- DATE -->
+              <td>
+
+                <span class="date-cell">
+                  {{ delivery.created_at | date:'dd MMM yyyy' }}
+                </span>
+
+              </td>
+
+
+              <!-- ACTIONS -->
+              <td>
+
+                <div class="action-buttons">
+
+                  <!-- VIEW -->
+                  <button
+                    type="button"
+                    class="view-btn"
+                    (click)="openDelivery(delivery)"
+                  >
+                    👁 View
+                  </button>
+
+
+                  <!-- START DELIVERY -->
+                  @if (canStartDelivery(delivery)) {
+
+                    <button
+                      type="button"
+                      class="start-btn"
+                      (click)="openExpectedDateModal(delivery)"
+                      [disabled]="updating"
+                    >
+                      🛵 Start
+                    </button>
+
+                  }
+
+
+                  <!-- COLLECT COD -->
+                  @if (canCollectCOD(delivery)) {
+
+                    <button
+                      type="button"
+                      class="cod-btn"
+                      (click)="
+                        performAction(
+                          delivery,
+                          'collect_cod'
+                        )
+                      "
+                      [disabled]="updating"
+                    >
+                      💵 Collect
+                    </button>
+
+                  }
+
+
+                  <!-- COMPLETE -->
+                  @if (canCompleteDelivery(delivery)) {
+
+                    <button
+                      type="button"
+                      class="complete-btn"
+                      (click)="
+                        performAction(
+                          delivery,
+                          'deliver'
+                        )
+                      "
+                      [disabled]="updating"
+                    >
+                      ✅ Complete
+                    </button>
+
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       DELIVERY DETAILS MODAL
+  ========================== -->
+
+  @if (
+    showDeliveryModal &&
+    selectedDelivery
+  ) {
+
+    <div
+      class="modal-overlay"
+      (click)="closeDelivery()"
+    >
+
+      <div
+        class="delivery-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <!-- MODAL HEADER -->
+
+        <div class="modal-header">
+
+          <div>
+
+            <span class="modal-label">
+              DELIVERY DETAILS
+            </span>
+
+            <h2>
+              Order #{{ selectedDelivery.id }}
+            </h2>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-modal"
+            (click)="closeDelivery()"
+            [disabled]="updating"
+          >
+            ✕
+          </button>
+
+        </div>
+
+
+        <!-- MODAL BODY -->
+
+        <div class="modal-body">
+
+
+          <!-- CUSTOMER -->
+
+          <div class="modal-section">
+
+            <div class="section-title">
+
+              <span>
+                👤
+              </span>
+
+              <h3>
+                Customer
+              </h3>
+
+            </div>
+
+
+            <div class="detail-grid">
+
+              <div class="detail-item">
+
+                <label>
+                  Name
+                </label>
+
+                <strong>
+                  {{ getCustomerName(selectedDelivery) }}
+                </strong>
+
+              </div>
+
+
+              <div class="detail-item">
+
+                <label>
+                  Email
+                </label>
+
+                <strong>
+                  {{ selectedDelivery.email || 'Not available' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- DELIVERY ADDRESS -->
+
+          <div class="modal-section">
+
+            <div class="section-title">
+
+              <span>
+                📍
+              </span>
+
+              <h3>
+                Delivery Address
+              </h3>
+
+            </div>
+
+
+            <div class="address-box">
+
+              <p>
+                {{ selectedDelivery.shipping_address }}
+              </p>
+
+              <p>
+                {{ selectedDelivery.city }},
+                {{ selectedDelivery.state }}
+                -
+                {{ selectedDelivery.pincode }}
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- ORDER ITEMS -->
+
+          <div class="modal-section">
+
+            <div class="section-title">
+
+              <span>
+                🌿
+              </span>
+
+              <h3>
+                Order Items
+              </h3>
+
+            </div>
+
+
+            @if (
+              selectedDelivery.items &&
+              selectedDelivery.items.length > 0
+            ) {
+
+              <div class="items-list">
+
+                @for (
+                  item of selectedDelivery.items;
+                  track item.id
+                ) {
+
+                  <div class="item-row">
+
+                    <div class="item-info">
+
+                      <strong>
+                        {{
+                          item.plant_name ||
+                          item.plant?.name ||
+                          'Plant'
+                        }}
+                      </strong>
+
+                      <small>
+                        Quantity:
+                        {{ item.quantity }}
+                      </small>
+
+                    </div>
+
+
+                    <div class="item-price">
+
+                      ₹{{ item.price | number:'1.2-2' }}
+
+                    </div>
+
+                  </div>
+
+                }
+
+              </div>
+
+            } @else {
+
+              <p class="no-items">
+                No item details available.
+              </p>
+
+            }
+
+          </div>
+
+
+          <!-- PAYMENT -->
+
+          <div class="modal-section">
+
+            <div class="section-title">
+
+              <span>
+                💳
+              </span>
+
+              <h3>
+                Payment
+              </h3>
+
+            </div>
+
+
+            <div class="payment-details">
+
+              <div class="payment-detail">
+
+                <label>
+                  Payment Method
+                </label>
+
+                <strong>
+                  {{ selectedDelivery.payment_method }}
+                </strong>
+
+              </div>
+
+
+              <div class="payment-detail">
+
+                <label>
+                  Payment Status
+                </label>
+
+                <span
+                  class="payment-status large"
+                  [class]="
+                    getPaymentClass(
+                      selectedDelivery.payment_status
+                    )
+                  "
+                >
+                  {{ selectedDelivery.payment_status }}
+                </span>
+
+              </div>
+
+
+              @if (
+                selectedDelivery.transaction_id
+              ) {
+
+                <div class="payment-detail">
+
+                  <label>
+                    Transaction ID
+                  </label>
+
+                  <strong>
+                    {{ selectedDelivery.transaction_id }}
+                  </strong>
+
+                </div>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- COD COLLECTION -->
+
+          @if (
+            selectedDelivery.payment_method === 'COD'
+          ) {
+
+            <div class="modal-section cod-section">
+
+              <div class="section-title">
+
+                <span>
+                  💵
+                </span>
+
+                <h3>
+                  COD Collection
+                </h3>
+
+              </div>
+
+
+              @if (
+                selectedDelivery.payment_status === 'Paid'
+              ) {
+
+                <div class="cod-success">
+
+                  <div class="cod-success-icon">
+                    ✅
+                  </div>
+
+                  <div>
+
+                    <strong>
+                      Cash Collected
+                    </strong>
+
+                    <p>
+
+                      ₹{{ selectedDelivery.total_amount }}
+
+                      @if (
+                        selectedDelivery.cod_collected_by_name
+                      ) {
+
+                        <span>
+                          collected by
+                          {{ selectedDelivery.cod_collected_by_name }}
+                        </span>
+
+                      }
+
+                    </p>
+
+                    @if (
+                      selectedDelivery.cod_collected_at
+                    ) {
+
+                      <small>
+
+                        {{
+                          selectedDelivery.cod_collected_at
+                            | date:'dd MMM yyyy, hh:mm a'
+                        }}
+
+                      </small>
+
+                    }
+
+                  </div>
+
+                </div>
+
+              } @else {
+
+                <div class="cod-pending">
+
+                  <span>
+                    💰
+                  </span>
+
+                  <div>
+
+                    <strong>
+                      COD Payment Pending
+                    </strong>
+
+                    <p>
+                      Collect ₹{{ selectedDelivery.total_amount }}
+                      from the customer before completing
+                      the delivery.
+                    </p>
+
+                  </div>
+
+                </div>
+
+              }
+
+            </div>
+
+          }
+
+
+          <!-- DELIVERY INFORMATION -->
+
+          <div class="modal-section">
+
+            <div class="section-title">
+
+              <span>
+                🚚
+              </span>
+
+              <h3>
+                Delivery Information
+              </h3>
+
+            </div>
+
+
+            <div class="delivery-info-grid">
+
+              <div class="detail-item">
+
+                <label>
+                  Assigned Staff
+                </label>
+
+                <strong>
+                  {{
+                    selectedDelivery.assigned_staff_name
+                    || 'Not Assigned'
+                  }}
+                </strong>
+
+              </div>
+
+
+              <div class="detail-item">
+
+                <label>
+                  Delivery Status
+                </label>
+
+                <span
+                  class="delivery-status"
+                  [class]="
+                    getDeliveryClass(
+                      selectedDelivery.delivery_status
+                    )
+                  "
+                >
+                  {{ selectedDelivery.delivery_status }}
+                </span>
+
+              </div>
+
+
+              <div class="detail-item">
+
+                <label>
+                  Order Status
+                </label>
+
+                <strong>
+                  {{ selectedDelivery.status }}
+                </strong>
+
+              </div>
+
+
+              <div class="detail-item">
+
+                <label>
+                  Order Date
+                </label>
+
+                <strong>
+                  {{
+                    selectedDelivery.created_at
+                      | date:'dd MMM yyyy, hh:mm a'
+                  }}
+                </strong>
+
+              </div>
+
+
+              <!-- SHIPPED DATE -->
+
+              @if (selectedDelivery.shipped_at) {
+
+                <div class="detail-item">
+
+                  <label>
+                    Shipped At
+                  </label>
+
+                  <strong>
+                    {{
+                      selectedDelivery.shipped_at
+                        | date:'dd MMM yyyy, hh:mm a'
+                    }}
+                  </strong>
+
+                </div>
+
+              }
+
+
+              <!-- EXPECTED DELIVERY -->
+
+              @if (selectedDelivery.expected_delivery_date) {
+
+                <div class="detail-item">
+
+                  <label>
+                    Expected Delivery
+                  </label>
+
+                  <strong>
+                    {{
+                      selectedDelivery.expected_delivery_date
+                        | date:'dd MMM yyyy'
+                    }}
+                  </strong>
+
+                </div>
+
+              }
+
+
+              <!-- ACTUAL DELIVERY -->
+
+              @if (selectedDelivery.delivered_at) {
+
+                <div class="detail-item">
+
+                  <label>
+                    Delivered At
+                  </label>
+
+                  <strong>
+                    {{
+                      selectedDelivery.delivered_at
+                        | date:'dd MMM yyyy, hh:mm a'
+                    }}
+                  </strong>
+
+                </div>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- TOTAL -->
+
+          <div class="modal-total">
+
+            <span>
+              Total Amount
+            </span>
+
+            <strong>
+              ₹{{ selectedDelivery.total_amount | number:'1.2-2' }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- MODAL FOOTER ACTIONS -->
+
+        <div class="modal-footer">
+
+
+          <!-- START DELIVERY -->
+
+          @if (
+            canStartDelivery(selectedDelivery)
+          ) {
+
+            <button
+              type="button"
+              class="start-btn large-btn"
+              (click)="openExpectedDateModal(selectedDelivery)"
+              [disabled]="updating"
+            >
+
+              @if (updating) {
+
+                Processing...
+
+              } @else {
+
+                🛵 Start Delivery
+
+              }
+
+            </button>
+
+          }
+
+
+          <!-- COLLECT COD -->
+
+          @if (
+            canCollectCOD(selectedDelivery)
+          ) {
+
+            <button
+              type="button"
+              class="cod-btn large-btn"
+              (click)="
+                performAction(
+                  selectedDelivery,
+                  'collect_cod'
+                )
+              "
+              [disabled]="updating"
+            >
+
+              @if (updating) {
+
+                Processing...
+
+              } @else {
+
+                💵 Collect COD
+
+              }
+
+            </button>
+
+          }
+
+
+          <!-- COMPLETE DELIVERY -->
+
+          @if (
+            canCompleteDelivery(selectedDelivery)
+          ) {
+
+            <button
+              type="button"
+              class="complete-btn large-btn"
+              (click)="
+                performAction(
+                  selectedDelivery,
+                  'deliver'
+                )
+              "
+              [disabled]="updating"
+            >
+
+              @if (updating) {
+
+                Processing...
+
+              } @else {
+
+                ✅ Complete Delivery
+
+              }
+
+            </button>
+
+          }
+
+
+          <!-- CLOSE -->
+
+          <button
+            type="button"
+            class="close-btn"
+            (click)="closeDelivery()"
+            [disabled]="updating"
+          >
+            Close
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =========================================================
+       EXPECTED DELIVERY DATE MODAL
+  ========================================================== -->
+
+  @if (showExpectedDateModal) {
+
+    <div
+      class="modal-overlay"
+      (click)="closeExpectedDateModal()"
+    >
+
+      <div
+        class="expected-date-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <!-- DATE MODAL HEADER -->
+
+        <div class="expected-date-header">
+
+          <div>
+
+            <span class="modal-label">
+              START DELIVERY
+            </span>
+
+            <h2>
+              Order #{{ selectedDeliveryForStart?.id }}
+            </h2>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-modal"
+            (click)="closeExpectedDateModal()"
+            [disabled]="updating"
+          >
+            ✕
+          </button>
+
+        </div>
+
+
+        <!-- DATE MODAL BODY -->
+
+        <div class="expected-date-body">
+
+          <div class="date-icon">
+            📅
+          </div>
+
+
+          <h3>
+            Select Expected Delivery Date
+          </h3>
+
+
+          <p>
+            Choose the date you expect to deliver this
+            order to the customer.
+          </p>
+
+
+          <p class="date-rule">
+
+            Delivery must be within
+            <strong>5 days</strong>
+            from today.
+
+          </p>
+
+
+          <div class="date-input-group">
+
+            <label for="expectedDeliveryDate">
+              Expected Delivery Date
+            </label>
+
+            <input
+              id="expectedDeliveryDate"
+              type="date"
+              [(ngModel)]="expectedDeliveryDate"
+              [min]="minDeliveryDate"
+              [max]="maxDeliveryDate"
+              [disabled]="updating"
+            />
+
+          </div>
+
+
+          @if (expectedDateError) {
+
+            <div class="date-error">
+              ⚠️ {{ expectedDateError }}
+            </div>
+
+          }
+
+
+          <div class="date-range">
+
+            <span>
+
+              Earliest:
+
+              <strong>
+                {{ minDeliveryDate | date:'dd MMM yyyy' }}
+              </strong>
+
+            </span>
+
+
+            <span>
+
+              Latest:
+
+              <strong>
+                {{ maxDeliveryDate | date:'dd MMM yyyy' }}
+              </strong>
+
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- DATE MODAL FOOTER -->
+
+        <div class="expected-date-footer">
+
+          <button
+            type="button"
+            class="close-btn"
+            (click)="closeExpectedDateModal()"
+            [disabled]="updating"
+          >
+            Cancel
+          </button>
+
+
+          <button
+            type="button"
+            class="start-btn large-btn"
+            (click)="confirmExpectedDeliveryDate()"
+            [disabled]="updating"
+          >
+
+            @if (updating) {
+
+              Processing...
+
+            } @else {
+
+              🛵 Start Delivery
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

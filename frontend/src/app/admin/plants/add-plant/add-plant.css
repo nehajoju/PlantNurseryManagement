@@ -1,0 +1,265 @@
+.add-plant-page {
+  min-height: calc(100vh - 72px);
+  background: #f5f8f5;
+  padding: 50px 8%;
+  box-sizing: border-box;
+}
+
+
+/* Header */
+
+.page-header {
+  margin-bottom: 35px;
+}
+
+.page-header p {
+  margin: 0 0 10px;
+
+  color: #3b7650;
+
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+}
+
+.page-header h1 {
+  margin: 0;
+
+  color: #245c38;
+
+  font-family: Georgia, serif;
+  font-size: 42px;
+}
+
+.page-header span {
+  display: block;
+
+  margin-top: 10px;
+
+  color: #6d756f;
+
+  font-family: Georgia, serif;
+  font-size: 16px;
+}
+
+
+/* Form */
+
+.plant-form {
+  max-width: 850px;
+
+  background: white;
+
+  padding: 40px;
+
+  border: 1px solid #dce7df;
+  border-radius: 14px;
+
+  box-shadow: 0 5px 20px rgba(30, 70, 40, 0.07);
+
+  box-sizing: border-box;
+}
+
+
+/* Form groups */
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #294a34;
+
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group label span {
+  color: #b44747;
+}
+
+
+/* Inputs */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 12px 14px;
+
+  border: 1px solid #cbd8ce;
+  border-radius: 7px;
+
+  background: #fbfdfb;
+
+  color: #25372b;
+
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+
+  outline: none;
+
+  transition: 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #39784d;
+
+  background: white;
+
+  box-shadow: 0 0 0 3px rgba(57, 120, 77, 0.08);
+}
+
+.form-group textarea {
+  resize: vertical;
+
+  min-height: 100px;
+}
+
+
+/* File input */
+
+.form-group input[type="file"] {
+  padding: 10px;
+
+  background: white;
+
+  cursor: pointer;
+}
+
+
+/* Price + Stock */
+
+.form-row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+
+/* Validation */
+
+.form-group small {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #b44747;
+
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+.validation-error {
+  display: block;
+  margin-top: 5px;
+  color: #c0392b;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Buttons */
+
+.form-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  margin-top: 35px;
+
+  padding-top: 25px;
+
+  border-top: 1px solid #e1e8e3;
+}
+
+.cancel-button,
+.save-button {
+  border: none;
+
+  padding: 11px 22px;
+
+  border-radius: 7px;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.cancel-button {
+  background: #edf1ee;
+
+  color: #405247;
+}
+
+.cancel-button:hover {
+  background: #dfe7e1;
+}
+
+.save-button {
+  background: #2f7042;
+
+  color: white;
+}
+
+.save-button:hover {
+  background: #245a35;
+}
+
+.save-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* Responsive */
+
+@media (max-width: 700px) {
+
+  .add-plant-page {
+    padding: 35px 20px;
+  }
+
+  .page-header h1 {
+    font-size: 32px;
+  }
+
+  .plant-form {
+    padding: 25px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-button,
+  .save-button {
+    width: 100%;
+  }
+
+}

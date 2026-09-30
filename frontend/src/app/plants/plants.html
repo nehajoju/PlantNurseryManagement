@@ -1,0 +1,90 @@
+<div class="plants-page">
+
+  <div class="plants-header">
+    <p>OUR COLLECTION</p>
+    <h1>Explore Our Plants 🌿</h1>
+    <span>Find the perfect plant for your space.</span>
+  </div>
+
+  <div class="plants-grid">
+
+    @for (plant of plants; track plant.id) {
+
+      <div class="plant-card">
+
+        <!-- Plant Image -->
+        <div class="plant-image">
+
+          @if (plant.image) {
+            <img
+              [src]="plant.image"
+              [alt]="plant.name"
+            >
+          } @else {
+            <div class="no-image">
+              🌱
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Plant Details -->
+        <div class="plant-info">
+
+          <span class="category">
+            {{ plant.category_name }}
+          </span>
+
+          <h2>{{ plant.name }}</h2>
+
+          <p class="description">
+            {{ plant.description }}
+          </p>
+
+
+          <div class="plant-details">
+
+            <span>
+              ☀️ {{ plant.sunlight }}
+            </span>
+
+            <span>
+              💧 {{ plant.watering }}
+            </span>
+
+          </div>
+
+
+          <div class="plant-bottom">
+
+            <strong>
+              ₹{{ plant.price }}
+            </strong>
+
+            <a [routerLink]="['/plants', plant.id]" class="view-button">
+  View Details
+</a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- No plants -->
+  @if (plants.length === 0) {
+
+    <div class="empty-message">
+      <h2>No plants available</h2>
+      <p>Check back soon for new plants.</p>
+    </div>
+
+  }
+
+</div>

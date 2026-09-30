@@ -1,0 +1,675 @@
+<div class="stock-page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+
+    <div>
+      <h1>📦 Stock Management</h1>
+      <p>Manage plant inventory and stock levels</p>
+    </div>
+
+    <button
+      class="history-btn"
+      (click)="openHistory()"
+    >
+      📋 Stock History
+    </button>
+
+  </div>
+
+
+  <!-- SUCCESS MESSAGE -->
+  @if (successMessage) {
+
+    <div class="alert success-alert">
+      ✅ {{ successMessage }}
+    </div>
+
+  }
+
+
+  <!-- ERROR MESSAGE -->
+  @if (errorMessage) {
+
+    <div class="alert error-alert">
+      ⚠️ {{ errorMessage }}
+    </div>
+
+  }
+
+
+  <!-- STATISTICS -->
+  <div class="stats-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        🌿
+      </div>
+
+      <div>
+        <span class="stat-label">
+          Total Plants
+        </span>
+
+        <strong>
+          {{ totalPlants }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="stat-card available-card">
+
+      <div class="stat-icon">
+        ✅
+      </div>
+
+      <div>
+        <span class="stat-label">
+          Available
+        </span>
+
+        <strong>
+          {{ availablePlants }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="stat-card low-card">
+
+      <div class="stat-icon">
+        ⚠️
+      </div>
+
+      <div>
+        <span class="stat-label">
+          Low Stock
+        </span>
+
+        <strong>
+          {{ lowStockPlants }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="stat-card out-card">
+
+      <div class="stat-icon">
+        🚫
+      </div>
+
+      <div>
+        <span class="stat-label">
+          Out of Stock
+        </span>
+
+        <strong>
+          {{ outOfStockPlants }}
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SEARCH + FILTER -->
+  <div class="controls">
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        [(ngModel)]="search"
+        placeholder="Search plants..."
+        (keyup.enter)="searchStock()"
+      />
+
+      <button
+        type="button"
+        (click)="searchStock()"
+      >
+        🔍 Search
+      </button>
+
+      @if (search) {
+
+        <button
+          type="button"
+          class="clear-btn"
+          (click)="clearSearch()"
+        >
+          ✕
+        </button>
+
+      }
+
+    </div>
+
+
+    <div class="filter-buttons">
+
+      <button
+        [class.active]="stockStatus === 'All'"
+        (click)="filterStock('All')"
+      >
+        All
+      </button>
+
+      <button
+        [class.active]="stockStatus === 'Available'"
+        (click)="filterStock('Available')"
+      >
+        Available
+      </button>
+
+      <button
+        [class.active]="stockStatus === 'Low'"
+        (click)="filterStock('Low')"
+      >
+        Low Stock
+      </button>
+
+      <button
+        [class.active]="stockStatus === 'Out of Stock'"
+        (click)="filterStock('Out of Stock')"
+      >
+        Out of Stock
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- LOADING -->
+  @if (loading) {
+
+    <div class="loading">
+
+      <div class="spinner"></div>
+
+      <p>
+        Loading stock information...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- EMPTY STATE -->
+  @if (!loading && plants.length === 0) {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        🌱
+      </div>
+
+      <h2>
+        No plants found
+      </h2>
+
+      <p>
+        No plants match your current search or filter.
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- STOCK TABLE -->
+  @if (!loading && plants.length > 0) {
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>PLANT</th>
+
+            <th>PRICE</th>
+
+            <th>STOCK</th>
+
+            <th>STATUS</th>
+
+            <th>ACTION</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (plant of plants; track plant.id) {
+
+            <tr>
+
+              <!-- PLANT -->
+              <td>
+
+                <div class="plant-info">
+
+                  @if (plant.image) {
+
+                    <img
+                      [src]="
+                        'http://127.0.0.1:8000' +
+                        plant.image
+                      "
+                      [alt]="plant.name"
+                    />
+
+                  } @else {
+
+                    <div class="plant-placeholder">
+                      🌿
+                    </div>
+
+                  }
+
+                  <div>
+
+                    <strong>
+                      {{ plant.name }}
+                    </strong>
+
+                    <span>
+                      Plant #{{ plant.id }}
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <!-- PRICE -->
+              <td>
+
+                ₹{{ plant.price }}
+
+              </td>
+
+
+              <!-- STOCK -->
+              <td>
+
+                <span class="stock-number">
+                  {{ plant.stock }}
+                </span>
+
+                units
+
+              </td>
+
+
+              <!-- STATUS -->
+              <td>
+
+                <span
+                  class="status-badge"
+                  [ngClass]="
+                    getStockClass(
+                      plant.stock_status
+                    )
+                  "
+                >
+                  {{ plant.stock_status }}
+                </span>
+
+              </td>
+
+
+              <!-- ACTION -->
+              <td>
+
+                <button
+                  class="restock-btn"
+                  (click)="openRestockModal(plant)"
+                >
+                  ➕ Restock
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- RESTOCK MODAL -->
+<!-- ================================================= -->
+
+@if (showRestockModal && selectedPlant) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeRestockModal()"
+  >
+
+    <div
+      class="modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>
+            ➕ Restock Plant
+          </h2>
+
+          <p>
+            {{ selectedPlant.name }}
+          </p>
+
+        </div>
+
+        <button
+          class="close-btn"
+          (click)="closeRestockModal()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="current-stock">
+
+          <span>
+            Current Stock
+          </span>
+
+          <strong>
+            {{ selectedPlant.stock }}
+          </strong>
+
+          <small>
+            units
+          </small>
+
+        </div>
+
+
+        <label>
+          Quantity to Add
+        </label>
+
+        <input
+          type="number"
+          [(ngModel)]="restockQuantity"
+          min="1"
+          placeholder="Enter quantity"
+        />
+
+
+        @if (errorMessage) {
+
+          <div class="modal-error">
+            ⚠️ {{ errorMessage }}
+          </div>
+
+        }
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          class="cancel-btn"
+          (click)="closeRestockModal()"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="confirm-btn"
+          (click)="restock()"
+        >
+          ➕ Add Stock
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+
+<!-- ================================================= -->
+<!-- STOCK HISTORY MODAL -->
+<!-- ================================================= -->
+
+@if (showHistoryModal) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeHistory()"
+  >
+
+    <div
+      class="history-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>
+            📋 Stock Movement History
+          </h2>
+
+          <p>
+            Track stock additions and removals
+          </p>
+
+        </div>
+
+        <button
+          class="close-btn"
+          (click)="closeHistory()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <div class="history-body">
+
+        @if (loadingHistory) {
+
+          <div class="loading-history">
+
+            <div class="spinner"></div>
+
+            <p>
+              Loading history...
+            </p>
+
+          </div>
+
+        }
+
+
+        @if (!loadingHistory && movements.length === 0) {
+
+          <div class="empty-history">
+
+            <div>
+              📦
+            </div>
+
+            <p>
+              No stock movements yet.
+            </p>
+
+          </div>
+
+        }
+
+
+        @if (!loadingHistory && movements.length > 0) {
+
+          <div class="history-table-wrapper">
+
+            <table class="history-table">
+
+              <thead>
+
+                <tr>
+
+                  <th>DATE</th>
+
+                  <th>PLANT</th>
+
+                  <th>TYPE</th>
+
+                  <th>QUANTITY</th>
+
+                  <th>STOCK</th>
+
+                  <th>REASON</th>
+
+                  <th>PERFORMED BY</th>
+
+                  <th>ORDER</th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody>
+
+                @for (
+                  movement of movements;
+                  track movement.id
+                ) {
+
+                  <tr>
+
+                    <td>
+                      {{ formatDate(
+                        movement.created_at
+                      ) }}
+                    </td>
+
+                    <td>
+                      <strong>
+                        {{ movement.plant_name }}
+                      </strong>
+                    </td>
+
+                    <td>
+
+                      <span
+                        class="movement-badge"
+                        [ngClass]="
+                          getMovementClass(
+                            movement.movement_type
+                          )
+                        "
+                      >
+
+                        @if (
+                          movement.movement_type === 'IN'
+                        ) {
+                          ➕ Stock In
+                        } @else {
+                          ➖ Stock Out
+                        }
+
+                      </span>
+
+                    </td>
+
+                    <td>
+                      <strong>
+                        {{ movement.quantity }}
+                      </strong>
+                    </td>
+
+                    <td>
+
+                      {{ movement.previous_stock }}
+                      →
+                      {{ movement.new_stock }}
+
+                    </td>
+
+                    <td>
+                      {{ movement.reason || '-' }}
+                    </td>
+
+                    <td>
+                      {{ movement.performed_by_name || '-' }}
+                    </td>
+
+                    <td>
+
+                      @if (movement.order_id) {
+
+                        #{{ movement.order_id }}
+
+                      } @else {
+
+                        -
+
+                      }
+
+                    </td>
+
+                  </tr>
+
+                }
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

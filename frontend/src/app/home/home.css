@@ -1,0 +1,867 @@
+.home {
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+
+/* Navbar */
+
+.navbar {
+  height: 70px;
+  padding: 0 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-bottom: 1px solid #eee;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-size: 15px;
+}
+
+.nav-links a:hover {
+  color: #2e7d32;
+}
+
+.cart {
+  font-size: 21px;
+}
+
+
+/* Hero */
+
+.hero {
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  padding: 0 10%;
+  background: #eef7ed;
+}
+
+.hero-content {
+  max-width: 650px;
+}
+
+.welcome {
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.hero h1 {
+  font-size: 58px;
+  line-height: 1.1;
+  margin: 20px 0;
+}
+
+.hero h1 span {
+  color: #2e7d32;
+}
+
+.hero-text {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #555;
+  max-width: 560px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 13px 25px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.primary-btn {
+  border: none;
+  background: #2e7d32;
+  color: white;
+}
+
+.secondary-btn {
+  border: 1px solid #2e7d32;
+  background: white;
+  color: #2e7d32;
+}
+
+
+/* Categories */
+
+.categories {
+  padding: 70px 8%;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-heading p {
+  color: #2e7d32;
+  letter-spacing: 2px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.section-heading h2 {
+  font-size: 35px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.category-card {
+  padding: 30px;
+  text-align: center;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.icon {
+  font-size: 40px;
+}
+
+.category-card h3 {
+  margin-top: 15px;
+}
+
+.category-card p {
+  color: #666;
+  line-height: 1.5;
+}
+/* Navigation */
+
+.nav-links a {
+  text-decoration: none;
+  color: #2f6b3f;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #1f4d2c;
+}
+
+.welcome-user {
+  color: #444;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.logout-btn {
+  border: none;
+  background: #2f6b3f;
+  color: white;
+  padding: 9px 16px;
+  border-radius: 7px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #245531;
+}
+
+.primary-btn,
+.secondary-btn {
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* =========================
+   FEATURED PLANTS
+========================= */
+
+.featured-plants {
+  padding: 80px 7%;
+  background: #f7faf7;
+}
+
+.featured-plants .section-heading {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.featured-plants .section-heading p {
+  margin-bottom: 8px;
+  color: #6b8e72;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.featured-plants .section-heading h2 {
+  margin: 0 0 12px;
+  color: #2f6b3f;
+  font-size: 32px;
+}
+
+.featured-plants .section-heading span {
+  color: #777;
+  font-size: 15px;
+}
+
+.plant-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.plant-card {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e2ebe3;
+  transition: 0.3s;
+}
+
+.plant-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.plant-card-image {
+  height: 220px;
+  background: #edf5ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.plant-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.plant-placeholder {
+  font-size: 60px;
+}
+
+.plant-card-content {
+  padding: 20px;
+}
+
+.plant-category {
+  color: #6b8e72;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.plant-card-content h3 {
+  margin: 8px 0 18px;
+  color: #333;
+  font-size: 20px;
+}
+
+.plant-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.plant-card-bottom strong {
+  color: #2f6b3f;
+  font-size: 19px;
+}
+
+.plant-view-button {
+  padding: 8px 14px;
+  border-radius: 7px;
+  background: #f1f6f1;
+  color: #2f6b3f;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.plant-view-button:hover {
+  background: #e2eee3;
+}
+
+.featured-action {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.view-all-button {
+  display: inline-block;
+  padding: 13px 25px;
+  border-radius: 8px;
+  background: #2f6b3f;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.view-all-button:hover {
+  background: #245531;
+}
+
+/* Featured Plants - Mobile */
+
+@media (max-width: 900px) {
+
+  .plant-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .featured-plants {
+    padding: 55px 5%;
+  }
+
+  .plant-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-plants .section-heading h2 {
+    font-size: 27px;
+  }
+
+}
+
+/* =========================
+   WHY PLANTNEST
+========================= */
+
+.why-plantnest {
+  padding: 80px 7%;
+  background: white;
+}
+
+.why-plantnest .section-heading {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 45px;
+}
+
+.why-plantnest .section-heading p {
+  margin-bottom: 8px;
+  color: #6b8e72;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.why-plantnest .section-heading h2 {
+  margin: 0 0 12px;
+  color: #2f6b3f;
+  font-size: 32px;
+}
+
+.why-plantnest .section-heading span {
+  color: #777;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.why-grid {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.why-card {
+  padding: 30px 22px;
+  text-align: center;
+  border: 1px solid #e2ebe3;
+  border-radius: 14px;
+  background: #fbfdfb;
+  transition: 0.3s;
+}
+
+.why-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+}
+
+.why-icon {
+  width: 65px;
+  height: 65px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #e5f1e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.why-card h3 {
+  margin: 0 0 12px;
+  color: #333;
+  font-size: 19px;
+}
+
+.why-card p {
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .why-plantnest {
+    padding: 55px 5%;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .why-plantnest .section-heading h2 {
+    font-size: 27px;
+  }
+
+}
+
+
+/* =========================
+   LOGOUT POPUP
+========================= */
+
+.logout-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+}
+
+.logout-popup {
+  width: 90%;
+  max-width: 420px;
+
+  background: white;
+  padding: 35px;
+
+  border-radius: 16px;
+
+  text-align: center;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.logout-icon {
+  width: 65px;
+  height: 65px;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  background: #e5f1e6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+}
+
+.logout-popup h2 {
+  margin: 0 0 10px;
+
+  color: #2f6b3f;
+
+  font-size: 26px;
+}
+
+.logout-popup p {
+  margin: 0 0 25px;
+
+  color: #666;
+
+  font-size: 15px;
+
+  line-height: 1.6;
+}
+
+.logout-actions {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 12px;
+}
+
+.cancel-logout,
+.confirm-logout {
+  padding: 11px 24px;
+
+  border-radius: 8px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.cancel-logout {
+  border: 1px solid #d5ddd6;
+
+  background: white;
+
+  color: #555;
+}
+
+.cancel-logout:hover {
+  background: #f3f6f3;
+}
+
+.confirm-logout {
+  border: none;
+
+  background: #2f6b3f;
+
+  color: white;
+}
+
+.confirm-logout:hover {
+  background: #245531;
+}
+
+/* =========================
+   FLOATING GARDENING AI
+========================= */
+
+.floating-gardening-ai {
+  position: fixed !important;
+  right: 28px !important;
+  bottom: 28px !important;
+
+  width: 60px !important;
+  height: 60px !important;
+
+  border-radius: 50% !important;
+
+  background: #2f6b3f !important;
+  color: white !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  text-decoration: none !important;
+
+  box-shadow: 0 8px 25px rgba(47, 107, 63, 0.35);
+
+  z-index: 99999;
+
+  transition: all 0.3s ease;
+}
+
+.floating-gardening-ai .ai-leaf {
+  display: block;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.floating-gardening-ai:hover {
+  transform: translateY(-4px) scale(1.05);
+  background: #245531 !important;
+}
+
+
+/* Tooltip */
+
+.floating-gardening-ai .ai-tooltip {
+  position: absolute;
+
+  right: 72px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: max-content;
+
+  padding: 9px 13px;
+
+  background: #253a2d;
+  color: white;
+
+  border-radius: 7px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: 0.2s;
+}
+
+.floating-gardening-ai:hover .ai-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+/* =========================
+   GARDENING SERVICES
+========================= */
+
+.gardening-services {
+  padding: 80px 7%;
+  background: #f7faf7;
+}
+
+.gardening-services .section-heading {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 45px;
+}
+
+.gardening-services .section-heading p {
+  margin-bottom: 8px;
+  color: #6b8e72;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.gardening-services .section-heading h2 {
+  margin: 0 0 12px;
+  color: #2f6b3f;
+  font-size: 32px;
+}
+
+.gardening-services .section-heading span {
+  color: #777;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+
+/* Service Cards */
+
+.service-grid {
+  max-width: 1100px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 22px;
+}
+
+.service-card {
+  padding: 32px 25px;
+
+  background: white;
+
+  border: 1px solid #e2ebe3;
+  border-radius: 14px;
+
+  text-align: center;
+
+  transition: 0.3s;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Service Icon */
+
+.service-icon {
+  width: 65px;
+  height: 65px;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  background: #e5f1e6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+}
+
+.service-card h3 {
+  margin: 0 0 12px;
+
+  color: #333;
+
+  font-size: 20px;
+}
+
+.service-card p {
+  margin: 0 0 20px;
+
+  color: #777;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* Service Link */
+
+.service-link {
+  display: inline-block;
+
+  color: #2f6b3f;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition: 0.3s;
+}
+
+.service-link:hover {
+  color: #1f4d2c;
+  transform: translateX(3px);
+}
+
+
+/* Gardening Services - Mobile */
+
+@media (max-width: 900px) {
+
+  .service-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .gardening-services {
+    padding: 55px 5%;
+  }
+
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gardening-services .section-heading h2 {
+    font-size: 27px;
+  }
+
+}
+
+/* Pulse */
+
+.floating-gardening-ai::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -5px;
+
+  border-radius: 50%;
+
+  border: 2px solid rgba(47, 107, 63, 0.25);
+
+  pointer-events: none;
+
+  animation: aiPulse 2s infinite;
+}
+
+@keyframes aiPulse {
+
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+
+  70% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 550px) {
+
+  .floating-gardening-ai {
+    width: 54px !important;
+    height: 54px !important;
+
+    right: 18px !important;
+    bottom: 18px !important;
+  }
+
+  .floating-gardening-ai .ai-leaf {
+    font-size: 25px;
+  }
+
+  .floating-gardening-ai .ai-tooltip {
+    display: none;
+  }
+
+}

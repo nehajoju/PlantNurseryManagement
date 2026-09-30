@@ -1,0 +1,687 @@
+<div class="customers-page">
+
+  <!-- PAGE HEADER -->
+
+  <div class="page-header">
+
+    <div>
+      <p>ADMIN PANEL</p>
+
+      <h1>Manage Customers</h1>
+
+      <span>
+        View and manage registered customers.
+      </span>
+    </div>
+
+  </div>
+
+
+  <!-- SUMMARY CARDS -->
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        👥
+      </div>
+
+      <div>
+        <span>Total Customers</span>
+        <strong>{{ totalCustomers }}</strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        📦
+      </div>
+
+      <div>
+        <span>Customers with Orders</span>
+        <strong>{{ customersWithOrders }}</strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        ₹
+      </div>
+
+      <div>
+        <span>Total Revenue</span>
+        <strong>
+          ₹{{ totalRevenue | number:'1.2-2' }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        📈
+      </div>
+
+      <div>
+        <span>Average Customer Value</span>
+        <strong>
+          ₹{{ averageCustomerValue | number:'1.2-2' }}
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SEARCH -->
+
+  <div class="filters-card">
+
+    <div class="search-box">
+
+      <span>🔍</span>
+
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="searchCustomers()"
+        placeholder="Search username, name or email">
+
+      <button
+        type="button"
+        (click)="searchCustomers()">
+
+        Search
+
+      </button>
+
+    </div>
+
+
+    @if (searchTerm) {
+
+      <button
+        type="button"
+        class="clear-search"
+        (click)="clearSearch()">
+
+        Clear
+
+      </button>
+
+    }
+
+  </div>
+
+
+  <!-- LOADING -->
+
+  @if (loading) {
+
+    <div class="loading">
+
+      <div class="loading-icon">
+        👥
+      </div>
+
+      <h2>
+        Loading Customers...
+      </h2>
+
+      <p>
+        Please wait while we fetch customer information.
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- EMPTY -->
+
+  @else if (customers.length === 0) {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        👥
+      </div>
+
+      <h2>
+        No Customers Found
+      </h2>
+
+      <p>
+        There are no customers matching your search.
+      </p>
+
+      @if (searchTerm) {
+
+        <button
+          type="button"
+          class="clear-button"
+          (click)="clearSearch()">
+
+          Clear Search
+
+        </button>
+
+      }
+
+    </div>
+
+  }
+
+
+  <!-- CUSTOMERS TABLE -->
+
+  @else {
+
+    <div class="customers-table-wrapper">
+
+      <table class="customers-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Customer</th>
+
+            <th>Email</th>
+
+            <th>Phone</th>
+
+            <th>Location</th>
+
+            <th>Orders</th>
+
+            <th>Total Spent</th>
+
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (
+            customer of customers;
+            track customer.id
+          ) {
+
+            <tr>
+
+              <!-- CUSTOMER -->
+
+              <td>
+
+                <div class="customer-info">
+
+                  <div class="customer-avatar">
+                    {{ getCustomerName(customer).charAt(0).toUpperCase() }}
+                  </div>
+
+                  <div>
+
+                    <strong>
+                      {{ getCustomerName(customer) }}
+                    </strong>
+
+                    <small>
+                      @{{ customer.username }}
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <!-- EMAIL -->
+
+              <td>
+
+                <span class="email-text">
+                  {{ customer.email || '—' }}
+                </span>
+
+              </td>
+
+
+              <!-- PHONE -->
+
+              <td>
+
+                <span class="phone-text">
+                  {{ customer.phone || '—' }}
+                </span>
+
+              </td>
+
+
+              <!-- LOCATION -->
+
+              <td>
+
+                @if (customer.city) {
+
+                  <div class="location-info">
+
+                    <strong>
+                      {{ customer.city }}
+                    </strong>
+
+                    <small>
+                      {{ customer.state || '' }}
+                    </small>
+
+                  </div>
+
+                } @else {
+
+                  <span class="muted">
+                    —
+                  </span>
+
+                }
+
+              </td>
+
+
+              <!-- ORDERS -->
+
+              <td>
+
+                <span
+                  class="orders-count"
+                  [class.has-orders]="customer.total_orders > 0">
+
+                  {{ customer.total_orders }}
+
+                </span>
+
+              </td>
+
+
+              <!-- TOTAL SPENT -->
+
+              <td>
+
+                <strong class="amount">
+                  ₹{{ customer.total_spent | number:'1.2-2' }}
+                </strong>
+
+              </td>
+
+
+              <!-- ACTION -->
+
+              <td>
+
+                <button
+                  type="button"
+                  class="view-button"
+                  (click)="openCustomerDetails(customer)">
+
+                  👁️ View
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>
+
+
+
+<!-- CUSTOMER DETAILS MODAL -->
+
+@if (showCustomerModal && selectedCustomer) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeCustomerModal()">
+
+
+    <div
+      class="customer-modal"
+      (click)="$event.stopPropagation()">
+
+
+      <!-- MODAL HEADER -->
+
+      <div class="modal-header">
+
+        <div class="customer-header-info">
+
+          <div class="large-avatar">
+
+            {{ getCustomerName(
+              selectedCustomer.customer
+            ).charAt(0).toUpperCase() }}
+
+          </div>
+
+
+          <div>
+
+            <p>PLANTNEST</p>
+
+            <h2>
+              {{ getCustomerName(
+                selectedCustomer.customer
+              ) }}
+            </h2>
+
+            <span>
+              @{{ selectedCustomer.customer.username }}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeCustomerModal()">
+
+          ×
+
+        </button>
+
+      </div>
+
+
+
+      <!-- CUSTOMER INFORMATION -->
+
+      <div class="modal-section">
+
+        <div class="section-title">
+
+          <span>👤</span>
+
+          <h3>
+            Customer Information
+          </h3>
+
+        </div>
+
+
+        <div class="info-grid">
+
+          <div>
+
+            <label>Email</label>
+
+            <strong>
+              {{ selectedCustomer.customer.email || '—' }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <label>Phone</label>
+
+            <strong>
+              {{ selectedCustomer.customer.phone || '—' }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <label>Username</label>
+
+            <strong>
+              @{{ selectedCustomer.customer.username }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <label>Total Orders</label>
+
+            <strong>
+              {{ selectedCustomer.customer.total_orders }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <label>Total Spent</label>
+
+            <strong>
+              ₹{{ selectedCustomer.customer.total_spent | number:'1.2-2' }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ADDRESS -->
+
+      <div class="modal-section">
+
+        <div class="section-title">
+
+          <span>📍</span>
+
+          <h3>
+            Address
+          </h3>
+
+        </div>
+
+
+        <div class="address-box">
+
+          @if (selectedCustomer.customer.address) {
+
+            <strong>
+              {{ selectedCustomer.customer.address }}
+            </strong>
+
+            <span>
+
+              {{ selectedCustomer.customer.city || '' }}
+
+              @if (selectedCustomer.customer.city &&
+                   selectedCustomer.customer.state) {
+                ,
+              }
+
+              {{ selectedCustomer.customer.state || '' }}
+
+              @if (selectedCustomer.customer.pincode) {
+                - {{ selectedCustomer.customer.pincode }}
+              }
+
+            </span>
+
+          } @else {
+
+            <span>
+              No address information available.
+            </span>
+
+          }
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ORDER HISTORY -->
+
+      <div class="modal-section">
+
+        <div class="section-title">
+
+          <span>📦</span>
+
+          <h3>
+            Order History
+          </h3>
+
+        </div>
+
+
+        @if (
+          selectedCustomer.orders &&
+          selectedCustomer.orders.length > 0
+        ) {
+
+          <div class="customer-orders">
+
+            @for (
+              order of selectedCustomer.orders;
+              track order.id
+            ) {
+
+              <div class="customer-order">
+
+                <div class="order-main">
+
+                  <strong>
+                    Order #{{ order.id }}
+                  </strong>
+
+                  <small>
+                    {{ order.created_at | date:'dd MMM yyyy, hh:mm a' }}
+                  </small>
+
+                </div>
+
+
+                <div class="order-items-info">
+
+                  <span>
+
+                    {{ getOrderItemCount(order) }}
+
+                    {{
+                      getOrderItemCount(order) === 1
+                        ? 'item'
+                        : 'items'
+                    }}
+
+                  </span>
+
+                </div>
+
+
+                <div class="order-payment">
+
+                  <span>
+                    {{ order.payment_method }}
+                  </span>
+
+                  <small>
+                    {{ order.payment_status }}
+                  </small>
+
+                </div>
+
+
+                <div class="order-status">
+
+                  <span
+                    class="status-badge"
+                    [class]="order.status.toLowerCase()">
+
+                    {{ order.status }}
+
+                  </span>
+
+                </div>
+
+
+                <strong class="order-amount">
+
+                  ₹{{ order.total_amount }}
+
+                </strong>
+
+              </div>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="no-orders">
+
+            <span>📦</span>
+
+            <p>
+              This customer has not placed any orders yet.
+            </p>
+
+          </div>
+
+        }
+
+      </div>
+
+
+
+      <!-- MODAL FOOTER -->
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="modal-close-button"
+          (click)="closeCustomerModal()">
+
+          Close
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

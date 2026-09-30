@@ -1,0 +1,130 @@
+.login-page {
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #eef7ed;
+
+  padding: 30px;
+}
+
+
+.login-card {
+  width: 420px;
+
+  background: white;
+
+  padding: 45px;
+
+  border-radius: 15px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+
+.login-header {
+  text-align: center;
+
+  margin-bottom: 30px;
+}
+
+
+.logo {
+  font-size: 45px;
+
+  margin-bottom: 10px;
+}
+
+
+.login-header h1 {
+  margin: 0;
+
+  font-size: 32px;
+}
+
+
+.login-header p {
+  color: #666;
+
+  margin-top: 10px;
+}
+
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-weight: 600;
+}
+
+
+.form-group input {
+  width: 100%;
+
+  padding: 13px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #ddd;
+
+  border-radius: 6px;
+
+  font-size: 15px;
+}
+
+
+.form-group input:focus {
+  outline: none;
+
+  border-color: #2e7d32;
+}
+
+
+button {
+  width: 100%;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  background: #2e7d32;
+
+  color: white;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+
+button:hover {
+  background: #256628;
+}
+
+
+.register-link {
+  text-align: center;
+
+  margin-top: 25px;
+
+  color: #666;
+}
+
+
+.register-link a {
+  color: #2e7d32;
+
+  text-decoration: none;
+
+  font-weight: bold;
+}

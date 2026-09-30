@@ -1,0 +1,1564 @@
+<div class="staff-page">
+
+  <!-- ====================================================== -->
+  <!-- PAGE HEADER -->
+  <!-- ====================================================== -->
+
+  <div class="page-header">
+
+    <div>
+      <h1>Staff Management</h1>
+      <p>Manage your PlantNest staff members</p>
+    </div>
+
+    <button
+      class="add-staff-btn"
+      type="button"
+      (click)="openAddStaff()"
+    >
+      <span>＋</span>
+      Add Staff
+    </button>
+
+  </div>
+
+
+  <!-- ====================================================== -->
+  <!-- SUMMARY CARDS -->
+  <!-- ====================================================== -->
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        👥
+      </div>
+
+      <div>
+        <span>Total Staff</span>
+        <strong>{{ totalStaff }}</strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        ✓
+      </div>
+
+      <div>
+        <span>Active Staff</span>
+        <strong>{{ activeStaff }}</strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        ⏸
+      </div>
+
+      <div>
+        <span>Inactive Staff</span>
+        <strong>{{ inactiveStaff }}</strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ====================================================== -->
+  <!-- SEARCH -->
+  <!-- ====================================================== -->
+
+  <div class="search-section">
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        🔍
+      </span>
+
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="searchStaff()"
+        placeholder="Search staff by name, username or email..."
+      />
+
+      @if (searchTerm) {
+
+        <button
+          type="button"
+          class="clear-btn"
+          (click)="clearSearch()"
+        >
+          ×
+        </button>
+
+      }
+
+    </div>
+
+    <button
+      type="button"
+      class="search-btn"
+      (click)="searchStaff()"
+    >
+      Search
+    </button>
+
+  </div>
+
+
+  <!-- ====================================================== -->
+  <!-- LOADING -->
+  <!-- ====================================================== -->
+
+  @if (loading) {
+
+    <div class="loading-state">
+
+      <div class="spinner"></div>
+
+      <p>
+        Loading staff...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- ====================================================== -->
+  <!-- STAFF TABLE -->
+  <!-- ====================================================== -->
+
+  @if (!loading && staff.length > 0) {
+
+    <div class="staff-table-container">
+
+      <table class="staff-table">
+
+        <thead>
+
+          <tr>
+            <th>Staff</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Responsibilities</th>
+            <th>Joined</th>
+            <th>Actions</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (member of staff; track member.id) {
+
+            <tr>
+
+              <!-- STAFF -->
+
+              <td>
+
+                <div class="staff-info">
+
+                  <div class="staff-avatar">
+                    {{ getStaffName(member).charAt(0).toUpperCase() }}
+                  </div>
+
+                  <div>
+
+                    <strong>
+                      {{ getStaffName(member) }}
+                    </strong>
+
+                    <span>
+                      @{{ member.username }}
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <!-- EMAIL -->
+
+              <td>
+                {{ member.email || '—' }}
+              </td>
+
+
+              <!-- PHONE -->
+
+              <td>
+                {{ member.phone || '—' }}
+              </td>
+
+
+              <!-- STATUS -->
+
+              <td>
+
+                @if (member.is_active) {
+
+                  <span class="status active">
+                    Active
+                  </span>
+
+                } @else {
+
+                  <span class="status inactive">
+                    Inactive
+                  </span>
+
+                }
+
+              </td>
+
+
+              <!-- RESPONSIBILITIES -->
+
+              <td>
+
+                @if (hasAnyResponsibility(member)) {
+
+                  <div class="responsibility-tags">
+
+                    @if (member.can_delivery) {
+
+                      <span class="responsibility-tag delivery">
+                        🚚 Delivery
+                      </span>
+
+                    }
+
+                    @if (member.can_stock) {
+
+                      <span class="responsibility-tag stock">
+                        📦 Stock
+                      </span>
+
+                    }
+
+                    @if (member.can_gardening) {
+
+                      <span class="responsibility-tag gardening">
+                        🌱 Gardening
+                      </span>
+
+                    }
+
+                  </div>
+
+                } @else {
+
+                  <span class="no-responsibility">
+                    Not Assigned
+                  </span>
+
+                }
+
+              </td>
+
+
+              <!-- JOINED -->
+
+              <td>
+                {{ member.date_joined | date:'dd MMM yyyy' }}
+              </td>
+
+
+              <!-- ACTIONS -->
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <!-- VIEW -->
+
+                  <button
+                    type="button"
+                    class="action-btn view"
+                    (click)="openViewStaff(member)"
+                    title="View Staff"
+                  >
+                    👁
+                  </button>
+
+
+                  <!-- EDIT -->
+
+                  <button
+                    type="button"
+                    class="action-btn edit"
+                    (click)="openEditStaff(member)"
+                    title="Edit Staff"
+                  >
+                    ✏
+                  </button>
+
+
+                  <!-- RESPONSIBILITIES -->
+
+                  <button
+                    type="button"
+                    class="action-btn responsibility"
+                    (click)="openResponsibilities(member)"
+                    title="Manage Responsibilities"
+                  >
+                    ⚙
+                  </button>
+
+
+                  <!-- STATUS -->
+
+                  @if (member.is_active) {
+
+                    <button
+                      type="button"
+                      class="action-btn deactivate"
+                      (click)="toggleStaffStatus(member)"
+                      title="Deactivate Staff"
+                    >
+                      ⏸
+                    </button>
+
+                  } @else {
+
+                    <button
+                      type="button"
+                      class="action-btn activate"
+                      (click)="toggleStaffStatus(member)"
+                      title="Activate Staff"
+                    >
+                      ▶
+                    </button>
+
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+
+  <!-- ====================================================== -->
+  <!-- EMPTY STATE -->
+  <!-- ====================================================== -->
+
+  @if (!loading && staff.length === 0) {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        👥
+      </div>
+
+      <h2>
+        No Staff Found
+      </h2>
+
+      @if (searchTerm) {
+
+        <p>
+          No staff members match "{{ searchTerm }}".
+        </p>
+
+        <button
+          type="button"
+          (click)="clearSearch()"
+        >
+          Clear Search
+        </button>
+
+      } @else {
+
+        <p>
+          You haven't added any staff members yet.
+        </p>
+
+        <button
+          type="button"
+          (click)="openAddStaff()"
+        >
+          Add Your First Staff
+        </button>
+
+      }
+
+    </div>
+
+  }
+
+</div>
+
+
+<!-- ====================================================== -->
+<!-- VIEW STAFF MODAL -->
+<!-- ====================================================== -->
+
+@if (showStaffModal && selectedStaff) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeViewModal()"
+  >
+
+    <div
+      class="modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- HEADER -->
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>
+            Staff Details
+          </h2>
+
+          <p>
+            View staff account information
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="close-btn"
+          (click)="closeViewModal()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- PROFILE -->
+
+      <div class="profile-header">
+
+        <div class="large-avatar">
+          {{ getStaffName(selectedStaff).charAt(0).toUpperCase() }}
+        </div>
+
+        <div>
+
+          <h3>
+            {{ getStaffName(selectedStaff) }}
+          </h3>
+
+          <p>
+            @{{ selectedStaff.username }}
+          </p>
+
+          @if (selectedStaff.is_active) {
+
+            <span class="status active">
+              Active
+            </span>
+
+          } @else {
+
+            <span class="status inactive">
+              Inactive
+            </span>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- DETAILS -->
+
+      <div class="details-grid">
+
+        <div class="detail-item">
+
+          <label>
+            Email
+          </label>
+
+          <span>
+            {{ selectedStaff.email || '—' }}
+          </span>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <label>
+            Phone
+          </label>
+
+          <span>
+            {{ selectedStaff.phone || '—' }}
+          </span>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <label>
+            City
+          </label>
+
+          <span>
+            {{ selectedStaff.city || '—' }}
+          </span>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <label>
+            State
+          </label>
+
+          <span>
+            {{ selectedStaff.state || '—' }}
+          </span>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <label>
+            Pincode
+          </label>
+
+          <span>
+            {{ selectedStaff.pincode || '—' }}
+          </span>
+
+        </div>
+
+
+        <div class="detail-item full-width">
+
+          <label>
+            Address
+          </label>
+
+          <span>
+            {{ selectedStaff.address || '—' }}
+          </span>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <label>
+            Joined
+          </label>
+
+          <span>
+            {{ selectedStaff.date_joined | date:'dd MMM yyyy, hh:mm a' }}
+          </span>
+
+        </div>
+
+
+        <!-- RESPONSIBILITIES -->
+
+        <div class="detail-item full-width">
+
+          <label>
+            Responsibilities
+          </label>
+
+          @if (hasAnyResponsibility(selectedStaff)) {
+
+            <div class="responsibility-tags">
+
+              @if (selectedStaff.can_delivery) {
+
+                <span class="responsibility-tag delivery">
+                  🚚 Delivery
+                </span>
+
+              }
+
+              @if (selectedStaff.can_stock) {
+
+                <span class="responsibility-tag stock">
+                  📦 Stock
+                </span>
+
+              }
+
+              @if (selectedStaff.can_gardening) {
+
+                <span class="responsibility-tag gardening">
+                  🌱 Gardening
+                </span>
+
+              }
+
+            </div>
+
+          } @else {
+
+            <span class="no-responsibility">
+              No responsibilities assigned
+            </span>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          (click)="closeViewModal()"
+        >
+          Close
+        </button>
+
+        <button
+          type="button"
+          class="primary-btn"
+          (click)="closeViewModal(); openEditStaff(selectedStaff)"
+        >
+          Edit Staff
+        </button>
+
+        <button
+          type="button"
+          class="primary-btn"
+          (click)="closeViewModal(); openResponsibilities(selectedStaff)"
+        >
+          Manage Responsibilities
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+
+<!-- ====================================================== -->
+<!-- ADD / EDIT STAFF MODAL -->
+<!-- ====================================================== -->
+
+@if (showFormModal) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeFormModal()"
+  >
+
+    <div
+      class="modal form-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- HEADER -->
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>
+            {{ isEditMode ? 'Edit Staff' : 'Add Staff' }}
+          </h2>
+
+          <p>
+            {{
+              isEditMode
+                ? 'Update staff account information'
+                : 'Create a new staff account'
+            }}
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="close-btn"
+          (click)="closeFormModal()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- STAFF FORM -->
+      <!-- ================================================= -->
+
+      <form
+        #staffFormRef="ngForm"
+        (ngSubmit)="saveStaff()"
+        novalidate
+      >
+
+        <div class="form-grid">
+
+
+          <!-- USERNAME -->
+
+          <div class="form-group">
+
+            <label>
+              Username <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              name="username"
+              [(ngModel)]="staffForm.username"
+              [disabled]="isEditMode"
+              required
+              minlength="3"
+              maxlength="30"
+              pattern="^[A-Za-z0-9._-]+$"
+              placeholder="Enter username"
+              #usernameRef="ngModel"
+            />
+
+            @if (
+              usernameRef.invalid &&
+              (usernameRef.touched || usernameRef.dirty)
+            ) {
+
+              <small class="validation-error">
+
+                @if (usernameRef.errors?.['required']) {
+                  Username is required.
+                }
+
+                @if (usernameRef.errors?.['minlength']) {
+                  Username must contain at least 3 characters.
+                }
+
+                @if (usernameRef.errors?.['maxlength']) {
+                  Username cannot exceed 30 characters.
+                }
+
+                @if (usernameRef.errors?.['pattern']) {
+                  Only letters, numbers, dot, underscore and hyphen are allowed.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- PASSWORD -->
+
+          <div class="form-group">
+
+            <label>
+
+              {{ isEditMode ? 'New Password' : 'Password' }}
+
+              @if (!isEditMode) {
+                <span>*</span>
+              }
+
+            </label>
+
+            <input
+              type="password"
+              name="password"
+              [(ngModel)]="staffForm.password"
+              [required]="!isEditMode"
+              minlength="8"
+              placeholder="{{
+                isEditMode
+                  ? 'Leave blank to keep current password'
+                  : 'Enter password'
+              }}"
+              #passwordRef="ngModel"
+            />
+
+            @if (
+              passwordRef.invalid &&
+              (passwordRef.touched || passwordRef.dirty)
+            ) {
+
+              <small class="validation-error">
+
+                @if (passwordRef.errors?.['required']) {
+                  Password is required.
+                }
+
+                @if (passwordRef.errors?.['minlength']) {
+                  Password must contain at least 8 characters.
+                }
+
+              </small>
+
+            }
+
+
+            <!-- UPPERCASE -->
+
+            @if (
+              staffForm.password &&
+              staffForm.password.length >= 8 &&
+              !hasUppercase(staffForm.password)
+            ) {
+
+              <small class="validation-error">
+                Password must contain an uppercase letter.
+              </small>
+
+            }
+
+
+            <!-- LOWERCASE -->
+
+            @if (
+              staffForm.password &&
+              staffForm.password.length >= 8 &&
+              !hasLowercase(staffForm.password)
+            ) {
+
+              <small class="validation-error">
+                Password must contain a lowercase letter.
+              </small>
+
+            }
+
+
+            <!-- NUMBER -->
+
+            @if (
+              staffForm.password &&
+              staffForm.password.length >= 8 &&
+              !hasNumber(staffForm.password)
+            ) {
+
+              <small class="validation-error">
+                Password must contain a number.
+              </small>
+
+            }
+
+
+            <!-- SPECIAL CHARACTER -->
+
+            @if (
+              staffForm.password &&
+              staffForm.password.length >= 8 &&
+              !hasSpecialCharacter(staffForm.password)
+            ) {
+
+              <small class="validation-error">
+                Password must contain a special character.
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- FIRST NAME -->
+
+          <div class="form-group">
+
+            <label>
+              First Name <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              name="first_name"
+              [(ngModel)]="staffForm.first_name"
+              required
+              minlength="2"
+              maxlength="50"
+              pattern="^[A-Za-z]+(?:[\s'-][A-Za-z]+)*$"
+              placeholder="Enter first name"
+              #firstNameRef="ngModel"
+            />
+
+            @if (
+              firstNameRef.invalid &&
+              (firstNameRef.touched || firstNameRef.dirty)
+            ) {
+
+              <small class="validation-error">
+
+                @if (firstNameRef.errors?.['required']) {
+                  First name is required.
+                }
+
+                @if (firstNameRef.errors?.['minlength']) {
+                  First name must contain at least 2 characters.
+                }
+
+                @if (firstNameRef.errors?.['pattern']) {
+                  First name can contain only letters, spaces, apostrophe or hyphen.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- LAST NAME -->
+
+          <div class="form-group">
+
+            <label>
+              Last Name <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              name="last_name"
+              [(ngModel)]="staffForm.last_name"
+              required
+              minlength="1"
+              maxlength="50"
+              pattern="^[A-Za-z]+(?:[\s'-][A-Za-z]+)*$"
+              placeholder="Enter last name"
+              #lastNameRef="ngModel"
+            />
+
+            @if (
+              lastNameRef.invalid &&
+              (lastNameRef.touched || lastNameRef.dirty)
+            ) {
+
+              <small class="validation-error">
+
+                @if (lastNameRef.errors?.['required']) {
+                  Last name is required.
+                }
+
+                @if (lastNameRef.errors?.['pattern']) {
+                  Last name can contain only letters, spaces, apostrophe or hyphen.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="form-group">
+
+            <label>
+              Email <span>*</span>
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="staffForm.email"
+              required
+              maxlength="100"
+              placeholder="Enter email"
+              #emailRef="ngModel"
+            />
+
+            @if (
+              emailRef.invalid &&
+              (emailRef.touched || emailRef.dirty)
+            ) {
+
+              <small class="validation-error">
+
+                @if (emailRef.errors?.['required']) {
+                  Email is required.
+                }
+
+                @if (emailRef.errors?.['email']) {
+                  Please enter a valid email address.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- PHONE -->
+
+          <div class="form-group">
+
+            <label>
+              Phone <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              name="phone"
+              [(ngModel)]="staffForm.phone"
+              required
+              minlength="10"
+              maxlength="10"
+              inputmode="numeric"
+              pattern="^[0-9]{10}$"
+              placeholder="Enter 10 digit phone number"
+              (input)="allowDigitsOnly('phone', $event)"
+              #phoneRef="ngModel"
+            />
+
+            @if (
+              phoneRef.invalid &&
+              (phoneRef.touched || phoneRef.dirty)
+            ) {
+
+              <small class="validation-error">
+
+                @if (phoneRef.errors?.['required']) {
+                  Phone number is required.
+                }
+
+                @if (
+                  phoneRef.errors?.['minlength'] ||
+                  phoneRef.errors?.['maxlength'] ||
+                  phoneRef.errors?.['pattern']
+                ) {
+                  Phone number must contain exactly 10 digits.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- CITY -->
+
+          <div class="form-group">
+
+            <label>
+              City <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              name="city"
+              [(ngModel)]="staffForm.city"
+              required
+              minlength="2"
+              maxlength="50"
+              pattern="^[A-Za-z]+(?:[\s'-][A-Za-z]+)*$"
+              placeholder="Enter city"
+              #cityRef="ngModel"
+            />
+
+            @if (
+              cityRef.invalid &&
+              (cityRef.touched || cityRef.dirty)
+            ) {
+
+              <small class="validation-error">
+
+                @if (cityRef.errors?.['required']) {
+                  City is required.
+                }
+
+                @if (cityRef.errors?.['pattern']) {
+                  City can contain only letters, spaces, apostrophe or hyphen.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- STATE -->
+
+          <div class="form-group">
+
+            <label>
+              State <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              name="state"
+              [(ngModel)]="staffForm.state"
+              required
+              minlength="2"
+              maxlength="50"
+              pattern="^[A-Za-z]+(?:[\s'-][A-Za-z]+)*$"
+              placeholder="Enter state"
+              #stateRef="ngModel"
+            />
+
+            @if (
+              stateRef.invalid &&
+              (stateRef.touched || stateRef.dirty)
+            ) {
+
+              <small class="validation-error">
+
+                @if (stateRef.errors?.['required']) {
+                  State is required.
+                }
+
+                @if (stateRef.errors?.['pattern']) {
+                  State can contain only letters, spaces, apostrophe or hyphen.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- PINCODE -->
+
+          <div class="form-group">
+
+            <label>
+              Pincode <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              name="pincode"
+              [(ngModel)]="staffForm.pincode"
+              required
+              minlength="6"
+              maxlength="6"
+              inputmode="numeric"
+              pattern="^[0-9]{6}$"
+              placeholder="Enter 6 digit pincode"
+              (input)="allowDigitsOnly('pincode', $event)"
+              #pincodeRef="ngModel"
+            />
+
+            @if (
+              pincodeRef.invalid &&
+              (pincodeRef.touched || pincodeRef.dirty)
+            ) {
+
+              <small class="validation-error">
+
+                @if (pincodeRef.errors?.['required']) {
+                  Pincode is required.
+                }
+
+                @if (
+                  pincodeRef.errors?.['minlength'] ||
+                  pincodeRef.errors?.['maxlength'] ||
+                  pincodeRef.errors?.['pattern']
+                ) {
+                  Pincode must contain exactly 6 digits.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- ADDRESS -->
+
+          <div class="form-group full-width">
+
+            <label>
+              Address <span>*</span>
+            </label>
+
+            <textarea
+              name="address"
+              [(ngModel)]="staffForm.address"
+              required
+              minlength="5"
+              maxlength="300"
+              rows="3"
+              placeholder="Enter complete address"
+              #addressRef="ngModel"
+            ></textarea>
+
+            @if (
+              addressRef.invalid &&
+              (addressRef.touched || addressRef.dirty)
+            ) {
+
+              <small class="validation-error">
+
+                @if (addressRef.errors?.['required']) {
+                  Address is required.
+                }
+
+                @if (addressRef.errors?.['minlength']) {
+                  Address must contain at least 5 characters.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- ACCOUNT STATUS -->
+
+          @if (isEditMode) {
+
+            <div class="form-group full-width">
+
+              <label>
+                Account Status
+              </label>
+
+              <label class="toggle-wrapper">
+
+                <input
+                  type="checkbox"
+                  name="is_active"
+                  [(ngModel)]="staffForm.is_active"
+                />
+
+                <span class="toggle"></span>
+
+                <span>
+                  {{
+                    staffForm.is_active
+                      ? 'Active'
+                      : 'Inactive'
+                  }}
+                </span>
+
+              </label>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- FORM FOOTER -->
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="secondary-btn"
+            (click)="closeFormModal()"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="primary-btn"
+            [disabled]="saving || !staffFormRef.valid"
+          >
+
+            @if (saving) {
+
+              Saving...
+
+            } @else {
+
+              {{ isEditMode ? 'Save Changes' : 'Create Staff' }}
+
+            }
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+}
+
+
+<!-- ====================================================== -->
+<!-- STAFF RESPONSIBILITIES MODAL -->
+<!-- ====================================================== -->
+
+@if (showResponsibilityModal && selectedStaff) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeResponsibilityModal()"
+  >
+
+    <div
+      class="modal responsibility-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- HEADER -->
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>
+            Staff Responsibilities
+          </h2>
+
+          <p>
+            Assign work areas to
+            {{ getStaffName(selectedStaff) }}
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="close-btn"
+          (click)="closeResponsibilityModal()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- STAFF INFORMATION -->
+
+      <div class="responsibility-staff">
+
+        <div class="large-avatar">
+          {{ getStaffName(selectedStaff).charAt(0).toUpperCase() }}
+        </div>
+
+        <div>
+
+          <h3>
+            {{ getStaffName(selectedStaff) }}
+          </h3>
+
+          <p>
+            @{{ selectedStaff.username }}
+          </p>
+
+          @if (selectedStaff.is_active) {
+
+            <span class="status active">
+              Active
+            </span>
+
+          } @else {
+
+            <span class="status inactive">
+              Inactive
+            </span>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- RESPONSIBILITY SECTION -->
+
+      <div class="responsibility-section">
+
+        <h3>
+          Assign Responsibilities
+        </h3>
+
+        <p class="responsibility-description">
+          Select the areas this staff member is responsible for.
+        </p>
+
+
+        <!-- DELIVERY -->
+
+        <label class="responsibility-option">
+
+          <input
+            type="checkbox"
+            name="can_delivery"
+            [(ngModel)]="responsibilityForm.can_delivery"
+          />
+
+          <div class="responsibility-icon">
+            🚚
+          </div>
+
+          <div class="responsibility-content">
+
+            <strong>
+              Delivery
+            </strong>
+
+            <span>
+              Handle assigned customer deliveries and COD collection.
+            </span>
+
+          </div>
+
+          <div class="responsibility-check">
+            ✓
+          </div>
+
+        </label>
+
+
+        <!-- STOCK -->
+
+        <label class="responsibility-option">
+
+          <input
+            type="checkbox"
+            name="can_stock"
+            [(ngModel)]="responsibilityForm.can_stock"
+          />
+
+          <div class="responsibility-icon">
+            📦
+          </div>
+
+          <div class="responsibility-content">
+
+            <strong>
+              Stock Management
+            </strong>
+
+            <span>
+              Manage inventory, stock updates and low-stock tasks.
+            </span>
+
+          </div>
+
+          <div class="responsibility-check">
+            ✓
+          </div>
+
+        </label>
+
+
+        <!-- GARDENING -->
+
+        <label class="responsibility-option">
+
+          <input
+            type="checkbox"
+            name="can_gardening"
+            [(ngModel)]="responsibilityForm.can_gardening"
+          />
+
+          <div class="responsibility-icon">
+            🌱
+          </div>
+
+          <div class="responsibility-content">
+
+            <strong>
+              Gardening
+            </strong>
+
+            <span>
+              Handle gardening services and gardening expert requests.
+            </span>
+
+          </div>
+
+          <div class="responsibility-check">
+            ✓
+          </div>
+
+        </label>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          (click)="closeResponsibilityModal()"
+          [disabled]="savingResponsibilities"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="primary-btn"
+          (click)="saveResponsibilities()"
+          [disabled]="savingResponsibilities"
+        >
+
+          @if (savingResponsibilities) {
+
+            Saving...
+
+          } @else {
+
+            Save Responsibilities
+
+          }
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

@@ -1,0 +1,628 @@
+<!-- ====================================================== -->
+<!-- ORDER SUCCESS PAGE -->
+<!-- ====================================================== -->
+
+@if (orderSuccess) {
+
+  <div class="order-success-page">
+
+    <div class="success-card">
+
+      <!-- SUCCESS ICON -->
+
+      <div class="success-icon">
+        ✓
+      </div>
+
+
+      <h1>
+        Order Confirmed!
+      </h1>
+
+
+      <p class="success-message">
+        Thank you for shopping with PlantNest 🌿
+      </p>
+
+
+      <p class="success-submessage">
+        Your order has been successfully placed.
+      </p>
+
+
+      <!-- ================================================= -->
+      <!-- ORDER SUMMARY -->
+      <!-- ================================================= -->
+
+      @if (orderDetails) {
+
+        <div class="order-summary-card">
+
+          <h2>
+            📦 Order Summary
+          </h2>
+
+
+          <div class="order-info">
+
+
+            <!-- ORDER ID -->
+
+            <div class="info-item">
+
+              <span>
+                Order ID
+              </span>
+
+              <strong>
+                #{{ orderDetails.id }}
+              </strong>
+
+            </div>
+
+
+            <!-- ORDER DATE -->
+
+            <div class="info-item">
+
+              <span>
+                Order Date
+              </span>
+
+              <strong>
+                {{
+                  orderDetails.created_at
+                  | date:'dd MMM yyyy'
+                }}
+              </strong>
+
+            </div>
+
+
+            <!-- TOTAL -->
+
+            <div class="info-item">
+
+              <span>
+                Total Amount
+              </span>
+
+              <strong>
+                ₹{{ orderDetails.total_amount }}
+              </strong>
+
+            </div>
+
+
+            <!-- PAYMENT METHOD -->
+
+            <div class="info-item">
+
+              <span>
+                Payment Method
+              </span>
+
+              <strong>
+                {{ orderDetails.payment_method }}
+              </strong>
+
+            </div>
+
+
+            <!-- PAYMENT STATUS -->
+
+            <div class="info-item">
+
+              <span>
+                Payment Status
+              </span>
+
+              <strong>
+                {{ orderDetails.payment_status }}
+              </strong>
+
+            </div>
+
+
+            <!-- ORDER STATUS -->
+
+            <div class="info-item">
+
+              <span>
+                Order Status
+              </span>
+
+              <strong>
+                {{ orderDetails.status }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- DELIVERY DETAILS -->
+        <!-- ================================================= -->
+
+        <div class="delivery-card">
+
+          <h2>
+            📍 Delivery Details
+          </h2>
+
+
+          <p>
+
+            <strong>
+              Address:
+            </strong>
+
+            {{ orderDetails.shipping_address }}
+
+          </p>
+
+
+          <p>
+
+            <strong>
+              City:
+            </strong>
+
+            {{ orderDetails.city }}
+
+          </p>
+
+
+          <p>
+
+            <strong>
+              State:
+            </strong>
+
+            {{ orderDetails.state }}
+
+          </p>
+
+
+          <p>
+
+            <strong>
+              Pincode:
+            </strong>
+
+            {{ orderDetails.pincode }}
+
+          </p>
+
+        </div>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- CONFIRMATION ACTIONS -->
+      <!-- ================================================= -->
+
+      <div class="confirmation-actions">
+
+        <button
+          type="button"
+          class="receipt-button"
+          (click)="downloadReceipt()"
+        >
+
+          📄 Download Receipt
+
+        </button>
+
+
+        <a
+          routerLink="/plants"
+          class="continue-shopping"
+        >
+
+          🌿 Continue Shopping
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+@else {
+
+  <!-- ==================================================== -->
+  <!-- CHECKOUT PAGE -->
+  <!-- ==================================================== -->
+
+  <div class="checkout-page">
+
+
+    <!-- ================================================== -->
+    <!-- HEADER -->
+    <!-- ================================================== -->
+
+    <div class="checkout-header">
+
+      <h1>
+        🌿 Checkout
+      </h1>
+
+
+      <a
+        routerLink="/cart"
+        class="back-link"
+      >
+
+        ← Back to Cart
+
+      </a>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- EMPTY CART -->
+    <!-- ================================================== -->
+
+    @if (cartItems.length === 0) {
+
+      <div class="empty-checkout">
+
+        <h2>
+          Your cart is empty
+        </h2>
+
+
+        <p>
+          Please add some plants before checkout.
+        </p>
+
+
+        <a
+          routerLink="/plants"
+          class="shop-button"
+        >
+
+          Browse Plants
+
+        </a>
+
+      </div>
+
+    }
+
+    @else {
+
+      <!-- ================================================= -->
+      <!-- CHECKOUT CONTAINER -->
+      <!-- ================================================= -->
+
+      <div class="checkout-container">
+
+
+        <!-- ================================================= -->
+        <!-- DELIVERY DETAILS -->
+        <!-- ================================================= -->
+
+        <div class="delivery-section">
+
+          <h2>
+            📦 Delivery Details
+          </h2>
+
+
+          <!-- SHIPPING ADDRESS -->
+
+<div class="form-group">
+
+  <label>
+    Shipping Address
+    <span>*</span>
+  </label>
+
+  <textarea
+    [(ngModel)]="shippingAddress"
+    placeholder="Enter your full delivery address"
+    rows="4"
+    maxlength="500"
+  ></textarea>
+
+  @if (!shippingAddress.trim()) {
+
+    <small class="validation-hint">
+      Shipping address is required.
+    </small>
+
+  }
+
+  @if (isAddressInvalid()) {
+
+    <small class="validation-error">
+      Please enter a complete delivery address.
+      Minimum 10 characters required.
+    </small>
+
+  }
+
+</div>
+
+
+<!-- CITY + STATE -->
+
+<div class="form-row">
+
+  <!-- CITY -->
+
+  <div class="form-group">
+
+    <label>
+      City
+      <span>*</span>
+    </label>
+
+    <input
+      type="text"
+      [(ngModel)]="city"
+      placeholder="Enter city"
+      maxlength="100"
+    />
+
+    @if (!city.trim()) {
+
+      <small class="validation-hint">
+        City is required.
+      </small>
+
+    }
+
+    @if (isCityInvalid()) {
+
+      <small class="validation-error">
+        City should contain letters, spaces,
+        apostrophe or hyphen only.
+      </small>
+
+    }
+
+  </div>
+
+
+  <!-- STATE -->
+
+  <div class="form-group">
+
+    <label>
+      State
+      <span>*</span>
+    </label>
+
+    <input
+      type="text"
+      [(ngModel)]="state"
+      placeholder="Enter state"
+      maxlength="100"
+    />
+
+    @if (!state.trim()) {
+
+      <small class="validation-hint">
+        State is required.
+      </small>
+
+    }
+
+    @if (isStateInvalid()) {
+
+      <small class="validation-error">
+        State should contain letters, spaces,
+        apostrophe or hyphen only.
+      </small>
+
+    }
+
+  </div>
+
+</div>
+
+
+<!-- PINCODE -->
+
+<div class="form-group">
+
+  <label>
+    Pincode
+    <span>*</span>
+  </label>
+
+  <input
+    type="text"
+    inputmode="numeric"
+    maxlength="6"
+    [(ngModel)]="pincode"
+    (input)="allowPincodeNumbers($event)"
+    placeholder="Enter 6-digit pincode"
+  />
+
+  @if (!pincode.trim()) {
+
+    <small class="validation-hint">
+      Pincode is required.
+    </small>
+
+  }
+
+  @if (isPincodeInvalid()) {
+
+    <small class="validation-error">
+      Pincode must contain exactly 6 digits.
+    </small>
+
+  }
+
+</div>
+</div>
+
+        <!-- ================================================= -->
+        <!-- PAYMENT -->
+        <!-- ================================================= -->
+
+        <div class="payment-section">
+
+          <h2>
+            💳 Payment Method
+          </h2>
+
+
+          <!-- COD -->
+
+          <label class="payment-option">
+
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="COD"
+              [(ngModel)]="paymentMethod"
+            />
+
+
+            <span>
+
+              <strong>
+                💵 Cash on Delivery
+              </strong>
+
+              <small>
+                Pay when your order is delivered
+              </small>
+
+            </span>
+
+          </label>
+
+
+          <!-- UPI -->
+
+          <label class="payment-option">
+
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="UPI"
+              [(ngModel)]="paymentMethod"
+            />
+
+
+            <span>
+
+              <strong>
+                📱 UPI
+              </strong>
+
+              <small>
+                Pay securely using Razorpay
+              </small>
+
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- ORDER SUMMARY -->
+        <!-- ================================================= -->
+
+        <div class="summary-section">
+
+          <h2>
+            🛒 Order Summary
+          </h2>
+
+
+          @for (
+            item of cartItems;
+            track item.id
+          ) {
+
+            <div class="summary-item">
+
+              <div>
+
+                <strong>
+                  {{ item.plant_name }}
+                </strong>
+
+
+                <p>
+
+                  ₹{{ item.plant_price }}
+
+                  ×
+
+                  {{ item.quantity }}
+
+                </p>
+
+              </div>
+
+
+              <strong>
+
+                ₹{{
+                  item.plant_price *
+                  item.quantity
+                }}
+
+              </strong>
+
+            </div>
+
+          }
+
+
+          <!-- TOTAL -->
+
+          <div class="summary-total">
+
+            <span>
+              Total
+            </span>
+
+
+            <strong>
+              ₹{{ totalAmount }}
+            </strong>
+
+          </div>
+
+
+          <!-- PLACE ORDER -->
+
+          <button
+            type="button"
+            class="place-order-button"
+            (click)="placeOrder()"
+          >
+
+            🌱 Place Order
+
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+}

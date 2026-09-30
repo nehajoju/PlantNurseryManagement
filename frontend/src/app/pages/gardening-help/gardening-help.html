@@ -1,0 +1,165 @@
+<div class="gardening-page">
+
+  <div class="gardening-header">
+
+    <div class="header-icon">
+      🌿
+    </div>
+
+    <div>
+      <h1>Gardening Expert</h1>
+      <p>
+        Ask anything about plants and gardening
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="gardening-card">
+
+    <label for="question">
+      Your Gardening Question
+    </label>
+
+    <textarea
+      id="question"
+      [(ngModel)]="question"
+      placeholder="Example: Why are my money plant leaves turning yellow?"
+      rows="5"
+      [disabled]="loading"
+    ></textarea>
+
+
+    @if (error) {
+
+      <div class="error-message">
+        {{ error }}
+      </div>
+
+    }
+
+
+    <div class="button-row">
+
+      <button
+        type="button"
+        class="ask-button"
+        (click)="askQuestion()"
+        [disabled]="loading"
+      >
+
+        @if (loading) {
+          <span>Thinking...</span>
+        } @else {
+          <span>🌱 Ask Gardening Expert</span>
+        }
+
+      </button>
+
+
+      @if (question || answer) {
+
+        <button
+          type="button"
+          class="clear-button"
+          (click)="clearQuestion()"
+          [disabled]="loading"
+        >
+          Clear
+        </button>
+
+      }
+
+    </div>
+
+  </div>
+
+
+  @if (loading) {
+
+    <div class="answer-card loading-card">
+
+      <div class="loading-icon">
+        🌿
+      </div>
+
+      <h2>Gardening Expert is thinking...</h2>
+
+      <p>
+        Finding the best advice for your plant.
+      </p>
+
+    </div>
+
+  }
+
+
+  @if (answer && !loading) {
+
+    <div class="answer-card">
+
+      <div class="answer-header">
+
+        <div class="answer-icon">
+          🌱
+        </div>
+
+        <div>
+          <h2>Gardening Expert</h2>
+          <span>AI-powered plant care advice</span>
+        </div>
+
+      </div>
+
+
+      <div class="answer-content">
+
+        {{ answer }}
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <div class="help-topics">
+
+    <h3>What can I ask?</h3>
+
+    <div class="topic-grid">
+
+      <button
+        type="button"
+        (click)="question = 'How often should I water my plants?'"
+      >
+        💧 Watering
+      </button>
+
+      <button
+        type="button"
+        (click)="question = 'How much sunlight does a money plant need?'"
+      >
+        ☀️ Sunlight
+      </button>
+
+      <button
+        type="button"
+        (click)="question = 'What type of soil is good for indoor plants?'"
+      >
+        🪴 Soil
+      </button>
+
+      <button
+        type="button"
+        (click)="question = 'Why are my plant leaves turning yellow?'"
+      >
+        🍃 Plant Problems
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

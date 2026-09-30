@@ -1,0 +1,85 @@
+<nav class="navbar">
+
+  <div class="logo">
+    🌿 PlantNest
+  </div>
+
+  <div class="nav-links">
+
+    <a routerLink="/">Home</a>
+
+    @if (isLoggedIn) {
+
+      <a routerLink="/plants">Plants</a>
+      <a routerLink="/orders">📦 My Orders</a>
+      <a routerLink="/profile">👤 Profile</a>
+      <a routerLink="/cart">🛒 Cart</a>
+      <a routerLink="/wishlist">❤️ Wishlist</a>
+      <a routerLink="/chat">💬 Chat</a>
+
+      <span class="welcome-user">
+  Hi, {{ username }} 👋
+</span>
+
+<app-notification></app-notification>
+
+<button
+  type="button"
+  class="logout-btn"
+  (click)="openLogoutPopup()">
+  Logout
+</button>
+    } @else {
+
+      <a routerLink="/login">Login</a>
+
+      <a routerLink="/register">Register</a>
+
+    }
+
+  </div>
+
+</nav>
+
+
+<!-- Logout Confirmation Popup -->
+
+@if (showLogoutPopup) {
+
+  <div class="logout-overlay">
+
+    <div class="logout-popup">
+
+      <div class="logout-icon">
+        🚪
+      </div>
+
+      <h2>Logout?</h2>
+
+      <p>
+        Are you sure you want to logout from PlantNest?
+      </p>
+
+      <div class="logout-actions">
+
+        <button
+          type="button"
+          class="cancel-logout"
+          (click)="cancelLogout()">
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="confirm-logout"
+          (click)="confirmLogout()">
+          Logout
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

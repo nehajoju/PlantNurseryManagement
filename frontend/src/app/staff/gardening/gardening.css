@@ -1,0 +1,1148 @@
+/* ==========================================
+   GARDENING PAGE
+   ========================================== */
+
+.gardening-page {
+  min-height: 100%;
+  padding: 32px;
+  background: #f6f8f5;
+  box-sizing: border-box;
+}
+
+
+/* ==========================================
+   HEADER
+   ========================================== */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 30px;
+  margin-bottom: 30px;
+
+  background: linear-gradient(
+    135deg,
+    #eef8ee,
+    #ffffff
+  );
+
+  border: 1px solid #e1ebe1;
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 25px rgba(43, 72, 45, 0.07);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.header-icon {
+  width: 64px;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+  background: #dff1df;
+
+  font-size: 32px;
+
+  box-shadow:
+    0 5px 15px rgba(46, 125, 50, 0.12);
+}
+
+.page-header h1 {
+  margin: 0 0 7px;
+
+  color: #214c2a;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin: 0;
+
+  color: #758078;
+  font-size: 14px;
+}
+
+
+/* ==========================================
+   REFRESH
+   ========================================== */
+
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  border: 1px solid #cfe2cf;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #2e6d35;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  background: #edf7ed;
+  border-color: #9fc8a1;
+  transform: translateY(-1px);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   LOADING
+   ========================================== */
+
+.loading-container {
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e5ebe5;
+  border-radius: 20px;
+
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+.loading-icon {
+  font-size: 45px;
+  margin-bottom: 14px;
+
+  animation: plantFloat 1.5s ease-in-out infinite;
+}
+
+.loading-container p {
+  margin: 0;
+
+  color: #78827b;
+  font-size: 14px;
+}
+
+@keyframes plantFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+
+/* ==========================================
+   ERROR
+   ========================================== */
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 18px 20px;
+
+  background: #fff8f8;
+  border: 1px solid #f0d2d2;
+  border-radius: 14px;
+
+  color: #9d4141;
+}
+
+.error-message p {
+  flex: 1;
+  margin: 0;
+
+  font-size: 14px;
+}
+
+.error-message button {
+  padding: 9px 16px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #a94444;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.error-message button:hover {
+  background: #8f3838;
+}
+
+
+/* ==========================================
+   SECTION
+   ========================================== */
+
+.task-section {
+  margin-bottom: 38px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+}
+
+.section-header h2 {
+  margin: 0 0 5px;
+
+  color: #29422e;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.section-header p {
+  margin: 0;
+
+  color: #7b847d;
+  font-size: 13px;
+}
+
+.task-count {
+  min-width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 12px;
+
+  background: #e3f2e4;
+  color: #2f7137;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* ==========================================
+   TASK GRID
+   ========================================== */
+
+.task-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(330px, 1fr));
+
+  gap: 22px;
+}
+
+
+/* ==========================================
+   TASK CARD
+   ========================================== */
+
+.task-card {
+  position: relative;
+
+  padding: 23px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5ebe5;
+  border-radius: 18px;
+
+  box-shadow:
+    0 6px 20px rgba(43, 63, 45, 0.055);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 12px 28px rgba(43, 63, 45, 0.10);
+}
+
+.my-task {
+  border-top: 4px solid #3f8146;
+}
+
+
+/* ==========================================
+   CARD HEADER
+   ========================================== */
+
+.task-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 15px;
+
+  margin-bottom: 18px;
+}
+
+.task-label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #94a097;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.task-card h3 {
+  margin: 0;
+
+  color: #293a2d;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  line-height: 1.35;
+}
+
+
+/* ==========================================
+   STATUS BADGES
+   ========================================== */
+
+.status {
+  flex-shrink: 0;
+
+  padding: 6px 11px;
+
+  border-radius: 30px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.status.available {
+  background: #e7f5e8;
+  color: #34713a;
+}
+
+.status.assigned {
+  background: #fff4d8;
+  color: #8b690b;
+}
+
+.status.claimed {
+  background: #e5f1fc;
+  color: #286699;
+}
+
+.status.in-progress {
+  background: #fff0dc;
+  color: #a25c13;
+}
+
+.status.completed {
+  background: #e1f4e4;
+  color: #277237;
+}
+
+.status.skipped {
+  background: #f0f1f0;
+  color: #707570;
+}
+
+
+/* ==========================================
+   TASK DETAILS
+   ========================================== */
+
+.task-details {
+  padding: 15px 0;
+
+  border-top: 1px solid #edf0ed;
+  border-bottom: 1px solid #edf0ed;
+}
+
+.task-details p {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+
+  margin: 10px 0;
+
+  color: #68736b;
+
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.task-details p:last-child {
+  margin-bottom: 0;
+}
+
+.task-details strong {
+  color: #3b493e;
+}
+
+
+/* ==========================================
+   CLAIM BUTTON
+   ========================================== */
+
+.claim-btn {
+  width: 100%;
+
+  margin-top: 17px;
+
+  padding: 12px 16px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #35783d;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.claim-btn:hover:not(:disabled) {
+  background: #2b6732;
+  transform: translateY(-1px);
+}
+
+.claim-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   ACTION BUTTON AREA
+   ========================================== */
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+
+  margin-top: 17px;
+}
+
+.task-actions button {
+  flex: 1;
+
+  padding: 11px 12px;
+
+  border: none;
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.task-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   START
+   ========================================== */
+
+.start-btn {
+  background: #e5f1fb;
+  color: #24649a;
+}
+
+.start-btn:hover:not(:disabled) {
+  background: #d5e9f8;
+}
+
+
+/* ==========================================
+   COMPLETE
+   ========================================== */
+
+.complete-btn {
+  background: #e3f3e5;
+  color: #32733a;
+}
+
+.complete-btn:hover:not(:disabled) {
+  background: #d4ecd7;
+}
+
+
+/* ==========================================
+   SKIP
+   ========================================== */
+
+.skip-btn {
+  background: #f1f2f1;
+  color: #626a63;
+}
+
+.skip-btn:hover:not(:disabled) {
+  background: #e5e7e5;
+}
+
+
+/* ==========================================
+   EMPTY STATE
+   ========================================== */
+
+.empty-message {
+  padding: 55px 25px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px dashed #ccd8cd;
+  border-radius: 18px;
+}
+
+.empty-icon {
+  margin-bottom: 12px;
+
+  font-size: 42px;
+}
+
+.empty-message h3 {
+  margin: 0 0 7px;
+
+  color: #3c4b40;
+
+  font-size: 17px;
+}
+
+.empty-message p {
+  margin: 0;
+
+  color: #858d87;
+
+  font-size: 13px;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 900px) {
+
+  .gardening-page {
+    padding: 22px;
+  }
+
+  .page-header {
+    padding: 22px;
+  }
+
+  .task-grid {
+    grid-template-columns:
+      repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* ==========================================
+   CUSTOM MODAL
+   ========================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(20, 30, 22, 0.55);
+
+  backdrop-filter: blur(4px);
+
+  animation: modalFadeIn 0.2s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* ==========================================
+   MODAL BOX
+   ========================================== */
+
+.gardening-modal {
+  width: 100%;
+  max-width: 520px;
+
+  background: #ffffff;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.20);
+
+  animation: modalSlideUp 0.25s ease;
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* ==========================================
+   MODAL HEADER
+   ========================================== */
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 15px;
+
+  padding: 24px 25px;
+
+  border-bottom: 1px solid #edf0ed;
+}
+
+.modal-title-area {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+}
+
+.modal-icon {
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #e5f3e7;
+  color: #32753a;
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.modal-title-area h2 {
+  margin: 2px 0 5px;
+
+  color: #29422e;
+
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.modal-title-area p {
+  margin: 0;
+
+  color: #7a847d;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* ==========================================
+   CLOSE BUTTON
+   ========================================== */
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: #788078;
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.modal-close:hover:not(:disabled) {
+  background: #f1f3f1;
+  color: #37423a;
+}
+
+.modal-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   MODAL BODY
+   ========================================== */
+
+.modal-body {
+  padding: 24px 25px;
+}
+
+.modal-body label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #354239;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.required {
+  color: #c54848;
+}
+
+
+/* ==========================================
+   TEXTAREA
+   ========================================== */
+
+.modal-body textarea {
+  width: 100%;
+
+  min-height: 125px;
+
+  padding: 13px 14px;
+
+  box-sizing: border-box;
+
+  resize: vertical;
+
+  border: 1px solid #d8e0d9;
+  border-radius: 11px;
+
+  background: #fafcf9;
+  color: #344139;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.modal-body textarea::placeholder {
+  color: #a1aaa3;
+}
+
+.modal-body textarea:focus {
+  background: #ffffff;
+
+  border-color: #6da875;
+
+  box-shadow:
+    0 0 0 3px rgba(77, 135, 83, 0.10);
+}
+
+.modal-body textarea:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   MODAL ERROR
+   ========================================== */
+
+.modal-error {
+  margin-top: 10px;
+
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  background: #fff3f3;
+  border: 1px solid #efd0d0;
+
+  color: #a34141;
+
+  font-size: 12px;
+}
+
+
+/* ==========================================
+   MODAL FOOTER
+   ========================================== */
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding: 17px 25px;
+
+  background: #fafcf9;
+
+  border-top: 1px solid #edf0ed;
+}
+
+.modal-cancel-btn,
+.modal-submit-btn {
+  min-width: 115px;
+
+  padding: 11px 16px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.modal-cancel-btn {
+  border: 1px solid #d9dfda;
+
+  background: #ffffff;
+  color: #59625b;
+}
+
+.modal-cancel-btn:hover:not(:disabled) {
+  background: #f1f3f1;
+}
+
+.modal-submit-btn {
+  border: none;
+
+  background: #35783d;
+  color: #ffffff;
+}
+
+.modal-submit-btn:hover:not(:disabled) {
+  background: #2b6732;
+  transform: translateY(-1px);
+}
+
+.modal-submit-btn.skip-submit {
+  background: #8b6a32;
+}
+
+.modal-submit-btn.skip-submit:hover:not(:disabled) {
+  background: #765926;
+}
+
+.modal-cancel-btn:disabled,
+.modal-submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+/* ==========================================
+   TOAST
+   ========================================== */
+
+.gardening-toast {
+  position: fixed;
+
+  right: 28px;
+  bottom: 28px;
+
+  z-index: 1100;
+
+  width: min(380px, calc(100vw - 40px));
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 14px 15px;
+
+  background: #ffffff;
+
+  border-radius: 13px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.15);
+
+  border-left: 4px solid #3c8144;
+
+  animation: toastSlideIn 0.3s ease;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* ==========================================
+   TOAST ICON
+   ========================================== */
+
+.toast-icon {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e4f3e6;
+  color: #34753b;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+
+/* ==========================================
+   TOAST CONTENT
+   ========================================== */
+
+.toast-content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.toast-content strong {
+  color: #304035;
+
+  font-size: 13px;
+}
+
+.toast-content span {
+  color: #707a72;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+}
+
+
+/* ==========================================
+   TOAST CLOSE
+   ========================================== */
+
+.toast-close {
+  width: 27px;
+  height: 27px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 6px;
+
+  background: transparent;
+  color: #8a928b;
+
+  font-size: 19px;
+
+  cursor: pointer;
+}
+
+.toast-close:hover {
+  background: #f0f2f0;
+  color: #4b544d;
+}
+
+
+/* ==========================================
+   ERROR TOAST
+   ========================================== */
+
+.gardening-toast.toast-error {
+  border-left-color: #b54a4a;
+}
+
+.gardening-toast.toast-error .toast-icon {
+  background: #fdeaea;
+  color: #ae4545;
+}
+
+
+/* ==========================================
+   MOBILE MODAL
+   ========================================== */
+
+@media (max-width: 600px) {
+
+  .modal-overlay {
+    padding: 15px;
+  }
+
+  .gardening-modal {
+    border-radius: 16px;
+  }
+
+  .modal-header {
+    padding: 20px;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+
+  .modal-footer {
+    padding: 15px 20px;
+
+    flex-direction: column-reverse;
+  }
+
+  .modal-cancel-btn,
+  .modal-submit-btn {
+    width: 100%;
+  }
+
+  .gardening-toast {
+    right: 15px;
+    bottom: 15px;
+  }
+
+}
+@media (max-width: 650px) {
+
+  .gardening-page {
+    padding: 15px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+  }
+
+  .header-content {
+    align-items: flex-start;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .refresh-btn {
+    justify-content: center;
+  }
+
+  .task-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .task-card-header {
+    flex-direction: column;
+  }
+
+  .task-actions {
+    flex-direction: column;
+  }
+
+  .task-actions button {
+    width: 100%;
+  }
+
+
+}

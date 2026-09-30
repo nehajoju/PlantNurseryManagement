@@ -1,0 +1,463 @@
+<div class="home">
+
+  <!-- =========================
+       HERO SECTION
+  ========================== -->
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <p class="welcome">
+        WELCOME TO PLANTNEST
+      </p>
+
+      <h1>
+        Bring the beauty of
+        <span>nature</span> home.
+      </h1>
+
+      <p class="hero-text">
+        Discover beautiful plants, gardening essentials,
+        and everything you need to create your own green space.
+      </p>
+
+      <div class="hero-buttons">
+
+        <a
+          routerLink="/plants"
+          class="primary-btn">
+          Explore Plants
+        </a>
+
+        <a
+          routerLink="/plants"
+          class="secondary-btn">
+          Learn More
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       CATEGORIES
+  ========================== -->
+
+  <section class="categories">
+
+    <div class="section-heading">
+
+      <p>
+        EXPLORE
+      </p>
+
+      <h2>
+        Find your perfect plant
+      </h2>
+
+    </div>
+
+
+    <div class="category-grid">
+
+      <div class="category-card">
+
+        <div class="icon">
+          🌿
+        </div>
+
+        <h3>
+          Indoor Plants
+        </h3>
+
+        <p>
+          Bring fresh greenery into your home.
+        </p>
+
+      </div>
+
+
+      <div class="category-card">
+
+        <div class="icon">
+          🌹
+        </div>
+
+        <h3>
+          Flowering Plants
+        </h3>
+
+        <p>
+          Add beautiful colors to your garden.
+        </p>
+
+      </div>
+
+
+      <div class="category-card">
+
+        <div class="icon">
+          🌵
+        </div>
+
+        <h3>
+          Succulents
+        </h3>
+
+        <p>
+          Beautiful plants that are easy to care for.
+        </p>
+
+      </div>
+
+
+      <div class="category-card">
+
+        <div class="icon">
+          🍋
+        </div>
+
+        <h3>
+          Fruit Plants
+        </h3>
+
+        <p>
+          Grow fresh fruits in your own garden.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FEATURED PLANTS
+  ========================== -->
+
+  <section class="featured-plants">
+
+    <div class="section-heading">
+
+      <p>
+        OUR COLLECTION
+      </p>
+
+      <h2>
+        Featured Plants
+      </h2>
+
+      <span>
+        Bring a little more green into your everyday life.
+      </span>
+
+    </div>
+
+
+    <div class="plant-grid">
+
+      @for (plant of plants; track plant.id) {
+
+        <div class="plant-card">
+
+          <div class="plant-card-image">
+
+            @if (plant.image) {
+
+              <img
+                [src]="plant.image"
+                [alt]="plant.name">
+
+            } @else {
+
+              <div class="plant-placeholder">
+                🌱
+              </div>
+
+            }
+
+          </div>
+
+
+          <div class="plant-card-content">
+
+            <span class="plant-category">
+              {{ plant.category_name }}
+            </span>
+
+            <h3>
+              {{ plant.name }}
+            </h3>
+
+
+            <div class="plant-card-bottom">
+
+              <strong>
+                ₹{{ plant.price }}
+              </strong>
+
+              <a
+                [routerLink]="['/plants', plant.id]"
+                class="plant-view-button">
+                View →
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <div class="featured-action">
+
+      <a
+        routerLink="/plants"
+        class="view-all-button">
+        View All Plants →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       WHY CHOOSE PLANTNEST
+  ========================== -->
+
+  <section class="why-plantnest">
+
+    <div class="section-heading">
+
+      <p>
+        WHY PLANTNEST
+      </p>
+
+      <h2>
+        Growing with you, every step of the way
+      </h2>
+
+      <span>
+        Everything you need to bring more life and greenery into your space.
+      </span>
+
+    </div>
+
+
+    <div class="why-grid">
+
+      <div class="why-card">
+
+        <div class="why-icon">
+          🌱
+        </div>
+
+        <h3>
+          Healthy Plants
+        </h3>
+
+        <p>
+          Carefully selected plants that are ready to grow
+          in your home and garden.
+        </p>
+
+      </div>
+
+
+      <div class="why-card">
+
+        <div class="why-icon">
+          🚚
+        </div>
+
+        <h3>
+          Safe Delivery
+        </h3>
+
+        <p>
+          We make sure your plants are packed carefully
+          for a safe journey to your doorstep.
+        </p>
+
+      </div>
+
+
+      <div class="why-card">
+
+        <div class="why-icon">
+          💳
+        </div>
+
+        <h3>
+          Secure Payments
+        </h3>
+
+        <p>
+          Choose from convenient payment options including
+          COD and secure online payments.
+        </p>
+
+      </div>
+
+
+      <div class="why-card">
+
+        <div class="why-icon">
+          👨‍🌾
+        </div>
+
+        <h3>
+          Expert Guidance
+        </h3>
+
+        <p>
+          Get helpful gardening and plant-care guidance
+          whenever you need it.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       GARDENING SERVICES
+  ========================== -->
+
+  <section class="gardening-services">
+
+    <div class="section-heading">
+
+      <p>
+        OUR SERVICES
+      </p>
+
+      <h2>
+        More than just plants
+      </h2>
+
+      <span>
+        Get the right support to create and maintain a healthy green space.
+      </span>
+
+    </div>
+
+
+    <div class="service-grid">
+
+
+      <!-- Garden Setup -->
+
+      <div class="service-card">
+
+        <div class="service-icon">
+          🌱
+        </div>
+
+        <h3>
+          Garden Setup
+        </h3>
+
+        <p>
+          Create a beautiful garden with the right plants,
+          layout, and gardening essentials.
+        </p>
+
+        <a
+          routerLink="/plants"
+          class="service-link">
+          Explore Plants →
+        </a>
+
+      </div>
+
+
+      <!-- Gardening Expert -->
+
+      <div class="service-card">
+
+        <div class="service-icon">
+          👨‍🌾
+        </div>
+
+        <h3>
+          Gardening Expert
+        </h3>
+
+        <p>
+          Get guidance from gardening experts to choose
+          and care for plants the right way.
+        </p>
+
+        <a
+          routerLink="/gardening-help"
+          class="service-link">
+          Get Guidance →
+        </a>
+
+      </div>
+
+
+      <!-- Plant Care -->
+
+      <div class="service-card">
+
+        <div class="service-icon">
+          🪴
+        </div>
+
+        <h3>
+          Plant Care
+        </h3>
+
+        <p>
+          Learn simple plant-care techniques to help
+          your plants stay healthy and grow beautifully.
+        </p>
+
+        <a
+          routerLink="/gardening-help"
+          class="service-link">
+          Learn More →
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FLOATING GARDENING AI
+  ========================== -->
+
+  <a
+    routerLink="/gardening-help"
+    class="floating-gardening-ai"
+    title="Ask Gardening Expert">
+
+    <span class="ai-leaf">
+      🌿
+    </span>
+
+    <span class="ai-tooltip">
+      Ask Gardening Expert
+    </span>
+
+  </a>
+
+
+</div>

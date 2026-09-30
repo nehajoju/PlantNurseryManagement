@@ -1,0 +1,179 @@
+<div class="cart-page">
+
+    <div class="cart-header">
+        <h1>🛒 Your Cart</h1>
+        <a routerLink="/plants" class="continue-button">
+            Continue Shopping
+        </a>
+    </div>
+
+    @if (cartItems.length === 0) {
+
+    <div class="empty-cart">
+        <div class="empty-icon">🛒</div>
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't added any plants yet.</p>
+
+        <a routerLink="/plants" class="shop-button">
+            Browse Plants
+        </a>
+    </div>
+
+    } @else {
+
+    <div class="cart-container">
+
+        <div class="cart-items">
+
+            @for (item of cartItems; track item.id) {
+
+            <div class="cart-item">
+
+                <div class="plant-image">
+                    @if (item.plant_image) {
+                    <img [src]="item.plant_image" [alt]="item.plant_name">
+                    } @else {
+                    <div class="image-placeholder">🌱</div>
+                    }
+                </div>
+
+                <div class="plant-info">
+                    <h2>{{ item.plant_name }}</h2>
+
+                    <p class="price">
+                        ₹{{ item.plant_price }}
+                    </p>
+
+                    <div class="quantity-control">
+
+                        <button type="button" (click)="decreaseQuantity(item)" [disabled]="item.quantity <= 1">
+                            −
+                        </button>
+
+                        <strong>{{ item.quantity }}</strong>
+
+                        <button type="button" (click)="increaseQuantity(item)">
+                            +
+                        </button>
+
+                    </div>
+
+                    <button
+  type="button"
+  class="remove-cart-button"
+  (click)="removeFromCart(item)">
+  Remove
+</button>
+                </div>
+
+                <div class="item-total">
+                    ₹{{ item.plant_price * item.quantity }}
+                </div>
+
+            </div>
+
+            }
+
+        </div>
+         <div class="checkout-action">
+            <a routerLink="/checkout" class="checkout-button">
+                Proceed to Checkout →
+            </a>
+        </div>
+    </div>
+
+    }
+
+
+
+
+    <!-- Wishlist Section -->
+
+<div class="wishlist-section">
+
+  <div class="wishlist-header">
+    <h1>❤️ My Wishlist</h1>
+  </div>
+
+  @if (wishlistItems.length === 0) {
+
+    <div class="empty-wishlist">
+      <div class="empty-icon">♡</div>
+
+      <h2>Your wishlist is empty</h2>
+
+      <p>
+        Save your favorite plants here for later.
+      </p>
+
+      <a
+        routerLink="/plants"
+        class="shop-button">
+        Browse Plants
+      </a>
+    </div>
+
+  } @else {
+
+    <div class="wishlist-items">
+
+      @for (item of wishlistItems; track item.id) {
+
+        <div class="wishlist-item">
+
+          <div class="wishlist-image">
+
+            @if (item.plant_image) {
+
+              <img
+                [src]="item.plant_image"
+                [alt]="item.plant_name">
+
+            } @else {
+
+              <div class="image-placeholder">
+                🌱
+              </div>
+
+            }
+
+          </div>
+
+          <div class="wishlist-info">
+
+            <h2>{{ item.plant_name }}</h2>
+
+            <p class="price">
+              ₹{{ item.plant_price }}
+            </p>
+
+          </div>
+
+          <div class="wishlist-actions">
+
+            <a
+              [routerLink]="['/plants', item.plant]"
+              class="view-button">
+              View Plant
+            </a>
+
+            <button
+              type="button"
+              class="remove-button"
+              (click)="removeFromWishlist(item)">
+              Remove
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div> 
+
+</div>

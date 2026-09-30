@@ -1,0 +1,47 @@
+<nav class="admin-navbar">
+
+  <div class="admin-brand">
+    <span class="brand-icon">🌿</span>
+    <span>PlantNest</span>
+    <small>ADMIN</small>
+  </div>
+
+  <div class="admin-nav-links">
+
+    <a routerLink="/admin">
+      🏠 Dashboard
+    </a>
+
+    <a routerLink="/admin/plants">
+      🌱 Plants
+    </a>
+
+    <a routerLink="/admin/categories">🌿 Categories</a>
+
+    <a routerLink="/admin/orders">
+      📦 Orders
+    </a>
+
+    <a routerLink="/admin/customers">
+      👥 Customers
+    </a>
+<a routerLink="/admin/staff">🧑‍💼 Staff</a>
+  </div>
+
+  <div class="admin-actions">
+
+  <span class="admin-welcome">
+    Admin
+  </span>
+
+  <app-notification></app-notification>
+
+  <button
+    type="button"
+    (click)="logout()">
+    Logout
+  </button>
+
+</div>
+
+</nav>

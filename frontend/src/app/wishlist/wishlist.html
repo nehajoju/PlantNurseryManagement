@@ -1,0 +1,118 @@
+<div class="plants-page">
+
+  <div class="plants-header">
+    <p>YOUR COLLECTION</p>
+
+    <h1>
+      My Wishlist ❤️
+    </h1>
+
+    <span>
+      Plants you've saved for later.
+    </span>
+  </div>
+
+
+  @if (wishlistItems.length === 0) {
+
+    <div class="empty-message">
+
+      <h2>
+        Your Wishlist is Empty ❤️
+      </h2>
+
+      <p>
+        Save your favorite plants here for later.
+      </p>
+
+      <a
+        routerLink="/plants"
+        class="view-button">
+        Explore Plants 🌿
+      </a>
+
+    </div>
+
+  } @else {
+
+    <div class="plants-grid">
+
+      @for (item of wishlistItems; track item.id) {
+
+        <div class="plant-card">
+
+          <!-- Plant Image -->
+
+          <div class="plant-image">
+
+            @if (item.plant_image) {
+
+              <img
+                [src]="item.plant_image"
+                [alt]="item.plant_name">
+
+            } @else {
+
+              <div class="no-image">
+                🌱
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- Plant Details -->
+
+          <div class="plant-info">
+
+            <span class="category">
+              Plant
+            </span>
+
+            <h2>
+              {{ item.plant_name }}
+            </h2>
+
+            <p class="description">
+              Saved in your wishlist.
+            </p>
+
+
+            <div class="plant-bottom">
+
+              <strong>
+                ₹{{ item.plant_price }}
+              </strong>
+
+              <a
+                [routerLink]="['/plants', item.plant]"
+                class="view-button">
+                View Plant
+              </a>
+
+            </div>
+
+
+            <div class="wishlist-actions">
+
+              <button
+                type="button"
+                class="remove-button"
+                (click)="removeFromWishlist(item)">
+                ❤️ Remove
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>

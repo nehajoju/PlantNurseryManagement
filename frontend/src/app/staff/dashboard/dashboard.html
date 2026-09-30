@@ -1,0 +1,853 @@
+<div class="dashboard-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <div class="dashboard-header">
+
+    <div>
+
+      <p class="eyebrow">
+        STAFF PORTAL
+      </p>
+
+      <h1>
+        Staff Dashboard
+      </h1>
+
+      <p class="subtitle">
+        Manage your assigned responsibilities and daily tasks.
+      </p>
+
+    </div>
+
+
+    <div class="welcome-box">
+
+      <span>
+        Welcome back 👋
+      </span>
+
+      <strong>
+        Staff
+      </strong>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       SUMMARY CARDS
+  ====================================================== -->
+
+  <div class="summary-grid">
+
+
+    <!-- TOTAL ORDERS
+         Available for every staff member
+    -->
+
+    <div class="summary-card">
+
+      <div class="card-icon orders-icon">
+        📦
+      </div>
+
+      <div>
+
+        <span>
+          Total Orders
+        </span>
+
+        <strong>
+          {{ totalOrders }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- PENDING ORDERS
+         Available for every staff member
+    -->
+
+    <div class="summary-card">
+
+      <div class="card-icon pending-icon">
+        ⏳
+      </div>
+
+      <div>
+
+        <span>
+          Pending Orders
+        </span>
+
+        <strong>
+          {{ pendingOrders }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         DELIVERY SUMMARY
+    ================================================== -->
+
+    @if (canDelivery) {
+
+      <div class="summary-card">
+
+        <div class="card-icon delivery-icon">
+          🚚
+        </div>
+
+        <div>
+
+          <span>
+            Deliveries
+          </span>
+
+          <strong>
+            {{ deliveryOrders }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="summary-card">
+
+        <div class="card-icon cod-icon">
+          💵
+        </div>
+
+        <div>
+
+          <span>
+            COD Pending
+          </span>
+
+          <strong>
+            {{ codPending }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    }
+
+
+
+    <!-- =================================================
+         STOCK SUMMARY
+    ================================================== -->
+
+    @if (canStock) {
+
+      <div class="summary-card">
+
+        <div class="card-icon stock-icon">
+          📦
+        </div>
+
+        <div>
+
+          <span>
+            Stock Management
+          </span>
+
+          <strong>
+            ✓
+          </strong>
+
+        </div>
+
+      </div>
+
+    }
+
+
+
+    <!-- =================================================
+         GARDENING SUMMARY
+    ================================================== -->
+
+    @if (canGardening) {
+
+      <div class="summary-card">
+
+        <div class="card-icon gardening-icon">
+          🌱
+        </div>
+
+        <div>
+
+          <span>
+            Gardening
+          </span>
+
+          <strong>
+            ✓
+          </strong>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+
+
+  <!-- =====================================================
+       MAIN GRID
+  ====================================================== -->
+
+  <div class="dashboard-grid">
+
+
+    <!-- =================================================
+         RECENT ORDERS
+    ================================================== -->
+
+    <section class="dashboard-card recent-orders">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>
+            Recent Orders
+          </h2>
+
+          <p>
+            Latest customer orders
+          </p>
+
+        </div>
+
+
+        <a routerLink="/staff/orders">
+          View All
+        </a>
+
+      </div>
+
+
+
+      @if (loading) {
+
+        <div class="loading-state">
+
+          <div class="spinner"></div>
+
+          <p>
+            Loading orders...
+          </p>
+
+        </div>
+
+      }
+
+      @else if (recentOrders.length > 0) {
+
+        <div class="order-list">
+
+          @for (
+            order of recentOrders;
+            track order.id
+          ) {
+
+            <div class="order-row">
+
+
+              <div class="order-main">
+
+                <div class="order-avatar">
+
+                  {{
+                    getCustomerName(order)
+                      .charAt(0)
+                      .toUpperCase()
+                  }}
+
+                </div>
+
+
+                <div>
+
+                  <strong>
+                    Order #{{ order.id }}
+                  </strong>
+
+                  <span>
+                    {{ getCustomerName(order) }}
+                  </span>
+
+                </div>
+
+              </div>
+
+
+
+              <div class="order-items">
+
+                {{ getItemCount(order) }}
+
+                {{
+                  getItemCount(order) === 1
+                    ? 'item'
+                    : 'items'
+                }}
+
+              </div>
+
+
+
+              <div class="order-amount">
+
+                ₹{{ order.total_amount | number:'1.2-2' }}
+
+              </div>
+
+
+
+              <span
+                class="status"
+                [class]="
+                  getStatusClass(order.status)
+                "
+              >
+
+                {{ order.status }}
+
+              </span>
+
+
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+      @else {
+
+        <div class="empty-orders">
+
+          <div>
+            📦
+          </div>
+
+          <h3>
+            No Orders Yet
+          </h3>
+
+          <p>
+            Customer orders will appear here.
+          </p>
+
+        </div>
+
+      }
+
+    </section>
+
+
+
+    <!-- =================================================
+         QUICK ACTIONS
+    ================================================== -->
+
+    <section class="dashboard-card quick-actions">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>
+            Quick Actions
+          </h2>
+
+          <p>
+            Common staff tasks
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="action-grid">
+
+
+        <!-- ORDERS
+             Available for every staff
+        -->
+
+        <a
+          routerLink="/staff/orders"
+          class="quick-action"
+        >
+
+          <span class="quick-icon">
+            📦
+          </span>
+
+          <div>
+
+            <strong>
+              Manage Orders
+            </strong>
+
+            <small>
+              View and update orders
+            </small>
+
+          </div>
+
+          <span class="arrow">
+            →
+          </span>
+
+        </a>
+
+
+
+        <!-- =================================================
+             DELIVERY
+        ================================================== -->
+
+        @if (canDelivery) {
+
+          <a
+            routerLink="/staff/deliveries"
+            class="quick-action"
+          >
+
+            <span class="quick-icon">
+              🚚
+            </span>
+
+            <div>
+
+              <strong>
+                Deliveries
+              </strong>
+
+              <small>
+                Manage assigned deliveries
+              </small>
+
+            </div>
+
+            <span class="arrow">
+              →
+            </span>
+
+          </a>
+
+
+
+          <!-- COD -->
+
+          <a
+            routerLink="/staff/deliveries"
+            class="quick-action"
+          >
+
+            <span class="quick-icon">
+              💵
+            </span>
+
+            <div>
+
+              <strong>
+                COD Payments
+              </strong>
+
+              <small>
+                Verify cash collections
+              </small>
+
+            </div>
+
+            <span class="arrow">
+              →
+            </span>
+
+          </a>
+
+        }
+
+
+
+        <!-- =================================================
+             STOCK
+        ================================================== -->
+
+        @if (canStock) {
+
+          <a
+            routerLink="/staff/stock"
+            class="quick-action"
+          >
+
+            <span class="quick-icon">
+              📦
+            </span>
+
+            <div>
+
+              <strong>
+                Stock
+              </strong>
+
+              <small>
+                Manage plant inventory
+              </small>
+
+            </div>
+
+            <span class="arrow">
+              →
+            </span>
+
+          </a>
+
+        }
+
+
+
+        <!-- =================================================
+             GARDENING
+        ================================================== -->
+
+        @if (canGardening) {
+
+          <a
+            routerLink="/staff/gardening"
+            class="quick-action"
+          >
+
+            <span class="quick-icon">
+              🌱
+            </span>
+
+            <div>
+
+              <strong>
+                Gardening
+              </strong>
+
+              <small>
+                Manage gardening services
+              </small>
+
+            </div>
+
+            <span class="arrow">
+              →
+            </span>
+
+          </a>
+
+        }
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       ORDER STATUS OVERVIEW
+  ====================================================== -->
+
+  <section class="dashboard-card status-overview">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>
+          Order Status Overview
+        </h2>
+
+        <p>
+          Current order distribution
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="status-grid">
+
+
+      <!-- PENDING -->
+
+      <div class="status-box">
+
+        <span class="status-dot pending"></span>
+
+        <div>
+
+          <small>
+            Pending
+          </small>
+
+          <strong>
+            {{ pendingOrders }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- CONFIRMED -->
+
+      <div class="status-box">
+
+        <span class="status-dot confirmed"></span>
+
+        <div>
+
+          <small>
+            Confirmed
+          </small>
+
+          <strong>
+            {{ confirmedOrders }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           SHIPPED
+           Delivery responsibility only
+      ================================================== -->
+
+      @if (canDelivery) {
+
+        <div class="status-box">
+
+          <span class="status-dot shipped"></span>
+
+          <div>
+
+            <small>
+              Shipped
+            </small>
+
+            <strong>
+              {{ shippedOrders }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      }
+
+
+
+      <!-- DELIVERED
+           Delivery responsibility only
+      -->
+
+      @if (canDelivery) {
+
+        <div class="status-box">
+
+          <span class="status-dot delivered"></span>
+
+          <div>
+
+            <small>
+              Delivered
+            </small>
+
+            <strong>
+              {{ deliveredOrders }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      }
+
+
+
+      <!-- COD PAID
+           Delivery responsibility only
+      -->
+
+      @if (canDelivery) {
+
+        <div class="status-box">
+
+          <span class="status-dot cod"></span>
+
+          <div>
+
+            <small>
+              COD Paid
+            </small>
+
+            <strong>
+              {{ codPaid }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       STOCK RESPONSIBILITY SECTION
+  ====================================================== -->
+
+  @if (canStock) {
+
+    <section class="dashboard-card responsibility-card">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>
+            📦 Stock Management
+          </h2>
+
+          <p>
+            Manage plant inventory and stock movements.
+          </p>
+
+        </div>
+
+
+        <a routerLink="/staff/stock">
+          Open Stock
+        </a>
+
+      </div>
+
+
+      <div class="responsibility-content">
+
+        <div class="responsibility-icon">
+          📦
+        </div>
+
+        <div>
+
+          <h3>
+            Inventory Operations
+          </h3>
+
+          <p>
+            View current stock, identify low-stock
+            plants, restock items and review stock
+            movement history.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  }
+
+
+
+  <!-- =====================================================
+       GARDENING RESPONSIBILITY SECTION
+  ====================================================== -->
+
+  @if (canGardening) {
+
+    <section class="dashboard-card responsibility-card">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>
+            🌱 Gardening Services
+          </h2>
+
+          <p>
+            Manage assigned gardening service work.
+          </p>
+
+        </div>
+
+
+        <a routerLink="/staff/gardening">
+          Open Gardening
+        </a>
+
+      </div>
+
+
+      <div class="responsibility-content">
+
+        <div class="responsibility-icon">
+          🌱
+        </div>
+
+        <div>
+
+          <h3>
+            Gardening Operations
+          </h3>
+
+          <p>
+            View assigned gardening services and
+            update service progress.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  }
+
+</div>

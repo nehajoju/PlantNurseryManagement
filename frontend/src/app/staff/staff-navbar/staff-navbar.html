@@ -1,0 +1,64 @@
+<nav class="staff-navbar">
+
+  <div class="staff-brand">
+    <span class="brand-icon">🌿</span>
+
+    <div class="brand-text">
+      <span class="brand-name">PlantNest</span>
+      <small>STAFF</small>
+    </div>
+  </div>
+
+  <div class="staff-nav-links">
+
+    <a routerLink="/staff">
+      🏠 Dashboard
+    </a>
+
+    <a routerLink="/staff/orders">
+      📦 Orders
+    </a>
+
+    @if (canDelivery) {
+      <a routerLink="/staff/deliveries">
+        🚚 Deliveries
+      </a>
+    }
+
+    @if (canStock) {
+      <a routerLink="/staff/stock">
+        📦 Stock
+      </a>
+    }
+
+    @if (canGardening) {
+      <a routerLink="/staff/gardening">
+        🌱 Gardening
+      </a>
+    }
+
+    <!-- Chat -->
+    <a routerLink="/chat">
+      💬 Chat
+    </a>
+
+  </div>
+
+  <div class="staff-actions">
+
+    <span class="staff-welcome">
+      Hi, {{ getUsername() }}
+    </span>
+
+    <app-notification></app-notification>
+
+    <button
+      type="button"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+
+  </div>
+
+</nav>

@@ -1,0 +1,591 @@
+<div class="chat-page">
+
+  <!-- Page Header -->
+  <div class="chat-header">
+    <div>
+      <h1>💬 Chat</h1>
+      <p>Connect with users, staff, and admin.</p>
+    </div>
+
+    <div class="header-actions">
+      <button class="new-chat-btn" (click)="openNewChat()">
+        ＋ New Chat
+      </button>
+
+      <button class="refresh-btn" (click)="refresh()">
+        ↻ Refresh
+      </button>
+    </div>
+  </div>
+
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="errorMessage">
+
+    <span>{{ errorMessage }}</span>
+
+    <button type="button" (click)="clearError()">
+      ×
+    </button>
+
+  </div>
+
+
+  <!-- Main Chat Container -->
+  <div class="chat-container">
+
+
+    <!-- LEFT: Conversations -->
+    <div class="conversation-panel">
+
+      <div class="conversation-header">
+
+        <h2>Conversations</h2>
+
+        <span class="conversation-count">
+          {{ conversations.length }}
+        </span>
+
+      </div>
+
+
+      <!-- Loading -->
+      <div class="loading-state" *ngIf="loadingConversations">
+
+        <div class="spinner"></div>
+
+        <p>Loading conversations...</p>
+
+      </div>
+
+
+      <!-- Empty -->
+      <div class="empty-state" *ngIf="
+          !loadingConversations &&
+          conversations.length === 0
+        ">
+
+        <div class="empty-icon">
+          💬
+        </div>
+
+        <h3>No conversations yet</h3>
+
+        <p>
+          Start a new conversation with
+          Admin or Staff.
+        </p>
+
+        <button class="empty-new-chat-btn" (click)="openNewChat()">
+
+          ＋ Start New Chat
+
+        </button>
+
+      </div>
+
+
+      <!-- Conversation List -->
+      <div class="conversation-list" *ngIf="
+          !loadingConversations &&
+          conversations.length > 0
+        ">
+
+        <div class="conversation-item" *ngFor="let conversation of conversations" [class.active]="
+            selectedConversation?.id === conversation.id
+          " (click)="selectConversation(conversation)">
+
+
+          <!-- Avatar -->
+          <div class="conversation-avatar">
+
+            <span *ngIf="
+                conversation.conversation_type ===
+                'USER_ADMIN'
+              ">
+              👑
+            </span>
+
+            <span *ngIf="
+                conversation.conversation_type ===
+                'USER_STAFF'
+              ">
+              👷
+            </span>
+
+            <span *ngIf="
+                conversation.conversation_type ===
+                'ADMIN_STAFF'
+              ">
+              👥
+            </span>
+
+          </div>
+
+
+          <!-- Conversation Info -->
+          <div class="conversation-info">
+
+            <div class="conversation-top">
+
+              <h3>
+                {{ getConversationTitle(conversation) }}
+              </h3>
+
+              <span class="unread-badge" *ngIf="conversation.unread_count > 0">
+
+                {{ conversation.unread_count }}
+
+              </span>
+
+            </div>
+
+            <span class="conversation-type">
+              {{ getConversationType(conversation) }}
+            </span>
+
+            <p class="last-message" *ngIf="conversation.last_message">
+
+              <strong *ngIf="
+    conversation.last_message.sender == currentUserId
+  ">
+                You:
+              </strong>
+
+              {{ conversation.last_message.message }}
+
+            </p>
+
+            <p class="last-message muted" *ngIf="!conversation.last_message">
+
+              No messages yet
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- RIGHT: Messages -->
+    <div class="message-panel">
+
+
+      <!-- No Conversation Selected -->
+      <div class="select-conversation" *ngIf="!selectedConversation">
+
+        <div class="select-icon">
+          💬
+        </div>
+
+        <h2>Select a conversation</h2>
+
+        <p>
+          Choose a conversation from the left
+          to view your messages.
+        </p>
+
+        <button class="select-new-chat-btn" (click)="openNewChat()">
+
+          ＋ Start a New Chat
+
+        </button>
+
+      </div>
+
+
+      <!-- Selected Conversation -->
+      <ng-container *ngIf="selectedConversation">
+
+
+        <!-- Message Header -->
+        <div class="message-header">
+
+          <div class="message-person">
+
+            <div class="message-avatar">
+
+              <span *ngIf="
+                  selectedConversation.conversation_type ===
+                  'USER_ADMIN'
+                ">
+                👑
+              </span>
+
+              <span *ngIf="
+                  selectedConversation.conversation_type ===
+                  'USER_STAFF'
+                ">
+                👷
+              </span>
+
+              <span *ngIf="
+                  selectedConversation.conversation_type ===
+                  'ADMIN_STAFF'
+                ">
+                👥
+              </span>
+
+            </div>
+
+            <div>
+
+              <h2>
+                {{
+                getConversationTitle(
+                selectedConversation
+                )
+                }}
+              </h2>
+
+              <span>
+                {{
+                getConversationType(
+                selectedConversation
+                )
+                }}
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Messages -->
+        <div class="messages-area">
+
+
+          <!-- Loading -->
+          <div class="message-loading" *ngIf="loadingMessages">
+
+            <div class="spinner"></div>
+
+            <p>Loading messages...</p>
+
+          </div>
+
+
+          <!-- No Messages -->
+          <div class="no-messages" *ngIf="
+              !loadingMessages &&
+              messages.length === 0
+            ">
+
+            <div>
+              💬
+            </div>
+
+            <h3>No messages yet</h3>
+
+            <p>
+              Start the conversation by sending
+              a message below.
+            </p>
+
+          </div>
+
+
+          <!-- Message List -->
+          <div class="message-list" *ngIf="
+              !loadingMessages &&
+              messages.length > 0
+            ">
+
+            <div class="message-row" *ngFor="let message of messages" [class.my-message]="isMyMessage(message)"
+              [class.other-message]="!isMyMessage(message)">
+
+              <div class="message-bubble">
+
+                <!-- Sender Name -->
+                <div class="sender-name" *ngIf="!isMyMessage(message)">
+
+                  {{ message.sender_name }}
+
+                </div>
+
+
+                <!-- Message -->
+                <div class="message-text">
+                  {{ message.message }}
+                </div>
+
+
+                <!-- Time -->
+                <div class="message-meta">
+
+                  <span>
+                    {{ formatMessageTime(message.created_at) }}
+                  </span>
+
+                  <span class="read-status" *ngIf="isMyMessage(message)">
+
+                    <span *ngIf="message.is_read">
+                      ✓✓
+                    </span>
+
+                    <span *ngIf="!message.is_read">
+                      ✓
+                    </span>
+
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Message Input -->
+        <div class="message-input-area">
+
+          <input type="text" [(ngModel)]="newMessage" placeholder="Type your message..." (keyup.enter)="sendMessage()"
+            [disabled]="sendingMessage" />
+
+          <button type="button" class="send-btn" (click)="sendMessage()" [disabled]="
+              sendingMessage ||
+              !newMessage.trim()
+            ">
+
+            <span *ngIf="!sendingMessage">
+              Send
+            </span>
+
+            <span *ngIf="sendingMessage">
+              Sending...
+            </span>
+
+          </button>
+
+        </div>
+
+      </ng-container>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ============================== -->
+  <!-- NEW CHAT MODAL -->
+  <!-- ============================== -->
+
+  <div class="modal-overlay" *ngIf="showNewChat" (click)="closeNewChat()">
+
+
+    <div class="new-chat-modal" (click)="$event.stopPropagation()">
+
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+
+        <div>
+
+          <h2>Start a New Chat</h2>
+
+          <p>
+            Choose who you want to chat with.
+          </p>
+
+        </div>
+
+        <button type="button" class="close-modal-btn" (click)="closeNewChat()">
+
+          ×
+
+        </button>
+
+      </div>
+
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+
+        <!-- Loading Users -->
+        <div class="modal-loading" *ngIf="loadingChatUsers">
+
+          <div class="spinner"></div>
+
+          <p>
+            Loading Admin and Staff...
+          </p>
+
+        </div>
+
+
+        <div *ngIf="!loadingChatUsers">
+
+
+          <!-- Chat Type -->
+          <label class="form-label">
+            Chat with
+          </label>
+
+          <div class="chat-type-options">
+
+
+            <!-- Admin -->
+            <button type="button" class="chat-type-card" [class.selected]="
+                selectedChatType === 'USER_ADMIN'
+              " (click)="
+                selectedChatType = 'USER_ADMIN';
+                changeChatType()
+              ">
+
+              <div class="type-icon">
+                👑
+              </div>
+
+              <div>
+
+                <strong>Admin</strong>
+
+                <span>
+                  Contact the nursery admin
+                </span>
+
+              </div>
+
+            </button>
+
+
+            <!-- Staff -->
+            <button type="button" class="chat-type-card" [class.selected]="
+                selectedChatType === 'USER_STAFF'
+              " (click)="
+                selectedChatType = 'USER_STAFF';
+                changeChatType()
+              ">
+
+              <div class="type-icon">
+                👷
+              </div>
+
+              <div>
+
+                <strong>Staff</strong>
+
+                <span>
+                  Contact a nursery staff member
+                </span>
+
+              </div>
+
+            </button>
+
+          </div>
+
+
+          <!-- Admin Selection -->
+          <div class="user-selection" *ngIf="
+              selectedChatType === 'USER_ADMIN'
+            ">
+
+            <label class="form-label">
+              Select Admin
+            </label>
+
+            <select [(ngModel)]="selectedUserId">
+
+              <option [ngValue]="null">
+                Choose an Admin
+              </option>
+
+              <option *ngFor="let admin of admins" [ngValue]="admin.id">
+
+                {{ admin.name }}
+
+              </option>
+
+            </select>
+
+            <p class="no-users" *ngIf="admins.length === 0">
+
+              No Admin is available.
+
+            </p>
+
+          </div>
+
+
+          <!-- Staff Selection -->
+          <div class="user-selection" *ngIf="
+              selectedChatType === 'USER_STAFF'
+            ">
+
+            <label class="form-label">
+              Select Staff
+            </label>
+
+            <select [(ngModel)]="selectedUserId">
+
+              <option [ngValue]="null">
+                Choose a Staff member
+              </option>
+
+              <option *ngFor="let staffMember of staff" [ngValue]="staffMember.id">
+
+                {{ staffMember.name }}
+
+              </option>
+
+            </select>
+
+            <p class="no-users" *ngIf="staff.length === 0">
+
+              No Staff members are available.
+
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+
+        <button type="button" class="cancel-btn" (click)="closeNewChat()">
+
+          Cancel
+
+        </button>
+
+        <button type="button" class="start-chat-btn" (click)="startConversation()" [disabled]="
+            !selectedChatType ||
+            !selectedUserId ||
+            creatingConversation
+          ">
+
+          <span *ngIf="!creatingConversation">
+            Start Chat
+          </span>
+
+          <span *ngIf="creatingConversation">
+            Starting...
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

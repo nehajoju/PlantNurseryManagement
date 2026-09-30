@@ -1,0 +1,727 @@
+<div class="gardening-page">
+
+  <!-- ==========================================
+       PAGE HEADER
+       ========================================== -->
+
+  <div class="page-header">
+
+    <div class="header-content">
+
+      <span class="header-icon">
+        🌱
+      </span>
+
+      <div>
+        <h1>Gardening Tasks</h1>
+
+        <p>
+          Manage and complete your assigned plant-care tasks.
+        </p>
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="refresh-btn"
+      (click)="loadTasks()"
+      [disabled]="loading"
+    >
+      🔄 Refresh
+    </button>
+
+  </div>
+
+
+  <!-- ==========================================
+       LOADING
+       ========================================== -->
+
+  <div
+    class="loading-container"
+    *ngIf="loading"
+  >
+
+    <div class="loading-icon">
+      🌱
+    </div>
+
+    <p>
+      Loading gardening tasks...
+    </p>
+
+  </div>
+
+
+  <!-- ==========================================
+       ERROR
+       ========================================== -->
+
+  <div
+    class="error-message"
+    *ngIf="!loading && errorMessage"
+  >
+
+    <span>⚠️</span>
+
+    <p>
+      {{ errorMessage }}
+    </p>
+
+    <button
+      type="button"
+      (click)="loadTasks()"
+    >
+      Try Again
+    </button>
+
+  </div>
+
+
+  <!-- ==========================================
+       MAIN CONTENT
+       ========================================== -->
+
+  <div
+    class="gardening-content"
+    *ngIf="!loading && !errorMessage"
+  >
+
+
+    <!-- ==========================================
+         AVAILABLE TASKS
+         ========================================== -->
+
+    <section class="task-section">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>
+            📋 Available Tasks
+          </h2>
+
+          <p>
+            Gardening tasks currently available to claim.
+          </p>
+
+        </div>
+
+        <span class="task-count">
+          {{ availableTasks.length }}
+        </span>
+
+      </div>
+
+
+      <!-- EMPTY -->
+
+      <div
+        class="empty-message"
+        *ngIf="availableTasks.length === 0"
+      >
+
+        <div class="empty-icon">
+          🌿
+        </div>
+
+        <h3>
+          No Available Tasks
+        </h3>
+
+        <p>
+          There are currently no gardening tasks available.
+        </p>
+
+      </div>
+
+
+      <!-- AVAILABLE TASKS -->
+
+      <div
+        class="task-grid"
+        *ngIf="availableTasks.length > 0"
+      >
+
+        <div
+          class="task-card"
+          *ngFor="let task of availableTasks"
+        >
+
+          <div class="task-card-header">
+
+            <div>
+
+              <span class="task-label">
+                Gardening Task
+              </span>
+
+              <h3>
+                {{ task.task_type || task.title || 'Plant Care' }}
+              </h3>
+
+            </div>
+
+            <span class="status available">
+              Available
+            </span>
+
+          </div>
+
+
+          <!-- TASK DETAILS -->
+
+          <div class="task-details">
+
+            <p *ngIf="task.plant_name">
+              🌿
+
+              <strong>
+                Plant:
+              </strong>
+
+              {{ task.plant_name }}
+            </p>
+
+
+            <p *ngIf="task.due_date">
+              ⏰
+
+              <strong>
+                Due:
+              </strong>
+
+              {{ task.due_date | date:'mediumDate' }}
+            </p>
+
+
+            <p *ngIf="task.schedule">
+              📋
+
+              <strong>
+                Schedule:
+              </strong>
+
+              #{{ task.schedule }}
+            </p>
+
+          </div>
+
+
+          <!-- CLAIM -->
+
+          <button
+            type="button"
+            class="claim-btn"
+            (click)="claimTask(task.id)"
+            [disabled]="isActionLoading(task.id)"
+          >
+
+            <span
+              *ngIf="!isActionLoading(task.id)"
+            >
+              🌱 Claim Task
+            </span>
+
+            <span
+              *ngIf="isActionLoading(task.id)"
+            >
+              Claiming...
+            </span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         MY TASKS
+         ========================================== -->
+
+    <section class="task-section my-tasks-section">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>
+            👷 My Gardening Tasks
+          </h2>
+
+          <p>
+            Tasks you have claimed and are currently handling.
+          </p>
+
+        </div>
+
+        <span class="task-count">
+          {{ myTasks.length }}
+        </span>
+
+      </div>
+
+
+      <!-- EMPTY -->
+
+      <div
+        class="empty-message"
+        *ngIf="myTasks.length === 0"
+      >
+
+        <div class="empty-icon">
+          🌱
+        </div>
+
+        <h3>
+          No Gardening Tasks Yet
+        </h3>
+
+        <p>
+          Claim an available task to start working.
+        </p>
+
+      </div>
+
+
+      <!-- MY TASKS -->
+
+      <div
+        class="task-grid"
+        *ngIf="myTasks.length > 0"
+      >
+
+        <div
+          class="task-card my-task"
+          *ngFor="let task of myTasks"
+        >
+
+          <div class="task-card-header">
+
+            <div>
+
+              <span class="task-label">
+                My Task
+              </span>
+
+              <h3>
+                {{ task.task_type || task.title || 'Plant Care' }}
+              </h3>
+
+            </div>
+
+
+            <span
+              class="status"
+              [ngClass]="getStatusClass(task.status)"
+            >
+              {{ task.status || 'Assigned' }}
+            </span>
+
+          </div>
+
+
+          <!-- TASK DETAILS -->
+
+          <div class="task-details">
+
+            <p *ngIf="task.plant_name">
+              🌿
+
+              <strong>
+                Plant:
+              </strong>
+
+              {{ task.plant_name }}
+            </p>
+
+
+            <p *ngIf="task.due_date">
+              ⏰
+
+              <strong>
+                Due:
+              </strong>
+
+              {{ task.due_date | date:'mediumDate' }}
+            </p>
+
+
+            <p *ngIf="task.schedule">
+              📋
+
+              <strong>
+                Schedule:
+              </strong>
+
+              #{{ task.schedule }}
+            </p>
+
+
+            <p *ngIf="task.started_at">
+              ▶️
+
+              <strong>
+                Started:
+              </strong>
+
+              {{ task.started_at | date:'medium' }}
+            </p>
+
+
+            <p *ngIf="task.completed_at">
+              ✅
+
+              <strong>
+                Completed:
+              </strong>
+
+              {{ task.completed_at | date:'medium' }}
+            </p>
+
+
+            <p *ngIf="task.staff_notes">
+              💬
+
+              <strong>
+                Staff Notes:
+              </strong>
+
+              {{ task.staff_notes }}
+            </p>
+
+
+            <p *ngIf="task.skip_reason">
+              ⚠️
+
+              <strong>
+                Skip Reason:
+              </strong>
+
+              {{ task.skip_reason }}
+            </p>
+
+          </div>
+
+
+          <!-- ======================================
+               ACTIONS
+               ====================================== -->
+
+          <div class="task-actions">
+
+
+            <!-- START -->
+
+            <button
+              type="button"
+              class="start-btn"
+              *ngIf="
+                task.status === 'Assigned' ||
+                task.status === 'Claimed'
+              "
+              (click)="startTask(task.id)"
+              [disabled]="isActionLoading(task.id)"
+            >
+
+              <span
+                *ngIf="!isActionLoading(task.id)"
+              >
+                ▶ Start Task
+              </span>
+
+              <span
+                *ngIf="isActionLoading(task.id)"
+              >
+                Starting...
+              </span>
+
+            </button>
+
+
+            <!-- COMPLETE -->
+
+            <button
+              type="button"
+              class="complete-btn"
+              *ngIf="task.status === 'In Progress'"
+              (click)="openCompleteModal(task.id)"
+              [disabled]="isActionLoading(task.id)"
+            >
+
+              <span
+                *ngIf="!isActionLoading(task.id)"
+              >
+                ✓ Complete
+              </span>
+
+              <span
+                *ngIf="isActionLoading(task.id)"
+              >
+                Completing...
+              </span>
+
+            </button>
+
+
+            <!-- SKIP -->
+
+            <button
+              type="button"
+              class="skip-btn"
+              *ngIf="
+                task.status === 'Claimed' ||
+                task.status === 'In Progress'
+              "
+              (click)="openSkipModal(task.id)"
+              [disabled]="isActionLoading(task.id)"
+            >
+
+              <span
+                *ngIf="!isActionLoading(task.id)"
+              >
+                ⏭ Skip
+              </span>
+
+              <span
+                *ngIf="isActionLoading(task.id)"
+              >
+                Skipping...
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+
+  <!-- ==========================================
+       COMPLETE / SKIP MODAL
+       ========================================== -->
+
+  <div
+    class="modal-overlay"
+    *ngIf="showModal"
+    (click)="closeModal()"
+  >
+
+    <div
+      class="gardening-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+
+      <!-- MODAL HEADER -->
+
+      <div class="modal-header">
+
+        <div class="modal-title-area">
+
+          <div class="modal-icon">
+            {{ modalType === 'complete' ? '✓' : '⏭' }}
+          </div>
+
+          <div>
+
+            <h2>
+              {{ modalTitle }}
+            </h2>
+
+            <p>
+              {{ modalDescription }}
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeModal()"
+          [disabled]="
+            selectedTaskId !== null &&
+            isActionLoading(selectedTaskId)
+          "
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- MODAL BODY -->
+
+      <div class="modal-body">
+
+        <label for="task-notes">
+
+          {{
+            modalType === 'complete'
+              ? 'Completion Notes'
+              : 'Reason for Skipping'
+          }}
+
+          <span
+            *ngIf="modalType === 'skip'"
+            class="required"
+          >
+            *
+          </span>
+
+        </label>
+
+
+        <textarea
+          id="task-notes"
+          [(ngModel)]="modalText"
+          [placeholder]="
+            modalType === 'complete'
+              ? 'Example: Watered the plant properly and checked the soil.'
+              : 'Example: Plant needs special care before this task can be completed.'
+          "
+          rows="5"
+          [disabled]="
+            selectedTaskId !== null &&
+            isActionLoading(selectedTaskId)
+          "
+        ></textarea>
+
+
+        <!-- MODAL ERROR -->
+
+        <div
+          class="modal-error"
+          *ngIf="modalError"
+        >
+          ⚠️ {{ modalError }}
+        </div>
+
+      </div>
+
+
+      <!-- MODAL FOOTER -->
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="modal-cancel-btn"
+          (click)="closeModal()"
+          [disabled]="
+            selectedTaskId !== null &&
+            isActionLoading(selectedTaskId)
+          "
+        >
+          Cancel
+        </button>
+
+
+        <button
+          type="button"
+          class="modal-submit-btn"
+          [class.skip-submit]="modalType === 'skip'"
+          (click)="submitModal()"
+          [disabled]="
+            selectedTaskId !== null &&
+            isActionLoading(selectedTaskId)
+          "
+        >
+
+          <span
+            *ngIf="
+              selectedTaskId === null ||
+              !isActionLoading(selectedTaskId)
+            "
+          >
+            {{
+              modalType === 'complete'
+                ? '✓ Complete Task'
+                : '⏭ Skip Task'
+            }}
+          </span>
+
+          <span
+            *ngIf="
+              selectedTaskId !== null &&
+              isActionLoading(selectedTaskId)
+            "
+          >
+            Processing...
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ==========================================
+       SUCCESS / ERROR TOAST
+       ========================================== -->
+
+  <div
+    class="gardening-toast"
+    *ngIf="showToast"
+    [class.toast-error]="toastType === 'error'"
+    [class.toast-success]="toastType === 'success'"
+  >
+
+    <div class="toast-icon">
+
+      {{
+        toastType === 'success'
+          ? '✓'
+          : '!'
+      }}
+
+    </div>
+
+    <div class="toast-content">
+
+      <strong>
+        {{
+          toastType === 'success'
+            ? 'Success'
+            : 'Error'
+        }}
+      </strong>
+
+      <span>
+        {{ toastMessage }}
+      </span>
+
+    </div>
+
+    <button
+      type="button"
+      class="toast-close"
+      (click)="closeToast()"
+      aria-label="Close notification"
+    >
+      ×
+    </button>
+
+  </div>
+
+</div>

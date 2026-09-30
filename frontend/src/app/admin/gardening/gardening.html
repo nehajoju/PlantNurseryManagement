@@ -1,0 +1,1721 @@
+<div class="gardening-admin-page">
+
+    <!-- ==========================================
+       PAGE HEADER
+       ========================================== -->
+
+    <div class="page-header">
+
+        <div class="header-left">
+
+            <div class="header-icon">
+                🌱
+            </div>
+
+            <div>
+                <h1>Gardening Management</h1>
+
+                <p>
+                    Manage plant care schedules, tasks and gardening history.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="header-actions">
+
+            <button
+                type="button"
+                class="refresh-btn"
+                (click)="refresh()"
+                [disabled]="loading"
+            >
+                🔄 Refresh
+            </button>
+
+
+            <button
+                type="button"
+                class="create-btn"
+                (click)="openScheduleModal()"
+            >
+                ＋ Create Schedule
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+       LOADING
+       ========================================== -->
+
+    <div
+        class="loading-container"
+        *ngIf="loading"
+    >
+
+        <div class="loading-icon">
+            🌱
+        </div>
+
+        <p>
+            Loading gardening data...
+        </p>
+
+    </div>
+
+
+    <!-- ==========================================
+       ERROR
+       ========================================== -->
+
+    <div
+        class="error-message"
+        *ngIf="!loading && errorMessage"
+    >
+
+        <span class="error-icon">
+            ⚠️
+        </span>
+
+        <div>
+
+            <strong>
+                Something went wrong
+            </strong>
+
+            <p>
+                {{ errorMessage }}
+            </p>
+
+        </div>
+
+        <button
+            type="button"
+            (click)="loadAll()"
+        >
+            Try Again
+        </button>
+
+    </div>
+
+
+    <!-- ==========================================
+       MAIN CONTENT
+       ========================================== -->
+
+    <div
+        class="gardening-content"
+        *ngIf="!loading && !errorMessage"
+    >
+
+
+        <!-- ========================================
+         SUMMARY CARDS
+         ======================================== -->
+
+        <div class="summary-grid">
+
+            <div class="summary-card">
+
+                <div class="summary-icon schedule-icon">
+                    📅
+                </div>
+
+                <div class="summary-info">
+
+                    <span class="summary-label">
+                        Care Schedules
+                    </span>
+
+                    <strong>
+                        {{ schedules.length }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon task-icon">
+                    🌱
+                </div>
+
+                <div class="summary-info">
+
+                    <span class="summary-label">
+                        Total Tasks
+                    </span>
+
+                    <strong>
+                        {{ tasks.length }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon history-icon">
+                    📜
+                </div>
+
+                <div class="summary-info">
+
+                    <span class="summary-label">
+                        History Records
+                    </span>
+
+                    <strong>
+                        {{ history.length }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================
+         TABS
+         ======================================== -->
+
+        <div class="gardening-tabs">
+
+            <button
+                type="button"
+                [class.active]="activeTab === 'schedules'"
+                (click)="setTab('schedules')"
+            >
+
+                📅
+
+                <span>
+                    Care Schedules
+                </span>
+
+                <small>
+                    {{ schedules.length }}
+                </small>
+
+            </button>
+
+
+            <button
+                type="button"
+                [class.active]="activeTab === 'tasks'"
+                (click)="setTab('tasks')"
+            >
+
+                🌱
+
+                <span>
+                    All Tasks
+                </span>
+
+                <small>
+                    {{ tasks.length }}
+                </small>
+
+            </button>
+
+
+            <button
+                type="button"
+                [class.active]="activeTab === 'history'"
+                (click)="setTab('history')"
+            >
+
+                📜
+
+                <span>
+                    History
+                </span>
+
+                <small>
+                    {{ history.length }}
+                </small>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="tab-button"
+                [class.active]="activeTab === 'task-types'"
+                (click)="setTab('task-types')"
+            >
+
+                <span class="tab-icon">
+                    ⚙️
+                </span>
+
+                <span>
+                    Task Types
+                </span>
+
+                <small>
+                    {{ taskTypes.length }}
+                </small>
+
+            </button>
+
+        </div>
+
+
+        <!-- ==========================================
+         CARE SCHEDULES
+         ========================================== -->
+
+        <section
+            class="content-section"
+            *ngIf="activeTab === 'schedules'"
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        📅 Care Schedules
+                    </h2>
+
+                    <p>
+                        Manage recurring plant-care schedules.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="section-create-btn"
+                    (click)="openScheduleModal()"
+                >
+                    ＋ New Schedule
+                </button>
+
+            </div>
+
+
+            <!-- EMPTY -->
+
+            <div
+                class="empty-state"
+                *ngIf="schedules.length === 0"
+            >
+
+                <div class="empty-icon">
+                    📅
+                </div>
+
+                <h3>
+                    No Care Schedules
+                </h3>
+
+                <p>
+                    Create a care schedule to start managing plant care.
+                </p>
+
+                <button
+                    type="button"
+                    class="empty-action-btn"
+                    (click)="openScheduleModal()"
+                >
+                    ＋ Create Schedule
+                </button>
+
+            </div>
+
+
+            <!-- SCHEDULE TABLE -->
+
+            <div
+                class="table-container"
+                *ngIf="schedules.length > 0"
+            >
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Plant
+                            </th>
+
+                            <th>
+                                Task Type
+                            </th>
+
+                            <th>
+                                Next Due Date
+                            </th>
+
+                            <th>
+                                Frequency
+                            </th>
+
+                            <th>
+                                Description
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr
+                            *ngFor="let schedule of schedules"
+                        >
+
+                            <!-- PLANT -->
+
+                            <td>
+
+                                <div class="plant-cell">
+
+                                    <span class="plant-icon">
+                                        🌿
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            {{
+                                                schedule.plant_name ||
+                                                'Unknown Plant'
+                                            }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- TASK TYPE -->
+
+                            <td>
+
+                                <span class="task-type-badge">
+
+                                    {{
+                                        schedule.care_type_name ||
+                                        'Plant Care'
+                                    }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- NEXT DUE DATE -->
+
+                            <td>
+
+                                <span class="due-date">
+
+                                    {{
+                                        schedule.next_due_date
+                                            ? (
+                                                schedule.next_due_date
+                                                | date:'mediumDate'
+                                              )
+                                            : '—'
+                                    }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- FREQUENCY -->
+
+                            <td>
+
+                                Every
+                                {{ schedule.frequency_days }}
+                                day{{ schedule.frequency_days === 1 ? '' : 's' }}
+
+                            </td>
+
+
+                            <!-- DESCRIPTION -->
+
+                            <td>
+
+                                <span class="description-cell">
+
+                                    {{
+                                        schedule.notes ||
+                                        'No description'
+                                    }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td>
+
+                                <button
+                                    type="button"
+                                    class="delete-button"
+                                    (click)="deleteSchedule(schedule.id)"
+                                >
+                                    🗑️ Delete
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+         ALL TASKS
+         ========================================== -->
+
+        <section
+            class="content-section"
+            *ngIf="activeTab === 'tasks'"
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        🌱 Gardening Tasks
+                    </h2>
+
+                    <p>
+                        View all generated gardening tasks and their current status.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMPTY -->
+
+            <div
+                class="empty-state"
+                *ngIf="tasks.length === 0"
+            >
+
+                <div class="empty-icon">
+                    🌱
+                </div>
+
+                <h3>
+                    No Gardening Tasks
+                </h3>
+
+                <p>
+                    There are currently no gardening tasks.
+                </p>
+
+            </div>
+
+
+            <!-- TASK CARDS -->
+
+            <div
+                class="task-grid"
+                *ngIf="tasks.length > 0"
+            >
+
+                <div
+                    class="task-card"
+                    *ngFor="let task of tasks"
+                >
+
+                    <div class="task-card-header">
+
+                        <div>
+
+                            <span class="task-label">
+                                Gardening Task
+                            </span>
+
+                            <h3>
+                                {{
+                                    task.task_type ||
+                                    'Plant Care'
+                                }}
+                            </h3>
+
+                        </div>
+
+
+                        <span
+                            class="status-badge"
+                            [ngClass]="getStatusClass(task.status)"
+                        >
+                            {{ task.status || 'Pending' }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- TASK DETAILS -->
+
+                    <div class="task-details">
+
+
+                        <!-- PLANT -->
+
+                        <div class="detail-item">
+
+                            <span class="detail-icon">
+                                🌿
+                            </span>
+
+                            <div>
+
+                                <small>
+                                    Plant
+                                </small>
+
+                                <strong>
+                                    {{
+                                        task.plant_name ||
+                                        'Unknown Plant'
+                                    }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DUE DATE -->
+
+                        <div
+                            class="detail-item"
+                            *ngIf="task.due_date"
+                        >
+
+                            <span class="detail-icon">
+                                ⏰
+                            </span>
+
+                            <div>
+
+                                <small>
+                                    Due Date
+                                </small>
+
+                                <strong>
+                                    {{
+                                        task.due_date
+                                        | date:'mediumDate'
+                                    }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ASSIGNED STAFF -->
+
+                        <div class="detail-item">
+
+                            <span class="detail-icon">
+                                👷
+                            </span>
+
+                            <div>
+
+                                <small>
+                                    Assigned Staff
+                                </small>
+
+                                <strong>
+
+                                    {{
+                                        task.assigned_staff_name ||
+                                        'Not assigned'
+                                    }}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- STARTED -->
+
+                        <div
+                            class="detail-item"
+                            *ngIf="task.started_at"
+                        >
+
+                            <span class="detail-icon">
+                                ▶️
+                            </span>
+
+                            <div>
+
+                                <small>
+                                    Started
+                                </small>
+
+                                <strong>
+                                    {{
+                                        task.started_at
+                                        | date:'medium'
+                                    }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- COMPLETED -->
+
+                        <div
+                            class="detail-item"
+                            *ngIf="task.completed_at"
+                        >
+
+                            <span class="detail-icon">
+                                ✅
+                            </span>
+
+                            <div>
+
+                                <small>
+                                    Completed
+                                </small>
+
+                                <strong>
+                                    {{
+                                        task.completed_at
+                                        | date:'medium'
+                                    }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STAFF NOTES -->
+
+                    <div
+                        class="task-notes"
+                        *ngIf="task.staff_notes"
+                    >
+
+                        <strong>
+                            💬 Staff Notes
+                        </strong>
+
+                        <p>
+                            {{ task.staff_notes }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+         HISTORY
+         ========================================== -->
+
+        <section
+            class="content-section"
+            *ngIf="activeTab === 'history'"
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        📜 Gardening History
+                    </h2>
+
+                    <p>
+                        Review completed and skipped gardening work.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMPTY -->
+
+            <div
+                class="empty-state"
+                *ngIf="history.length === 0"
+            >
+
+                <div class="empty-icon">
+                    📜
+                </div>
+
+                <h3>
+                    No Gardening History
+                </h3>
+
+                <p>
+                    Completed or skipped tasks will appear here.
+                </p>
+
+            </div>
+
+
+            <!-- HISTORY TABLE -->
+
+            <div
+                class="table-container"
+                *ngIf="history.length > 0"
+            >
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Task
+                            </th>
+
+                            <th>
+                                Plant
+                            </th>
+
+                            <th>
+                                Staff
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Notes
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr
+                            *ngFor="let record of history"
+                        >
+
+                            <!-- TASK -->
+
+                            <td>
+
+                                <strong>
+                                    {{
+                                        record.care_type ||
+                                        'Plant Care'
+                                    }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- PLANT -->
+
+                            <td>
+
+                                <div class="plant-cell">
+
+                                    <span class="plant-icon">
+                                        🌿
+                                    </span>
+
+                                    <span>
+                                        {{
+                                            record.plant_name ||
+                                            'Unknown Plant'
+                                        }}
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- STAFF -->
+
+                            <td>
+
+                                <span
+                                    *ngIf="record.performed_by_name"
+                                >
+                                    👷
+                                    {{ record.performed_by_name }}
+                                </span>
+
+                                <span
+                                    class="muted-text"
+                                    *ngIf="!record.performed_by_name"
+                                >
+                                    —
+                                </span>
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                <span
+                                    class="status-badge"
+                                    [ngClass]="getStatusClass(record.action)"
+                                >
+                                    {{ record.action }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- NOTES -->
+
+                            <td>
+
+                                <span
+                                    *ngIf="record.notes"
+                                >
+                                    {{ record.notes }}
+                                </span>
+
+                                <span
+                                    class="muted-text"
+                                    *ngIf="!record.notes"
+                                >
+                                    —
+                                </span>
+
+                            </td>
+
+
+                            <!-- DATE -->
+
+                            <td>
+
+                                <span
+                                    *ngIf="record.performed_at"
+                                >
+                                    {{
+                                        record.performed_at
+                                        | date:'medium'
+                                    }}
+                                </span>
+
+                                <span
+                                    class="muted-text"
+                                    *ngIf="!record.performed_at"
+                                >
+                                    —
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- EMPTY -->
+
+                        <tr
+                            *ngIf="history.length === 0"
+                        >
+
+                            <td
+                                colspan="6"
+                                class="empty-table"
+                            >
+
+                                <div>
+                                    📜
+                                </div>
+
+                                <strong>
+                                    No Gardening History
+                                </strong>
+
+                                <p>
+                                    Completed or skipped tasks will appear here.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+         TASK TYPES
+         ========================================== -->
+
+        <section
+            class="tab-content"
+            *ngIf="activeTab === 'task-types'"
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Gardening Task Types
+                    </h2>
+
+                    <p>
+                        Create and manage the types of gardening
+                        care activities used in the nursery.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="primary-button"
+                    type="button"
+                    (click)="openTaskTypeModal()"
+                >
+
+                    <span>
+                        ＋
+                    </span>
+
+                    Add Task Type
+
+                </button>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div
+                class="error-message"
+                *ngIf="errorMessage"
+            >
+                {{ errorMessage }}
+            </div>
+
+
+            <!-- EMPTY -->
+
+            <div
+                class="empty-state"
+                *ngIf="taskTypes.length === 0"
+            >
+
+                <div class="empty-icon">
+                    🌱
+                </div>
+
+                <h3>
+                    No Task Types Found
+                </h3>
+
+                <p>
+                    Add your first gardening task type
+                    to get started.
+                </p>
+
+                <button
+                    class="primary-button"
+                    type="button"
+                    (click)="openTaskTypeModal()"
+                >
+                    ＋ Add Task Type
+                </button>
+
+            </div>
+
+
+            <!-- TASK TYPES TABLE -->
+
+            <div
+                class="table-container"
+                *ngIf="taskTypes.length > 0"
+            >
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Task Type
+                            </th>
+
+                            <th>
+                                Description
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr
+                            *ngFor="
+                                let taskType of taskTypes;
+                                let i = index
+                            "
+                        >
+
+                            <td>
+                                {{ i + 1 }}
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    {{ taskType.name }}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+
+                                <span
+                                    *ngIf="taskType.description"
+                                >
+                                    {{ taskType.description }}
+                                </span>
+
+                                <span
+                                    class="muted-text"
+                                    *ngIf="!taskType.description"
+                                >
+                                    No description
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span
+                                    class="status-badge"
+                                    [class.status-active]="taskType.is_active"
+                                >
+
+                                    {{
+                                        taskType.is_active
+                                            ? 'Active'
+                                            : 'Inactive'
+                                    }}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="action-buttons">
+
+                                    <button
+                                        class="secondary-button"
+                                        type="button"
+                                        (click)="openEditTaskTypeModal(taskType)"
+                                    >
+                                        ✏️ Edit
+                                    </button>
+
+
+                                    <button
+                                        class="danger-button"
+                                        type="button"
+                                        (click)="deleteTaskType(taskType)"
+                                    >
+                                        🗑️ Deactivate
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- ==========================================
+       CREATE SCHEDULE MODAL
+       ========================================== -->
+
+    <div
+        class="modal-overlay"
+        *ngIf="showScheduleModal"
+        (click)="closeScheduleModal()"
+    >
+
+        <div
+            class="schedule-modal"
+            (click)="$event.stopPropagation()"
+        >
+
+
+            <!-- MODAL HEADER -->
+
+            <div class="modal-header">
+
+                <div class="modal-title">
+
+                    <div class="modal-icon">
+                        📅
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Create Care Schedule
+                        </h2>
+
+                        <p>
+                            Set up a new plant-care schedule.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="modal-close"
+                    (click)="closeScheduleModal()"
+                    [disabled]="scheduleLoading"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- MODAL BODY -->
+
+            <div class="modal-body">
+
+
+                <!-- PLANT -->
+
+                <div class="form-group">
+
+                    <label for="plant">
+
+                        Plant
+
+                        <span>
+                            *
+                        </span>
+
+                    </label>
+
+
+                    <select
+                        id="plant"
+                        [(ngModel)]="scheduleForm.plant"
+                        [disabled]="scheduleLoading"
+                    >
+
+                        <option value="">
+                            Select a plant
+                        </option>
+
+                        <option
+                            *ngFor="let plant of plants"
+                            [value]="plant.id"
+                        >
+                            {{ plant.name }}
+                        </option>
+
+                    </select>
+
+
+                    <small>
+                        Select the plant that needs care.
+                    </small>
+
+                </div>
+
+
+                <!-- TASK TYPE -->
+
+                <div class="form-group">
+
+                    <label for="task-type">
+
+                        Task Type
+
+                        <span>
+                            *
+                        </span>
+
+                    </label>
+
+
+                    <select
+                        id="task-type"
+                        [(ngModel)]="scheduleForm.task_type"
+                        [disabled]="scheduleLoading"
+                    >
+
+                        <option value="">
+                            Select task type
+                        </option>
+
+                        <option
+                            *ngFor="let taskType of taskTypes"
+                            [value]="taskType.id"
+                        >
+                            {{ taskType.name }}
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DATES -->
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="scheduled-date">
+
+                            Scheduled Date
+
+                            <span>
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <input
+                            id="scheduled-date"
+                            type="date"
+                            [(ngModel)]="scheduleForm.scheduled_date"
+                            [disabled]="scheduleLoading"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="due-date">
+
+                            Due Date
+
+                            <span>
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <input
+                            id="due-date"
+                            type="date"
+                            [(ngModel)]="scheduleForm.due_date"
+                            [disabled]="scheduleLoading"
+                        />
+
+                    </div>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+
+                    <textarea
+                        id="description"
+                        rows="4"
+                        [(ngModel)]="scheduleForm.description"
+                        placeholder="Add instructions or notes for this care schedule..."
+                        [disabled]="scheduleLoading"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- ERROR -->
+
+                <div
+                    class="modal-error"
+                    *ngIf="scheduleError"
+                >
+
+                    ⚠️
+
+                    <span>
+                        {{ scheduleError }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- MODAL FOOTER -->
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    (click)="closeScheduleModal()"
+                    [disabled]="scheduleLoading"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    class="submit-btn"
+                    (click)="createSchedule()"
+                    [disabled]="scheduleLoading"
+                >
+
+                    <span
+                        *ngIf="!scheduleLoading"
+                    >
+                        ✓ Create Schedule
+                    </span>
+
+                    <span
+                        *ngIf="scheduleLoading"
+                    >
+                        Creating...
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+       TASK TYPE MODAL
+       ========================================== -->
+
+    <div
+        class="modal-overlay"
+        *ngIf="showTaskTypeModal"
+        (click)="closeTaskTypeModal()"
+    >
+
+        <div
+            class="modal-content"
+            (click)="$event.stopPropagation()"
+        >
+
+
+            <!-- HEADER -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+
+                        {{
+                            editingTaskTypeId !== null
+                                ? 'Edit Task Type'
+                                : 'Add Task Type'
+                        }}
+
+                    </h2>
+
+                    <p>
+
+                        {{
+                            editingTaskTypeId !== null
+                                ? 'Update the gardening task type details.'
+                                : 'Create a new gardening task type.'
+                        }}
+
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="modal-close"
+                    (click)="closeTaskTypeModal()"
+                    [disabled]="taskTypeLoading"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div
+                class="form-error"
+                *ngIf="taskTypeError"
+            >
+                {{ taskTypeError }}
+            </div>
+
+
+            <!-- FORM -->
+
+            <form
+                (ngSubmit)="saveTaskType()"
+            >
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="task-type-name">
+
+                        Task Type Name
+
+                        <span>
+                            *
+                        </span>
+
+                    </label>
+
+
+                    <input
+                        id="task-type-name"
+                        type="text"
+                        name="taskTypeName"
+                        [(ngModel)]="taskTypeForm.name"
+                        placeholder="Example: Leaf Cleaning"
+                        maxlength="100"
+                        [disabled]="taskTypeLoading"
+                        required
+                    />
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label for="task-type-description">
+                        Description
+                    </label>
+
+
+                    <textarea
+                        id="task-type-description"
+                        name="taskTypeDescription"
+                        [(ngModel)]="taskTypeForm.description"
+                        placeholder="Describe what this gardening task involves..."
+                        rows="4"
+                        [disabled]="taskTypeLoading"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        (click)="closeTaskTypeModal()"
+                        [disabled]="taskTypeLoading"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                        [disabled]="taskTypeLoading"
+                    >
+
+                        <span
+                            *ngIf="!taskTypeLoading"
+                        >
+
+                            {{
+                                editingTaskTypeId !== null
+                                    ? 'Update Task Type'
+                                    : 'Create Task Type'
+                            }}
+
+                        </span>
+
+
+                        <span
+                            *ngIf="taskTypeLoading"
+                        >
+                            Saving...
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+       TOAST
+       ========================================== -->
+
+    <div
+        class="gardening-toast"
+        *ngIf="showToast"
+        [class.toast-error]="toastType === 'error'"
+        [class.toast-success]="toastType === 'success'"
+    >
+
+        <div class="toast-icon">
+
+            {{
+                toastType === 'success'
+                    ? '✓'
+                    : '!'
+            }}
+
+        </div>
+
+
+        <div class="toast-content">
+
+            <strong>
+
+                {{
+                    toastType === 'success'
+                        ? 'Success'
+                        : 'Error'
+                }}
+
+            </strong>
+
+            <span>
+                {{ toastMessage }}
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="toast-close"
+            (click)="closeToast()"
+        >
+            ×
+        </button>
+
+    </div>
+
+</div>

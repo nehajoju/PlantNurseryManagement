@@ -1,0 +1,265 @@
+/* =========================================================
+   PLANTNEST COMMON ALERT POPUP
+========================================================= */
+
+.alert-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(25, 38, 30, 0.55);
+
+  animation: alertFadeIn 0.18s ease;
+}
+
+
+.alert-popup {
+  width: min(420px, 100%);
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  padding: 30px 28px 25px;
+
+  text-align: center;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.25);
+
+  animation: alertScaleIn 0.2s ease;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.alert-icon {
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 17px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 27px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.alert-content h2 {
+  margin: 0 0 9px;
+
+  color: #253a2d;
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+.alert-content p {
+  margin: 0 auto;
+
+  max-width: 330px;
+
+  color: #68766e;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   SUCCESS
+========================================================= */
+
+.alert-popup.success .alert-icon {
+  background: #e8f6eb;
+  color: #28713d;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.alert-popup.error .alert-icon {
+  background: #fdeaea;
+  color: #a43a3a;
+}
+
+
+/* =========================================================
+   WARNING
+========================================================= */
+
+.alert-popup.warning .alert-icon {
+  background: #fff4dc;
+  color: #956619;
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.alert-popup.info .alert-icon {
+  background: #eaf5fc;
+  color: #286a8d;
+}
+
+
+/* =========================================================
+   CONFIRM
+========================================================= */
+
+.alert-popup.confirm .alert-icon {
+  background: #edf6ef;
+  color: #315d3d;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.alert-button {
+  border: none;
+
+  min-width: 90px;
+
+  padding: 10px 18px;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+
+.primary-button {
+  background: #315d3d;
+
+  color: white;
+}
+
+
+.primary-button:hover {
+  background: #264b31;
+
+  transform: translateY(-1px);
+}
+
+
+.cancel-button {
+  background: #eef1ef;
+
+  color: #59655e;
+}
+
+
+.cancel-button:hover {
+  background: #e2e7e4;
+}
+
+
+/* =========================================================
+   NORMAL ALERT BUTTON
+========================================================= */
+
+.alert-popup:not(.confirm) .primary-button {
+  margin-top: 22px;
+}
+
+
+/* =========================================================
+   CONFIRMATION BUTTONS
+========================================================= */
+
+.alert-actions {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  margin-top: 23px;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes alertFadeIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes alertScaleIn {
+
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 500px) {
+
+  .alert-popup {
+    padding: 25px 20px 21px;
+
+    border-radius: 15px;
+  }
+
+
+  .alert-actions {
+    flex-direction: column-reverse;
+  }
+
+
+  .alert-actions .alert-button {
+    width: 100%;
+  }
+
+}

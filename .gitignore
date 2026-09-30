@@ -1,0 +1,67 @@
+# =========================
+# Python / Django
+# =========================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Django database
+db.sqlite3
+db.sqlite3-journal
+
+# Django logs
+*.log
+
+# Static and media
+staticfiles/
+media/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+
+# =========================
+# Angular / Node
+# =========================
+
+node_modules/
+dist/
+.angular/
+
+# Angular cache
+.cache/
+
+
+# =========================
+# IDE
+# =========================
+
+.vscode/
+.idea/
+*.code-workspace
+
+
+# =========================
+# OS
+# =========================
+
+.DS_Store
+Thumbs.db
+
+
+# =========================
+# Temporary files
+# =========================
+
+*.tmp
+*.temp
+*.swp
+*.swo

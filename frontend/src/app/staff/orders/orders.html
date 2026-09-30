@@ -1,0 +1,596 @@
+<div class="orders-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">STAFF MANAGEMENT</p>
+      <h1>Orders</h1>
+      <p class="subtitle">
+        View and manage customer orders.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div>
+        <span>Total Orders</span>
+        <strong>{{ totalOrders }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">⏳</div>
+      <div>
+        <span>Pending</span>
+        <strong>{{ pendingOrders }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🚚</div>
+      <div>
+        <span>Shipped</span>
+        <strong>{{ shippedOrders }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div>
+        <span>Delivered</span>
+        <strong>{{ deliveredOrders }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">💵</div>
+      <div>
+        <span>COD Pending</span>
+        <strong>{{ codPending }}</strong>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- Filters -->
+  <div class="filter-card">
+
+    <div class="search-box">
+
+      <span class="search-icon">🔎</span>
+
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search by order ID, customer or email..."
+        (keyup.enter)="searchOrders()"
+      />
+
+      @if (searchTerm) {
+        <button
+          type="button"
+          class="clear-btn"
+          (click)="clearSearch()"
+        >
+          ✕
+        </button>
+      }
+
+    </div>
+
+
+    <select
+      [(ngModel)]="selectedStatus"
+      (change)="filterOrders()"
+    >
+
+      @for (status of statuses; track status) {
+
+        <option [value]="status">
+          {{ status }}
+        </option>
+
+      }
+
+    </select>
+
+
+    <button
+      type="button"
+      class="search-btn"
+      (click)="searchOrders()"
+    >
+      Search
+    </button>
+
+  </div>
+
+
+  <!-- Loading -->
+  @if (loading) {
+
+    <div class="state-card">
+
+      <div class="loader"></div>
+
+      <p>Loading orders...</p>
+
+    </div>
+
+  }
+
+
+  <!-- Empty -->
+  @if (!loading && orders.length === 0) {
+
+    <div class="state-card empty-state">
+
+      <div class="empty-icon">📦</div>
+
+      <h3>No orders found</h3>
+
+      <p>
+        There are no orders matching your search or filter.
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- Orders Table -->
+  @if (!loading && orders.length > 0) {
+
+    <div class="table-card">
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Order</th>
+
+              <th>Customer</th>
+
+              <th>Date</th>
+
+              <th>Items</th>
+
+              <th>Total</th>
+
+              <th>Payment</th>
+
+              <th>Status</th>
+
+              <th>Action</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (order of orders; track order.id) {
+
+              <tr>
+
+                <!-- Order -->
+                <td>
+
+                  <div class="order-id">
+                    #{{ order.id }}
+                  </div>
+
+                </td>
+
+
+                <!-- Customer -->
+                <td>
+
+                  <div class="customer-info">
+
+                    <strong>
+                      {{ getCustomerName(order) }}
+                    </strong>
+
+                    @if (order.email) {
+                      <small>
+                        {{ order.email }}
+                      </small>
+                    }
+
+                  </div>
+
+                </td>
+
+
+                <!-- Date -->
+                <td>
+
+                  {{ order.created_at | date:'dd MMM yyyy' }}
+
+                  <small class="time">
+                    {{ order.created_at | date:'hh:mm a' }}
+                  </small>
+
+                </td>
+
+
+                <!-- Items -->
+                <td>
+
+                  <span class="item-count">
+                    {{ getItemCount(order) }}
+                    {{ getItemCount(order) === 1 ? 'item' : 'items' }}
+                  </span>
+
+                </td>
+
+
+                <!-- Total -->
+                <td>
+
+                  <strong class="amount">
+                    ₹{{ order.total_amount | number:'1.2-2' }}
+                  </strong>
+
+                </td>
+
+
+                <!-- Payment -->
+                <td>
+
+                  <div class="payment-info">
+
+                    <span class="payment-method">
+                      {{ order.payment_method }}
+                    </span>
+
+                    <span
+                      class="payment-status"
+                      [class.paid]="order.payment_status === 'Paid'"
+                      [class.pending]="order.payment_status === 'Pending'"
+                      [class.failed]="order.payment_status === 'Failed'"
+                    >
+                      {{ order.payment_status }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <!-- Status -->
+                <td>
+
+                  <span
+                    class="status-badge"
+                    [ngClass]="getStatusClass(order.status)"
+                  >
+                    {{ order.status }}
+                  </span>
+
+                </td>
+
+
+                <!-- Action -->
+                <td>
+
+                  <button
+                    type="button"
+                    class="view-btn"
+                    (click)="openOrder(order)"
+                  >
+                    View
+                  </button>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  }
+
+
+</div>
+
+
+<!-- Order Details Modal -->
+
+@if (showOrderModal && selectedOrder) {
+
+  <div
+    class="modal-backdrop"
+    (click)="closeOrder()"
+  >
+
+    <div
+      class="order-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+
+        <div>
+
+          <span class="modal-label">
+            ORDER DETAILS
+          </span>
+
+          <h2>
+            Order #{{ selectedOrder.id }}
+          </h2>
+
+        </div>
+
+        <button
+          type="button"
+          class="close-btn"
+          (click)="closeOrder()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <!-- Customer -->
+      <div class="detail-section">
+
+        <h3>👤 Customer Information</h3>
+
+        <div class="detail-grid">
+
+          <div>
+            <label>Name</label>
+            <p>{{ getCustomerName(selectedOrder) }}</p>
+          </div>
+
+          <div>
+            <label>Email</label>
+            <p>{{ selectedOrder.email || 'Not provided' }}</p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Delivery -->
+      <div class="detail-section">
+
+        <h3>📍 Delivery Information</h3>
+
+        <div class="address-box">
+
+          <p>
+            {{ selectedOrder.shipping_address }}
+          </p>
+
+          <p>
+            {{ selectedOrder.city }},
+            {{ selectedOrder.state }}
+            - {{ selectedOrder.pincode }}
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- Items -->
+      <div class="detail-section">
+
+        <h3>🌱 Order Items</h3>
+
+        <div class="items-list">
+
+          @for (item of selectedOrder.items; track item.id) {
+
+            <div class="item-row">
+
+              <div class="item-image">
+
+                @if (item.plant_image) {
+
+                  <img
+                    [src]="item.plant_image"
+                    [alt]="item.plant_name"
+                  />
+
+                } @else {
+
+                  <span>🌿</span>
+
+                }
+
+              </div>
+
+
+              <div class="item-details">
+
+                <strong>
+                  {{ item.plant_name }}
+                </strong>
+
+                <small>
+                  Quantity: {{ item.quantity }}
+                </small>
+
+              </div>
+
+
+              <div class="item-price">
+
+                <span>
+                  ₹{{ item.price | number:'1.2-2' }}
+                </span>
+
+                <small>
+                  ₹{{ (item.price * item.quantity) | number:'1.2-2' }}
+                </small>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <div class="order-total">
+
+          <span>Total Amount</span>
+
+          <strong>
+            ₹{{ selectedOrder.total_amount | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- Payment -->
+      <div class="detail-section">
+
+        <h3>💳 Payment Information</h3>
+
+        <div class="payment-detail">
+
+          <div>
+
+            <label>Method</label>
+
+            <strong>
+              {{ selectedOrder.payment_method }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <label>Status</label>
+
+            <span
+              class="payment-status large"
+              [class.paid]="selectedOrder.payment_status === 'Paid'"
+              [class.pending]="selectedOrder.payment_status === 'Pending'"
+              [class.failed]="selectedOrder.payment_status === 'Failed'"
+            >
+              {{ selectedOrder.payment_status }}
+            </span>
+
+          </div>
+
+          @if (selectedOrder.transaction_id) {
+
+            <div>
+
+              <label>Transaction ID</label>
+
+              <strong>
+                {{ selectedOrder.transaction_id }}
+              </strong>
+
+            </div>
+
+          }
+
+        </div>
+
+        @if (isCOD(selectedOrder)) {
+
+          <div class="cod-note">
+
+            💵
+            <div>
+
+              <strong>Cash on Delivery</strong>
+
+              <p>
+                COD payment should be marked as paid
+                only after cash is collected during delivery.
+              </p>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <!-- Status Update -->
+      <div class="detail-section">
+
+        <h3>🔄 Update Order Status</h3>
+
+        <div class="status-actions">
+
+          @for (status of statuses; track status) {
+
+            @if (status !== 'All') {
+
+              <button
+                type="button"
+                class="status-btn"
+                [class.current]="selectedOrder.status === status"
+                [disabled]="
+                  updating ||
+                  selectedOrder.status === status
+                "
+                (click)="updateOrderStatus(selectedOrder, status)"
+              >
+                {{ status }}
+              </button>
+
+            }
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- Footer -->
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="close-modal-btn"
+          (click)="closeOrder()"
+        >
+          Close
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

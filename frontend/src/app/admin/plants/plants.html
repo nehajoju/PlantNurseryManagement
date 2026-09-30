@@ -1,0 +1,185 @@
+<div class="admin-plants-page">
+
+  <div class="page-header">
+
+    <div>
+      <p>ADMIN PANEL</p>
+
+      <h1>Manage Plants</h1>
+
+      <span>
+        View and manage your plant inventory.
+      </span>
+    </div>
+
+    <button
+  type="button"
+  class="add-plant-button"
+  routerLink="/admin/plants/add">
+  + Add Plant
+</button>
+
+  </div>
+
+
+  @if (loading) {
+
+    <div class="loading">
+      <p>Loading plants...</p>
+    </div>
+
+  }
+
+  @else if (plants.length === 0) {
+
+    <div class="empty-state">
+
+      <div>🌱</div>
+
+      <h2>No Plants Found</h2>
+
+      <p>
+        There are no plants in your inventory yet.
+      </p>
+
+    </div>
+
+  }
+
+  @else {
+
+    <div class="plants-table-wrapper">
+
+      <table class="plants-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Plant</th>
+
+            <th>Category</th>
+
+            <th>Price</th>
+
+            <th>Stock</th>
+
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (plant of plants; track plant.id) {
+
+            <tr>
+
+              <td>
+
+                <div class="plant-info">
+
+                  <div class="plant-image">
+
+                    @if (plant.image) {
+
+                      <img
+                        [src]="plant.image"
+                        [alt]="plant.name">
+
+                    } @else {
+
+                      <span>🌱</span>
+
+                    }
+
+                  </div>
+
+
+                  <div>
+
+                    <strong>
+                      {{ plant.name }}
+                    </strong>
+
+                    <small>
+                      ID: #{{ plant.id }}
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <td>
+                {{ plant.category_name || '—' }}
+              </td>
+
+
+              <td>
+                ₹{{ plant.price }}
+              </td>
+
+
+              <td>
+
+                <span
+                  [class.low-stock]="plant.stock <= 5"
+                  [class.out-of-stock]="plant.stock === 0">
+
+                  {{ plant.stock }}
+
+                </span>
+
+              </td>
+
+
+              <td>
+
+  <button
+    type="button"
+    class="view-button"
+    [routerLink]="['/admin/plants/view', plant.id]">
+
+    👁️ View
+
+  </button>
+
+
+  <button
+    type="button"
+    class="edit-button"
+    [routerLink]="['/admin/plants/edit', plant.id]">
+
+    ✏️ Edit
+
+  </button>
+
+
+  <button
+  type="button"
+  class="delete-button"
+  [disabled]="deleting"
+  (click)="deletePlant(plant.id, plant.name)">
+  🗑️ Delete
+</button>
+
+</td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>

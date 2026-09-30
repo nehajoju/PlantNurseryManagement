@@ -1,0 +1,480 @@
+<div class="register-page">
+
+  <div class="register-card">
+
+    <h1>Create Account</h1>
+
+    <p>
+      Join PlantNest and start your green journey 🌿
+    </p>
+
+
+    @if (successMessage) {
+      <div class="success-message">
+        {{ successMessage }}
+      </div>
+    }
+
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="register()"
+    >
+
+      <!-- First Name + Last Name -->
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label for="first_name">
+            First Name
+          </label>
+
+          <input
+            id="first_name"
+            type="text"
+            formControlName="first_name"
+            placeholder="Enter first name"
+          >
+
+          @if (
+            isInvalid('first_name') &&
+            registerForm.get('first_name')?.hasError('required')
+          ) {
+            <small class="field-error">
+              First name is required.
+            </small>
+          }
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="last_name">
+            Last Name
+          </label>
+
+          <input
+            id="last_name"
+            type="text"
+            formControlName="last_name"
+            placeholder="Enter last name"
+          >
+
+          @if (
+            isInvalid('last_name') &&
+            registerForm.get('last_name')?.hasError('required')
+          ) {
+            <small class="field-error">
+              Last name is required.
+            </small>
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- Username -->
+
+      <div class="form-group">
+
+        <label for="username">
+          Username
+        </label>
+
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="Enter username"
+        >
+
+        @if (
+          isInvalid('username') &&
+          registerForm.get('username')?.hasError('required')
+        ) {
+          <small class="field-error">
+            Username is required.
+          </small>
+        }
+
+        @if (
+          registerForm.get('username')?.hasError('serverError')
+        ) {
+          <small class="field-error">
+            Username already exists.
+          </small>
+        }
+
+      </div>
+
+
+      <!-- Email -->
+
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter email"
+        >
+
+        @if (
+          isInvalid('email') &&
+          registerForm.get('email')?.hasError('required')
+        ) {
+          <small class="field-error">
+            Email is required.
+          </small>
+        }
+
+        @if (
+          isInvalid('email') &&
+          registerForm.get('email')?.hasError('email')
+        ) {
+          <small class="field-error">
+            Please enter a valid email address.
+          </small>
+        }
+
+        @if (
+          registerForm.get('email')?.hasError('serverError')
+        ) {
+          <small class="field-error">
+            Please check your email address.
+          </small>
+        }
+
+      </div>
+
+
+      <!-- Phone -->
+
+      <div class="form-group">
+
+        <label for="phone">
+          Phone
+        </label>
+
+        <input
+          id="phone"
+          type="text"
+          formControlName="phone"
+          placeholder="Enter 10-digit phone number"
+          maxlength="10"
+        >
+
+        @if (
+          isInvalid('phone') &&
+          registerForm.get('phone')?.hasError('required')
+        ) {
+          <small class="field-error">
+            Phone number is required.
+          </small>
+        }
+
+        @if (
+          isInvalid('phone') &&
+          registerForm.get('phone')?.hasError('pattern')
+        ) {
+          <small class="field-error">
+            Phone number must contain exactly 10 digits.
+          </small>
+        }
+
+      </div>
+
+
+      <!-- Password -->
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <div class="password-wrapper">
+
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Create a strong password"
+          >
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePassword()"
+            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+          >
+            {{ showPassword ? '🙈' : '👁️' }}
+          </button>
+
+        </div>
+
+
+        @if (
+          isInvalid('password') &&
+          registerForm.get('password')?.hasError('required')
+        ) {
+          <small class="field-error">
+            Password is required.
+          </small>
+        }
+
+
+        @if (
+          isInvalid('password') &&
+          registerForm.get('password')?.hasError('minlength')
+        ) {
+          <small class="field-error">
+            Password must contain at least 8 characters.
+          </small>
+        }
+
+
+        @if (
+          isInvalid('password') &&
+          registerForm.get('password')?.hasError('pattern')
+        ) {
+          <small class="field-error">
+            Password must contain uppercase, lowercase, number and special character.
+          </small>
+        }
+
+
+        @if (
+          registerForm.get('password')?.value &&
+          registerForm.get('password')?.valid
+        ) {
+          <small class="field-success">
+            ✓ Strong password
+          </small>
+        }
+
+      </div>
+
+
+      <!-- Confirm Password -->
+
+      <div class="form-group">
+
+        <label for="confirm_password">
+          Confirm Password
+        </label>
+
+        <div class="password-wrapper">
+
+          <input
+            id="confirm_password"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirm_password"
+            placeholder="Confirm your password"
+          >
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="toggleConfirmPassword()"
+            [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
+          >
+            {{ showConfirmPassword ? '🙈' : '👁️' }}
+          </button>
+
+        </div>
+
+
+        @if (
+          isInvalid('confirm_password') &&
+          registerForm.get('confirm_password')?.hasError('required')
+        ) {
+          <small class="field-error">
+            Please confirm your password.
+          </small>
+        }
+
+
+        @if (
+          getPasswordMismatch()
+        ) {
+          <small class="field-error">
+            Passwords do not match.
+          </small>
+        }
+
+
+        @if (
+          registerForm.get('confirm_password')?.value &&
+          !getPasswordMismatch() &&
+          registerForm.get('confirm_password')?.valid
+        ) {
+          <small class="field-success">
+            ✓ Passwords match
+          </small>
+        }
+
+      </div>
+
+
+      <!-- Address -->
+
+      <div class="form-group">
+
+        <label for="address">
+          Address
+        </label>
+
+        <textarea
+          id="address"
+          formControlName="address"
+          placeholder="Enter address"
+        ></textarea>
+
+        @if (
+          isInvalid('address') &&
+          registerForm.get('address')?.hasError('required')
+        ) {
+          <small class="field-error">
+            Address is required.
+          </small>
+        }
+
+      </div>
+
+
+      <!-- City + State -->
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label for="city">
+            City
+          </label>
+
+          <input
+            id="city"
+            type="text"
+            formControlName="city"
+            placeholder="Enter city"
+          >
+
+          @if (
+            isInvalid('city') &&
+            registerForm.get('city')?.hasError('required')
+          ) {
+            <small class="field-error">
+              City is required.
+            </small>
+          }
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="state">
+            State
+          </label>
+
+          <input
+            id="state"
+            type="text"
+            formControlName="state"
+            placeholder="Enter state"
+          >
+
+          @if (
+            isInvalid('state') &&
+            registerForm.get('state')?.hasError('required')
+          ) {
+            <small class="field-error">
+              State is required.
+            </small>
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- Pincode -->
+
+      <div class="form-group">
+
+        <label for="pincode">
+          Pincode
+        </label>
+
+        <input
+          id="pincode"
+          type="text"
+          formControlName="pincode"
+          placeholder="Enter 6-digit pincode"
+          maxlength="6"
+        >
+
+        @if (
+          isInvalid('pincode') &&
+          registerForm.get('pincode')?.hasError('required')
+        ) {
+          <small class="field-error">
+            Pincode is required.
+          </small>
+        }
+
+        @if (
+          isInvalid('pincode') &&
+          registerForm.get('pincode')?.hasError('pattern')
+        ) {
+          <small class="field-error">
+            Pincode must contain exactly 6 digits.
+          </small>
+        }
+
+      </div>
+
+
+      <!-- Submit -->
+
+      <button
+        type="submit"
+        class="register-button"
+      >
+        Create Account
+      </button>
+
+    </form>
+
+
+    <!-- Login -->
+
+    <p class="login-link">
+
+      Already have an account?
+
+      <a routerLink="/login">
+        Login
+      </a>
+
+    </p>
+
+  </div>
+
+</div>

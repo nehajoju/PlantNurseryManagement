@@ -1,0 +1,362 @@
+<div class="profile-page">
+
+  <div class="profile-header">
+
+    <p>YOUR ACCOUNT</p>
+
+    <h1>My Profile</h1>
+
+    <span>
+      View and manage your personal information.
+    </span>
+
+  </div>
+
+
+  @if (loading) {
+
+    <div class="profile-loading">
+
+      <p>Loading your profile...</p>
+
+    </div>
+
+  }
+
+
+  @else if (user) {
+
+    <div class="profile-card">
+
+      <!-- Profile Icon -->
+
+      <div class="profile-icon">
+        👤
+      </div>
+
+
+      <!-- Username -->
+
+      <h2>
+        {{ user.username }}
+      </h2>
+
+      <p class="profile-email">
+        {{ user.email }}
+      </p>
+
+
+      <!-- ========================= -->
+      <!-- VIEW MODE -->
+      <!-- ========================= -->
+
+      @if (!editMode) {
+
+        <div class="profile-details">
+
+          <!-- Username -->
+
+          <div class="detail-item">
+
+            <span>Username</span>
+
+            <strong>
+              {{ user.username }}
+            </strong>
+
+          </div>
+
+
+          <!-- Email -->
+
+          <div class="detail-item">
+
+            <span>Email</span>
+
+            <strong>
+              {{ user.email || 'Not provided' }}
+            </strong>
+
+          </div>
+
+
+          <!-- Phone -->
+
+          <div class="detail-item">
+
+            <span>Phone</span>
+
+            <strong>
+              {{ user.phone || 'Not provided' }}
+            </strong>
+
+          </div>
+
+
+          <!-- Address -->
+
+          <div class="detail-item">
+
+            <span>Address</span>
+
+            <strong>
+              {{ user.address || 'Not provided' }}
+            </strong>
+
+          </div>
+
+
+          <!-- City -->
+
+          <div class="detail-item">
+
+            <span>City</span>
+
+            <strong>
+              {{ user.city || 'Not provided' }}
+            </strong>
+
+          </div>
+
+
+          <!-- State -->
+
+          <div class="detail-item">
+
+            <span>State</span>
+
+            <strong>
+              {{ user.state || 'Not provided' }}
+            </strong>
+
+          </div>
+
+
+          <!-- Pincode -->
+
+          <div class="detail-item">
+
+            <span>Pincode</span>
+
+            <strong>
+              {{ user.pincode || 'Not provided' }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- Edit Button -->
+
+        <div class="profile-actions">
+
+          <button
+            type="button"
+            class="edit-button"
+            (click)="startEdit()">
+
+            ✏️ Edit Profile
+
+          </button>
+
+        </div>
+
+      }
+
+
+      <!-- ========================= -->
+      <!-- EDIT MODE -->
+      <!-- ========================= -->
+
+      @else {
+
+        <div class="profile-form">
+
+
+          <!-- ========================= -->
+          <!-- EMAIL -->
+          <!-- ========================= -->
+
+          <div class="form-group">
+
+            <label for="email">
+              Email
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              [(ngModel)]="editUser.email"
+              placeholder="Enter your email"
+              required>
+
+          </div>
+
+
+          <!-- ========================= -->
+          <!-- PHONE -->
+          <!-- ========================= -->
+
+          <div class="form-group">
+
+            <label for="phone">
+              Phone
+            </label>
+
+            <input
+              id="phone"
+              type="text"
+              [(ngModel)]="editUser.phone"
+              placeholder="Enter your phone number"
+              maxlength="10"
+              inputmode="numeric"
+              required>
+
+          </div>
+
+
+          <!-- ========================= -->
+          <!-- ADDRESS -->
+          <!-- ========================= -->
+
+          <div class="form-group">
+
+            <label for="address">
+              Address
+            </label>
+
+            <textarea
+              id="address"
+              [(ngModel)]="editUser.address"
+              placeholder="Enter your address"
+              rows="3"
+              required>
+            </textarea>
+
+          </div>
+
+
+          <!-- ========================= -->
+          <!-- CITY -->
+          <!-- ========================= -->
+
+          <div class="form-group">
+
+            <label for="city">
+              City
+            </label>
+
+            <input
+              id="city"
+              type="text"
+              [(ngModel)]="editUser.city"
+              placeholder="Enter your city"
+              required>
+
+          </div>
+
+
+          <!-- ========================= -->
+          <!-- STATE -->
+          <!-- ========================= -->
+
+          <div class="form-group">
+
+            <label for="state">
+              State
+            </label>
+
+            <input
+              id="state"
+              type="text"
+              [(ngModel)]="editUser.state"
+              placeholder="Enter your state"
+              required>
+
+          </div>
+
+
+          <!-- ========================= -->
+          <!-- PINCODE -->
+          <!-- ========================= -->
+
+          <div class="form-group">
+
+            <label for="pincode">
+              Pincode
+            </label>
+
+            <input
+              id="pincode"
+              type="text"
+              [(ngModel)]="editUser.pincode"
+              placeholder="Enter your pincode"
+              maxlength="6"
+              inputmode="numeric"
+              required>
+
+          </div>
+
+
+          <!-- ========================= -->
+          <!-- FORM BUTTONS -->
+          <!-- ========================= -->
+
+          <div class="profile-actions">
+
+            <button
+              type="button"
+              class="cancel-button"
+              (click)="cancelEdit()"
+              [disabled]="saving">
+
+              Cancel
+
+            </button>
+
+
+            <button
+              type="button"
+              class="save-button"
+              (click)="saveProfile()"
+              [disabled]="saving">
+
+              @if (saving) {
+
+                Saving...
+
+              }
+
+              @else {
+
+                💾 Save Changes
+
+              }
+
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+
+  @else {
+
+    <div class="profile-error">
+
+      <p>
+        Unable to load your profile.
+      </p>
+
+    </div>
+
+  }
+
+</div>

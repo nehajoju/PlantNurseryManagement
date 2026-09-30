@@ -1,0 +1,82 @@
+@if (alert) {
+
+  <div
+    class="alert-overlay"
+    (click)="alert.type === 'confirm' ? null : close()"
+  >
+
+    <div
+      class="alert-popup"
+      [class]="alert.type"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- ICON -->
+
+      <div class="alert-icon">
+        {{ getIcon() }}
+      </div>
+
+
+      <!-- CONTENT -->
+
+      <div class="alert-content">
+
+        <h2>
+          {{ alert.title }}
+        </h2>
+
+        <p>
+          {{ alert.message }}
+        </p>
+
+      </div>
+
+
+      <!-- NORMAL ALERT -->
+
+      @if (alert.type !== 'confirm') {
+
+        <button
+          type="button"
+          class="alert-button primary-button"
+          (click)="close()"
+        >
+          OK
+        </button>
+
+      }
+
+
+      <!-- CONFIRMATION -->
+
+      @if (alert.type === 'confirm') {
+
+        <div class="alert-actions">
+
+          <button
+            type="button"
+            class="alert-button cancel-button"
+            (click)="confirm(false)"
+          >
+            {{ alert.cancelText || 'Cancel' }}
+          </button>
+
+
+          <button
+            type="button"
+            class="alert-button primary-button"
+            (click)="confirm(true)"
+          >
+            {{ alert.confirmText || 'Confirm' }}
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+}

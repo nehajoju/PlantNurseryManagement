@@ -1,0 +1,188 @@
+.staff-navbar {
+  height: 70px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 32px;
+
+  gap: 35px;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+
+/* =========================
+   BRAND
+========================= */
+
+.staff-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-width: 180px;
+}
+
+.brand-icon {
+  font-size: 28px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-size: 19px;
+  font-weight: 700;
+  color: #166534;
+  line-height: 1.1;
+}
+
+.brand-text small {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #6b7280;
+  margin-top: 3px;
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.staff-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  flex: 1;
+}
+
+.staff-nav-links a {
+  text-decoration: none;
+
+  color: #4b5563;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  padding: 10px 13px;
+
+  border-radius: 7px;
+
+  transition: 0.2s;
+}
+
+.staff-nav-links a:hover {
+  background: #ecfdf5;
+  color: #166534;
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.staff-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.staff-welcome {
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.staff-actions button {
+  border: none;
+
+  background: #f3f4f6;
+  color: #374151;
+
+  padding: 9px 16px;
+
+  border-radius: 7px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.staff-actions button:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+  .staff-navbar {
+    padding: 0 18px;
+    gap: 15px;
+  }
+
+  .staff-brand {
+    min-width: auto;
+  }
+
+  .staff-nav-links {
+    gap: 2px;
+  }
+
+  .staff-nav-links a {
+    padding: 9px 8px;
+    font-size: 13px;
+  }
+
+  .staff-welcome {
+    display: none;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .staff-navbar {
+    height: auto;
+    min-height: 70px;
+    flex-wrap: wrap;
+    padding: 12px 15px;
+  }
+
+  .staff-brand {
+    flex: 1;
+  }
+
+  .staff-actions {
+    margin-left: auto;
+  }
+
+  .staff-nav-links {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 3px;
+  }
+
+  .staff-nav-links a {
+    white-space: nowrap;
+  }
+
+}

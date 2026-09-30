@@ -1,0 +1,147 @@
+@if (plant) {
+
+  <div class="detail-page">
+
+    <a routerLink="/plants" class="back-link">
+      ← Back to Plants
+    </a>
+
+    <div class="detail-card">
+
+      <!-- Image -->
+      <div class="detail-image">
+
+        @if (plant.image) {
+
+          <img
+            [src]="plant.image"
+            [alt]="plant.name"
+          >
+
+        } @else {
+
+          <div class="no-image">
+            🌱
+          </div>
+
+        }
+
+      </div>
+
+
+      <!-- Information -->
+      <div class="detail-info">
+
+        <span class="category">
+          {{ plant.category_name }}
+        </span>
+
+        <h1>{{ plant.name }}</h1>
+
+        <p class="description">
+          {{ plant.description }}
+        </p>
+
+
+        <div class="price">
+          ₹{{ plant.price }}
+        </div>
+
+
+        <div class="info-section">
+
+          <div>
+            <strong>☀️ Sunlight</strong>
+            <p>{{ plant.sunlight }}</p>
+          </div>
+
+          <div>
+            <strong>💧 Watering</strong>
+            <p>{{ plant.watering }}</p>
+          </div>
+
+          <div>
+            <strong>📦 Stock</strong>
+            <p>{{ plant.stock }} available</p>
+          </div>
+
+        </div>
+
+
+        <div class="care">
+
+          <h3>Care Instructions</h3>
+
+          <p>
+            {{ plant.care_instructions }}
+          </p>
+
+        </div>
+
+
+        <div class="actions">
+
+          @if (isInCart) {
+
+  <div class="cart-actions">
+
+    <button
+      class="cart-button"
+      disabled>
+      ✓ Added to Cart
+    </button>
+
+    <a
+      routerLink="/cart"
+      class="view-cart-button">
+      🛒 View Cart
+    </a>
+
+  </div>
+
+} @else {
+
+  <button
+    class="cart-button"
+    (click)="addToCart()">
+    Add to Cart
+  </button>
+
+}
+
+
+          @if (isInWishlist) {
+
+  <button
+    class="wishlist-button added"
+    disabled>
+    ❤️ Added to Wishlist
+  </button>
+
+} @else {
+
+  <button
+    class="wishlist-button"
+    (click)="addToWishlist()">
+    ♡ Wishlist
+  </button>
+
+}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+} @else {
+
+  <div class="loading">
+
+    <p>Loading plant details...</p>
+
+  </div>
+
+}

@@ -1,0 +1,566 @@
+.cart-page {
+  min-height: 100vh;
+  padding: 40px 8%;
+  background: #f7faf7;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.cart-header h1 {
+  color: #2f5d3a;
+  font-size: 32px;
+  margin: 0;
+}
+
+.continue-button,
+.shop-button {
+  text-decoration: none;
+  background: #2f6b3f;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.continue-button:hover,
+.shop-button:hover {
+  background: #244f30;
+}
+
+.empty-cart {
+  background: white;
+  max-width: 550px;
+  margin: 80px auto;
+  padding: 50px 30px;
+  text-align: center;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.empty-icon {
+  font-size: 60px;
+  margin-bottom: 15px;
+}
+
+.empty-cart h2 {
+  color: #2f5d3a;
+  margin-bottom: 10px;
+}
+
+.empty-cart p {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+.cart-container {
+  max-width: 1000px;
+  margin: auto;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+}
+
+.plant-image {
+  width: 130px;
+  height: 130px;
+  flex-shrink: 0;
+}
+
+.plant-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #edf5ed;
+  border-radius: 12px;
+  font-size: 45px;
+}
+
+.plant-info {
+  flex: 1;
+}
+
+.plant-info h2 {
+  color: #2f5d3a;
+  margin: 0 0 10px;
+}
+
+.price {
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.item-total {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6b3f;
+}
+
+
+/* ========================================
+   WISHLIST SECTION
+======================================== */
+
+.wishlist-section {
+  margin-top: 50px;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.wishlist-header {
+  margin-bottom: 25px;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 15px;
+}
+
+.wishlist-header h1 {
+  margin: 0;
+  color: #2f5d3a;
+  font-size: 28px;
+}
+
+
+/* Empty Wishlist */
+
+.empty-wishlist {
+  text-align: center;
+  padding: 45px 20px;
+}
+
+.empty-wishlist .empty-icon {
+  font-size: 55px;
+  color: #8aa68f;
+  margin-bottom: 15px;
+}
+
+.empty-wishlist h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.empty-wishlist p {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+
+/* Wishlist Items */
+
+.wishlist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.wishlist-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fafcf9;
+  transition: 0.3s ease;
+}
+
+.wishlist-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+}
+
+
+/* Wishlist Image */
+
+.wishlist-image {
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #edf4ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wishlist-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wishlist-image .image-placeholder {
+  font-size: 40px;
+}
+
+
+/* Wishlist Information */
+
+.wishlist-info {
+  flex: 1;
+}
+
+.wishlist-info h2 {
+  margin: 0 0 8px;
+  color: #2f5d3a;
+  font-size: 20px;
+}
+
+.wishlist-info .price {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #444;
+}
+
+
+/* Wishlist Buttons */
+
+.wishlist-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wishlist-actions .view-button {
+  padding: 10px 16px;
+  background: #2f6b3f;
+  color: white;
+  text-decoration: none;
+  border-radius: 7px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.wishlist-actions .view-button:hover {
+  background: #245532;
+}
+
+.remove-button {
+  padding: 10px 16px;
+  border: 1px solid #c96c6c;
+  background: white;
+  color: #b34d4d;
+  border-radius: 7px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.remove-button:hover {
+  background: #b34d4d;
+  color: white;
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+
+  .wishlist-section {
+    padding: 20px;
+    margin-top: 30px;
+  }
+
+  .wishlist-item {
+    flex-wrap: wrap;
+  }
+
+  .wishlist-actions {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  .wishlist-actions .view-button,
+  .remove-button {
+    flex: 1;
+    text-align: center;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .wishlist-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wishlist-image {
+    width: 100%;
+    height: 180px;
+  }
+
+  .wishlist-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .wishlist-actions .view-button,
+  .remove-button {
+    width: 100%;
+  }
+
+}
+.remove-cart-button {
+  margin-top: 10px;
+  padding: 9px 16px;
+  border: 1px solid #c96c6c;
+  background: white;
+  color: #b34d4d;
+  border-radius: 7px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.remove-cart-button:hover {
+  background: #b34d4d;
+  color: white;
+}
+
+
+/* ========================================
+   CART ITEM IMPROVEMENTS
+======================================== */
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 150px 1fr auto;
+  align-items: center;
+  gap: 28px;
+  padding: 24px 28px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e8eee9;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Plant Image */
+
+.plant-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #eef5ef;
+}
+
+.plant-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Plant Information */
+
+.plant-info h2 {
+  margin: 0 0 10px;
+  font-size: 25px;
+  color: #285c38;
+}
+
+.plant-info .price {
+  margin: 0 0 18px;
+  font-size: 18px;
+  color: #555;
+  font-weight: 600;
+}
+
+
+/* ========================================
+   QUANTITY SELECTOR
+======================================== */
+
+.quantity-control {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #d8e2da;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #ffffff;
+  height: 44px;
+}
+
+.quantity-control button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: #f1f6f2;
+  color: #285c38;
+  font-size: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.quantity-control button:hover:not(:disabled) {
+  background: #dcebdd;
+}
+
+.quantity-control button:disabled {
+  color: #aaa;
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+
+/* Quantity Number */
+
+.quantity-control strong {
+  min-width: 48px;
+  text-align: center;
+  font-size: 17px;
+  color: #333;
+  border-left: 1px solid #e2e7e3;
+  border-right: 1px solid #e2e7e3;
+  line-height: 44px;
+}
+
+
+/* ========================================
+   REMOVE BUTTON
+======================================== */
+
+.remove-cart-button {
+  display: block;
+  margin-top: 14px;
+  padding: 9px 18px;
+  border: 1px solid #d66b6b;
+  background: #ffffff;
+  color: #c34f4f;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.remove-cart-button:hover {
+  background: #c34f4f;
+  color: #ffffff;
+}
+
+
+/* ========================================
+   ITEM TOTAL
+======================================== */
+
+.item-total {
+  min-width: 110px;
+  text-align: right;
+  font-size: 23px;
+  font-weight: 700;
+  color: #28703e;
+}
+
+
+/* ========================================
+   CART CONTAINER
+======================================== */
+
+/* .cart-container {
+  margin-top: 25px;
+} */
+
+/* .cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+} */
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+  .cart-item {
+    grid-template-columns: 100px 1fr;
+    gap: 18px;
+    padding: 18px;
+  }
+
+  .plant-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .item-total {
+    grid-column: 2;
+    text-align: left;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .cart-item {
+    grid-template-columns: 1fr;
+  }
+
+  .plant-image {
+    width: 100%;
+    height: 200px;
+  }
+
+  .item-total {
+    grid-column: 1;
+    text-align: left;
+  }
+
+}
+
+.checkout-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+.checkout-button {
+  display: inline-block;
+  padding: 14px 26px;
+  background: #2f6b3f;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.checkout-button:hover {
+  background: #245531;
+}
