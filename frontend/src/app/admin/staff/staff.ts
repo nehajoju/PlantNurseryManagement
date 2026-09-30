@@ -15,10 +15,10 @@ import { AlertService } from '../../services/alert';
 export class Staff implements OnInit {
 
   private apiUrl =
-    'http://127.0.0.1:8000/api/users/admin/staff/';
+    'http://https://plantnurserymanagement.onrender.com/api/users/admin/staff/';
 
   private responsibilityUrl =
-    'http://127.0.0.1:8000/api/users/admin/staff/';
+    'http://https://plantnurserymanagement.onrender.com/api/users/admin/staff/';
 
   staff: any[] = [];
 

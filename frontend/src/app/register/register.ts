@@ -212,7 +212,7 @@ export class Register {
 
 
     this.http.post(
-      'http://127.0.0.1:8000/api/users/register/',
+      'http://https://plantnurserymanagement.onrender.com/api/users/register/',
       this.registerForm.value
     )
     .subscribe({

@@ -8,9 +8,9 @@ import { Auth } from './auth';
 })
 export class Cart {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/cart/';
-  private ordersApiUrl = 'http://127.0.0.1:8000/api/orders/';
-  private profileApiUrl = 'http://127.0.0.1:8000/api/users/profile/';
+  private apiUrl = 'http://https://plantnurserymanagement.onrender.com/api/cart/';
+  private ordersApiUrl = 'http://https://plantnurserymanagement.onrender.com/api/orders/';
+  private profileApiUrl = 'http://https://plantnurserymanagement.onrender.com/api/users/profile/';
 
   constructor(
     private http: HttpClient,

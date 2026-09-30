@@ -7,7 +7,7 @@ import { Auth } from './auth';
 })
 export class GardeningAi {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/gardening-ai/ask/';
+  private apiUrl = 'http://https://plantnurserymanagement.onrender.com/api/gardening-ai/ask/';
 
   constructor(
     private http: HttpClient,

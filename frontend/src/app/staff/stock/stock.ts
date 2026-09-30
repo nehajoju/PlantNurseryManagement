@@ -13,10 +13,10 @@ import { Auth } from '../../services/auth';
 export class Stock implements OnInit {
 
   private apiUrl =
-    'http://127.0.0.1:8000/api/plants/staff/stock/';
+    'http://https://plantnurserymanagement.onrender.com/api/plants/staff/stock/';
 
   private historyUrl =
-    'http://127.0.0.1:8000/api/plants/staff/stock/history/';
+    'http://https://plantnurserymanagement.onrender.com/api/plants/staff/stock/history/';
 
   plants: any[] = [];
   movements: any[] = [];

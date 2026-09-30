@@ -17,7 +17,7 @@ import { Auth } from '../../services/auth';
 export class Customers implements OnInit {
 
   private apiUrl =
-    'http://127.0.0.1:8000/api/users/admin/customers/';
+    'http://https://plantnurserymanagement.onrender.com/api/users/admin/customers/';
 
   customers: any[] = [];
 

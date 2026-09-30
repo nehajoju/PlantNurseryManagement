@@ -8,7 +8,7 @@ import { Auth } from './auth';
 })
 export class UserService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/users/profile/';
+  private apiUrl = 'http://https://plantnurserymanagement.onrender.com/api/users/profile/';
 
   constructor(
     private http: HttpClient,

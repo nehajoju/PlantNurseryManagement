@@ -9,7 +9,7 @@ import { Auth } from './auth';
 export class NotificationService {
 
   private apiUrl =
-    'http://127.0.0.1:8000/api/notifications/';
+    'http://https://plantnurserymanagement.onrender.com/api/notifications/';
 
   constructor(
     private http: HttpClient,

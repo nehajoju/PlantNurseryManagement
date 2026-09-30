@@ -18,7 +18,7 @@ import { Auth } from '../../services/auth';
 export class Dashboard implements OnInit {
 
   private apiUrl =
-    'http://127.0.0.1:8000/api/orders/staff/';
+    'http://https://plantnurserymanagement.onrender.com/api/orders/staff/';
 
   orders: any[] = [];
 
