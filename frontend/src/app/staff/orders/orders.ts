@@ -18,7 +18,7 @@ import { AlertService } from '../../services/alert';
 })
 export class Orders implements OnInit {
 
-  private apiUrl = 'http://https://plantnurserymanagement.onrender.com/api/orders/staff/';
+  private apiUrl = 'https://plantnurserymanagement.onrender.com/api/orders/staff/';
 
   orders: any[] = [];
 

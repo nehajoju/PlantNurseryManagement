@@ -8,7 +8,7 @@ import { Auth } from './auth';
 })
 export class PlantService {
 
-  private apiUrl = 'http://https://plantnurserymanagement.onrender.com/api/plants/';
+  private apiUrl = 'https://plantnurserymanagement.onrender.com/api/plants/';
 
   constructor(
     private http: HttpClient,

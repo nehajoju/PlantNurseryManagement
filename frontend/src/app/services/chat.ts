@@ -8,7 +8,7 @@ import { Auth } from './auth';
 })
 export class ChatService {
 
-  private apiUrl = 'http://https://plantnurserymanagement.onrender.com/api/chat/';
+  private apiUrl = 'https://plantnurserymanagement.onrender.com/api/chat/';
 
   constructor(
     private http: HttpClient,

@@ -212,7 +212,7 @@ export class Register {
 
 
     this.http.post(
-      'http://https://plantnurserymanagement.onrender.com/api/users/register/',
+      'https://plantnurserymanagement.onrender.com/api/users/register/',
       this.registerForm.value
     )
     .subscribe({

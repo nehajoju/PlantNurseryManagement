@@ -14,13 +14,13 @@ import { AlertService } from '../../services/alert';
 export class Orders implements OnInit {
 
   private apiUrl =
-    'http://https://plantnurserymanagement.onrender.com/api/orders/admin/';
+    'https://plantnurserymanagement.onrender.com/api/orders/admin/';
 
   private staffApiUrl =
-    'http://https://plantnurserymanagement.onrender.com/api/users/admin/staff/';
+    'https://plantnurserymanagement.onrender.com/api/users/admin/staff/';
 
   private assignApiUrl =
-    'http://https://plantnurserymanagement.onrender.com/api/orders/admin/';
+    'https://plantnurserymanagement.onrender.com/api/orders/admin/';
 
   orders: any[] = [];
 

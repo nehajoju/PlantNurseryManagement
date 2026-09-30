@@ -9,7 +9,7 @@ import { Auth } from './auth';
 export class NotificationService {
 
   private apiUrl =
-    'http://https://plantnurserymanagement.onrender.com/api/notifications/';
+    'https://plantnurserymanagement.onrender.com/api/notifications/';
 
   constructor(
     private http: HttpClient,
@@ -137,5 +137,6 @@ deleteAllNotifications(): Observable<any> {
   );
 } 
 }
+
 
 

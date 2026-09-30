@@ -9,7 +9,7 @@ import { Auth } from './auth';
 export class StaffResponsibilityService {
 
   private apiUrl =
-    'http://https://plantnurserymanagement.onrender.com/api/users/staff/responsibilities/';
+    'https://plantnurserymanagement.onrender.com/api/users/staff/responsibilities/';
 
   constructor(
     private http: HttpClient,

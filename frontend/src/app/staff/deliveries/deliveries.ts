@@ -20,10 +20,10 @@ import { AlertService } from '../../services/alert';
 export class Deliveries implements OnInit {
 
   private apiUrl =
-    'http://https://plantnurserymanagement.onrender.com/api/orders/staff/deliveries/';
+    'https://plantnurserymanagement.onrender.com/api/orders/staff/deliveries/';
 
   private statsApiUrl =
-    'http://https://plantnurserymanagement.onrender.com/api/orders/staff/deliveries/stats/';
+    'https://plantnurserymanagement.onrender.com/api/orders/staff/deliveries/stats/';
 
   deliveries: any[] = [];
 
