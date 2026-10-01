@@ -41,7 +41,9 @@ class LoginView(APIView):
             token, created = Token.objects.get_or_create(
                 user=user
             )
-
+            print("LOGIN USER:", user.username, user.id)
+            print("LOGIN TOKEN:", token.key)
+            print("TOKEN CREATED:", created)
             UserProfile.objects.get_or_create(
                 user=user
             )

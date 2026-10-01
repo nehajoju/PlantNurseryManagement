@@ -9,7 +9,7 @@ import { Auth } from './auth';
 export class Gardening {
 
   private apiUrl =
-    'https://plantnurserymanagement.onrender.com/api/gardening/';
+  'https://plantnurserymanagement.onrender.com/api/gardening/';
 
   constructor(
     private http: HttpClient,

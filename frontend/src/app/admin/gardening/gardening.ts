@@ -45,6 +45,10 @@ export class Gardening implements OnInit {
     description: ''
   };
 
+  // Date restrictions
+  today = this.getTodayDate();
+  minDueDate = this.today;
+
   // ==============================
   // TASK TYPE MODAL
   // ==============================
@@ -70,23 +74,23 @@ export class Gardening implements OnInit {
 
   private toastTimer: any;
 
-
   constructor(
     private gardeningService: GardeningService,
     private plantService: PlantService
   ) {}
-
 
   // ==============================
   // INITIAL LOAD
   // ==============================
 
   ngOnInit(): void {
+    this.today = this.getTodayDate();
+    this.minDueDate = this.today;
+
     this.loadPlants();
     this.loadTaskTypes();
     this.loadAll();
   }
-
 
   // ==============================
   // PLANTS
@@ -107,7 +111,6 @@ export class Gardening implements OnInit {
 
     });
   }
-
 
   // ==============================
   // TASK TYPES
@@ -139,7 +142,6 @@ export class Gardening implements OnInit {
     });
   }
 
-
   openTaskTypeModal(): void {
 
     this.editingTaskTypeId = null;
@@ -152,7 +154,6 @@ export class Gardening implements OnInit {
     this.taskTypeError = '';
     this.showTaskTypeModal = true;
   }
-
 
   openEditTaskTypeModal(taskType: any): void {
 
@@ -167,7 +168,6 @@ export class Gardening implements OnInit {
     this.showTaskTypeModal = true;
   }
 
-
   closeTaskTypeModal(): void {
 
     if (this.taskTypeLoading) {
@@ -179,12 +179,12 @@ export class Gardening implements OnInit {
     this.editingTaskTypeId = null;
   }
 
-
   saveTaskType(): void {
 
     this.taskTypeError = '';
 
     const name = this.taskTypeForm.name.trim();
+
     const description =
       this.taskTypeForm.description.trim();
 
@@ -202,7 +202,6 @@ export class Gardening implements OnInit {
       name: name,
       description: description
     };
-
 
     // ==============================
     // EDIT EXISTING TASK TYPE
@@ -252,7 +251,6 @@ export class Gardening implements OnInit {
       return;
     }
 
-
     // ==============================
     // CREATE NEW TASK TYPE
     // ==============================
@@ -293,7 +291,6 @@ export class Gardening implements OnInit {
 
       });
   }
-
 
   deleteTaskType(taskType: any): void {
 
@@ -336,7 +333,6 @@ export class Gardening implements OnInit {
       });
   }
 
-
   // ==============================
   // LOAD GARDENING DATA
   // ==============================
@@ -348,7 +344,6 @@ export class Gardening implements OnInit {
 
     this.loadSchedules();
   }
-
 
   loadSchedules(): void {
 
@@ -385,7 +380,6 @@ export class Gardening implements OnInit {
       });
   }
 
-
   loadTasks(): void {
 
     this.gardeningService
@@ -420,7 +414,6 @@ export class Gardening implements OnInit {
 
       });
   }
-
 
   loadHistory(): void {
 
@@ -457,7 +450,6 @@ export class Gardening implements OnInit {
       });
   }
 
-
   // ==============================
   // TABS
   // ==============================
@@ -473,6 +465,26 @@ export class Gardening implements OnInit {
     this.activeTab = tab;
   }
 
+  // ==============================
+  // DATE HELPER
+  // ==============================
+
+  private getTodayDate(): string {
+
+    const date = new Date();
+
+    const year = date.getFullYear();
+
+    const month = String(
+      date.getMonth() + 1
+    ).padStart(2, '0');
+
+    const day = String(
+      date.getDate()
+    ).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
 
   // ==============================
   // SCHEDULE MODAL
@@ -480,20 +492,20 @@ export class Gardening implements OnInit {
 
   openScheduleModal(): void {
 
-    this.scheduleForm = {
+    this.today = this.getTodayDate();
+    this.minDueDate = this.today;
 
+    this.scheduleForm = {
       plant: '',
       task_type: '',
       scheduled_date: '',
       due_date: '',
       description: ''
-
     };
 
     this.scheduleError = '';
     this.showScheduleModal = true;
   }
-
 
   closeScheduleModal(): void {
 
@@ -505,10 +517,25 @@ export class Gardening implements OnInit {
     this.scheduleError = '';
   }
 
+  onScheduledDateChange(date: string): void {
+
+    this.minDueDate = date || this.today;
+
+    if (
+      this.scheduleForm.due_date &&
+      this.scheduleForm.due_date < this.minDueDate
+    ) {
+      this.scheduleForm.due_date = '';
+    }
+  }
 
   createSchedule(): void {
 
     this.scheduleError = '';
+
+    // ==============================
+    // REQUIRED FIELD VALIDATION
+    // ==============================
 
     if (!this.scheduleForm.plant.trim()) {
 
@@ -542,6 +569,43 @@ export class Gardening implements OnInit {
       return;
     }
 
+    // ==============================
+    // DATE VALIDATION
+    // ==============================
+
+    const today = this.getTodayDate();
+
+    if (this.scheduleForm.scheduled_date < today) {
+
+      this.scheduleError =
+        'Scheduled date cannot be in the past.';
+
+      return;
+    }
+
+    if (this.scheduleForm.due_date < today) {
+
+      this.scheduleError =
+        'Due date cannot be in the past.';
+
+      return;
+    }
+
+    if (
+      this.scheduleForm.due_date <
+      this.scheduleForm.scheduled_date
+    ) {
+
+      this.scheduleError =
+        'Due date cannot be before the scheduled date.';
+
+      return;
+    }
+
+    // ==============================
+    // CREATE SCHEDULE
+    // ==============================
+
     this.scheduleLoading = true;
 
     const data = {
@@ -561,7 +625,6 @@ export class Gardening implements OnInit {
         this.scheduleForm.description.trim()
 
     };
-
 
     this.gardeningService
       .createCareSchedule(data)
@@ -598,7 +661,6 @@ export class Gardening implements OnInit {
 
       });
   }
-
 
   deleteSchedule(scheduleId: number): void {
 
@@ -641,7 +703,6 @@ export class Gardening implements OnInit {
       });
   }
 
-
   // ==============================
   // REFRESH
   // ==============================
@@ -655,7 +716,6 @@ export class Gardening implements OnInit {
       'Gardening data refreshed.'
     );
   }
-
 
   // ==============================
   // STATUS
@@ -672,7 +732,6 @@ export class Gardening implements OnInit {
       .replace(/\s+/g, '-');
   }
 
-
   // ==============================
   // TOAST
   // ==============================
@@ -686,7 +745,6 @@ export class Gardening implements OnInit {
     this.resetToastTimer();
   }
 
-
   showErrorToast(message: string): void {
 
     this.toastType = 'error';
@@ -696,7 +754,6 @@ export class Gardening implements OnInit {
     this.resetToastTimer();
   }
 
-
   closeToast(): void {
 
     this.showToast = false;
@@ -705,7 +762,6 @@ export class Gardening implements OnInit {
       clearTimeout(this.toastTimer);
     }
   }
-
 
   private resetToastTimer(): void {
 
@@ -721,5 +777,3 @@ export class Gardening implements OnInit {
   }
 
 }
-
-

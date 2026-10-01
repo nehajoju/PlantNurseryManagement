@@ -1,8 +1,8 @@
 <div class="gardening-admin-page">
 
     <!-- ==========================================
-       PAGE HEADER
-       ========================================== -->
+         PAGE HEADER
+         ========================================== -->
 
     <div class="page-header">
 
@@ -22,7 +22,6 @@
 
         </div>
 
-
         <div class="header-actions">
 
             <button
@@ -33,7 +32,6 @@
             >
                 🔄 Refresh
             </button>
-
 
             <button
                 type="button"
@@ -49,8 +47,8 @@
 
 
     <!-- ==========================================
-       LOADING
-       ========================================== -->
+         LOADING
+         ========================================== -->
 
     <div
         class="loading-container"
@@ -69,8 +67,8 @@
 
 
     <!-- ==========================================
-       ERROR
-       ========================================== -->
+         ERROR
+         ========================================== -->
 
     <div
         class="error-message"
@@ -104,18 +102,17 @@
 
 
     <!-- ==========================================
-       MAIN CONTENT
-       ========================================== -->
+         MAIN CONTENT
+         ========================================== -->
 
     <div
         class="gardening-content"
         *ngIf="!loading && !errorMessage"
     >
 
-
         <!-- ========================================
-         SUMMARY CARDS
-         ======================================== -->
+             SUMMARY CARDS
+             ======================================== -->
 
         <div class="summary-grid">
 
@@ -185,8 +182,8 @@
 
 
         <!-- ========================================
-         TABS
-         ======================================== -->
+             TABS
+             ======================================== -->
 
         <div class="gardening-tabs">
 
@@ -272,8 +269,8 @@
 
 
         <!-- ==========================================
-         CARE SCHEDULES
-         ========================================== -->
+             CARE SCHEDULES
+             ========================================== -->
 
         <section
             class="content-section"
@@ -293,7 +290,6 @@
                     </p>
 
                 </div>
-
 
                 <button
                     type="button"
@@ -499,8 +495,8 @@
 
 
         <!-- ==========================================
-         ALL TASKS
-         ========================================== -->
+             ALL TASKS
+             ========================================== -->
 
         <section
             class="content-section"
@@ -646,6 +642,32 @@
                         </div>
 
 
+                        <!-- OVERDUE -->
+
+                        <div
+                            class="detail-item"
+                            *ngIf="task.is_overdue"
+                        >
+
+                            <span class="detail-icon">
+                                ⚠️
+                            </span>
+
+                            <div>
+
+                                <small>
+                                    Task Status
+                                </small>
+
+                                <strong>
+                                    Overdue
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
                         <!-- ASSIGNED STAFF -->
 
                         <div class="detail-item">
@@ -692,10 +714,12 @@
                                 </small>
 
                                 <strong>
+
                                     {{
                                         task.started_at
                                         | date:'medium'
                                     }}
+
                                 </strong>
 
                             </div>
@@ -721,10 +745,12 @@
                                 </small>
 
                                 <strong>
+
                                     {{
                                         task.completed_at
                                         | date:'medium'
                                     }}
+
                                 </strong>
 
                             </div>
@@ -751,6 +777,24 @@
 
                     </div>
 
+
+                    <!-- SKIP REASON -->
+
+                    <div
+                        class="task-notes"
+                        *ngIf="task.skip_reason"
+                    >
+
+                        <strong>
+                            ⚠️ Skip Reason
+                        </strong>
+
+                        <p>
+                            {{ task.skip_reason }}
+                        </p>
+
+                    </div>
+
                 </div>
 
             </div>
@@ -759,8 +803,8 @@
 
 
         <!-- ==========================================
-         HISTORY
-         ========================================== -->
+             HISTORY
+             ========================================== -->
 
         <section
             class="content-section"
@@ -859,10 +903,12 @@
                             <td>
 
                                 <strong>
+
                                     {{
                                         record.care_type ||
                                         'Plant Care'
                                     }}
+
                                 </strong>
 
                             </td>
@@ -879,10 +925,12 @@
                                     </span>
 
                                     <span>
+
                                         {{
                                             record.plant_name ||
                                             'Unknown Plant'
                                         }}
+
                                     </span>
 
                                 </div>
@@ -897,8 +945,10 @@
                                 <span
                                     *ngIf="record.performed_by_name"
                                 >
+
                                     👷
                                     {{ record.performed_by_name }}
+
                                 </span>
 
                                 <span
@@ -952,10 +1002,12 @@
                                 <span
                                     *ngIf="record.performed_at"
                                 >
+
                                     {{
                                         record.performed_at
                                         | date:'medium'
                                     }}
+
                                 </span>
 
                                 <span
@@ -964,34 +1016,6 @@
                                 >
                                     —
                                 </span>
-
-                            </td>
-
-                        </tr>
-
-
-                        <!-- EMPTY -->
-
-                        <tr
-                            *ngIf="history.length === 0"
-                        >
-
-                            <td
-                                colspan="6"
-                                class="empty-table"
-                            >
-
-                                <div>
-                                    📜
-                                </div>
-
-                                <strong>
-                                    No Gardening History
-                                </strong>
-
-                                <p>
-                                    Completed or skipped tasks will appear here.
-                                </p>
 
                             </td>
 
@@ -1007,8 +1031,8 @@
 
 
         <!-- ==========================================
-         TASK TYPES
-         ========================================== -->
+             TASK TYPES
+             ========================================== -->
 
         <section
             class="tab-content"
@@ -1225,8 +1249,8 @@
 
 
     <!-- ==========================================
-       CREATE SCHEDULE MODAL
-       ========================================== -->
+         CREATE SCHEDULE MODAL
+         ========================================== -->
 
     <div
         class="modal-overlay"
@@ -1365,6 +1389,9 @@
 
                 <div class="form-row">
 
+
+                    <!-- SCHEDULED DATE -->
+
                     <div class="form-group">
 
                         <label for="scheduled-date">
@@ -1381,12 +1408,21 @@
                         <input
                             id="scheduled-date"
                             type="date"
+                            [min]="today"
                             [(ngModel)]="scheduleForm.scheduled_date"
+                            (ngModelChange)="onScheduledDateChange($event)"
                             [disabled]="scheduleLoading"
                         />
 
+
+                        <small>
+                            The date when the care schedule starts.
+                        </small>
+
                     </div>
 
+
+                    <!-- DUE DATE -->
 
                     <div class="form-group">
 
@@ -1404,9 +1440,15 @@
                         <input
                             id="due-date"
                             type="date"
+                            [min]="minDueDate"
                             [(ngModel)]="scheduleForm.due_date"
                             [disabled]="scheduleLoading"
                         />
+
+
+                        <small>
+                            The date by which the care task is due.
+                        </small>
 
                     </div>
 
@@ -1494,8 +1536,8 @@
 
 
     <!-- ==========================================
-       TASK TYPE MODAL
-       ========================================== -->
+         TASK TYPE MODAL
+         ========================================== -->
 
     <div
         class="modal-overlay"
@@ -1668,8 +1710,8 @@
 
 
     <!-- ==========================================
-       TOAST
-       ========================================== -->
+         TOAST
+         ========================================== -->
 
     <div
         class="gardening-toast"
